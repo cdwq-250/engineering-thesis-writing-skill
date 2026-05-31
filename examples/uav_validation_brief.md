@@ -28,3 +28,4 @@ This case can validate whether the skill can:
 - distinguish simulated assumptions from real factory deployment
 - reject unsupported claims about field data, production deployment, or trained reinforcement-learning policies
 
+See `examples/uav_evidence_map.md` for the chapter-by-chapter evidence map.

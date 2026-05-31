@@ -39,3 +39,5 @@ After placing legally obtained PDFs under `private_corpus/`, run:
 ```powershell
 python engineering-thesis-zh\scripts\run_corpus_pipeline.py
 ```
+
+The `examples/` folder also contains a UAV thesis validation brief and evidence map that show how to ground thesis writing in code, tests, CSV outputs, and figures.
