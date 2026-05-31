@@ -49,6 +49,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `analyze_corpus.py`: aggregate chapter, keyword, figure/table, and thesis-type statistics.
 - `quality_check.py`: check duplicate records, missing fields, and parse failures.
 - `check_public_safety.py`: scan a repository before commit or push for private/copyrighted artifacts.
+- `summarize_experiment_metrics.py`: summarize CSV experiment metrics for evidence-grounded experiment chapter writing.
 
 The scripts are intentionally structural. They do not publish full text.
 
@@ -73,4 +74,3 @@ For corpus-analysis tasks, output:
 - aggregate statistics only
 - no raw thesis text
 - no long verbatim passages from source papers
-

@@ -41,3 +41,9 @@ python engineering-thesis-zh\scripts\run_corpus_pipeline.py
 ```
 
 The `examples/` folder also contains a UAV thesis validation brief and evidence map that show how to ground thesis writing in code, tests, CSV outputs, and figures.
+
+To summarize experiment CSV files for thesis writing, run:
+
+```powershell
+python engineering-thesis-zh\scripts\summarize_experiment_metrics.py path\to\results\csv --output examples\metric_summary.md
+```
