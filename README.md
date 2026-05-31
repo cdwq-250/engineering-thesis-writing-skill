@@ -15,6 +15,8 @@ This repository is designed for a local, legally accessed thesis corpus. It does
 7. Use `engineering-thesis-zh` to plan and write thesis sections from real project evidence.
 8. Run the public-safety scan before committing or pushing.
 
+See `ENVIRONMENT.md` for Python dependency setup.
+
 ## Repository Layout
 
 ```text
