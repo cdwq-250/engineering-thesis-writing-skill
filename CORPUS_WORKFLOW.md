@@ -27,6 +27,18 @@ python engineering-thesis-zh\scripts\build_manifest.py private_corpus --output p
 
 Fill or enrich the blank metadata columns when practical. The manifest stays private.
 
+To run the full PDF pipeline in one command, use:
+
+```powershell
+python engineering-thesis-zh\scripts\run_corpus_pipeline.py
+```
+
+For an empty-directory smoke test, use:
+
+```powershell
+python engineering-thesis-zh\scripts\run_corpus_pipeline.py --allow-empty
+```
+
 Run:
 
 ```powershell
