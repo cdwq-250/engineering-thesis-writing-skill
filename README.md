@@ -32,6 +32,8 @@ engineering-thesis-writing-skill/
 
 Do not commit original theses, converted documents, extracted full text, or long verbatim passages from copyrighted papers. The scripts intentionally focus on structure, labels, counts, and aggregate statistics.
 
+See `PUBLISHING.md` for the GitHub publishing checklist.
+
 ## One-Command Local Pipeline
 
 After placing legally obtained PDFs under `private_corpus/`, run:
