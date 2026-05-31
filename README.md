@@ -59,3 +59,10 @@ Run the local tests with:
 ```powershell
 python -m pytest
 ```
+
+Validate the skill and public-safety rules with:
+
+```powershell
+python engineering-thesis-zh\scripts\validate_skill.py engineering-thesis-zh
+python engineering-thesis-zh\scripts\check_public_safety.py .
+```

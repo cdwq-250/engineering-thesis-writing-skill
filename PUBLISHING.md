@@ -30,7 +30,8 @@ From repository root:
 
 ```powershell
 python engineering-thesis-zh\scripts\check_public_safety.py .
-python C:\Users\HP\.codex\skills\.system\skill-creator\scripts\quick_validate.py D:\desktop\毕设\1\engineering-thesis-writing-skill\engineering-thesis-zh
+python engineering-thesis-zh\scripts\validate_skill.py engineering-thesis-zh
+python -m pytest
 git status --short
 ```
 
@@ -38,6 +39,7 @@ Expected:
 
 - public safety check passes
 - skill is valid
+- tests pass
 - git working tree is clean
 
 ## 3. Create The Public Repository
@@ -72,6 +74,8 @@ Confirm the remote does not contain:
 - long verbatim thesis passages
 - database credentials or session details
 
+The repository includes `.github/workflows/ci.yml`, so GitHub Actions should also run tests, skill validation, and the public safety scan after push.
+
 ## 5. Resume Corpus Work
 
 After publishing, continue local corpus analysis by placing legally obtained PDFs under:
@@ -87,4 +91,3 @@ Then run:
 ```powershell
 python engineering-thesis-zh\scripts\run_corpus_pipeline.py
 ```
-
