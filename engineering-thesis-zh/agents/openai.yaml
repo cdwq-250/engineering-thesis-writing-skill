@@ -1,0 +1,5 @@
+interface:
+  display_name: "Engineering Thesis ZH"
+  short_description: "Chinese engineering thesis writing from evidence."
+  default_prompt: "Use $engineering-thesis-zh to plan and write a Chinese engineering graduate thesis from real project evidence."
+

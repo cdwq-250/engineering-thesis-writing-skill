@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Private thesis corpus and derived full-text caches.
+private_corpus/
+private_extracts/
+downloads/
+*.pdf
+*.doc
+*.docx
+*.caj
+*.kdh
+
+# Local reports that may contain copyrighted snippets.
+*_fulltext*.json
+*_extract*.txt
+*_extract*.jsonl
+
