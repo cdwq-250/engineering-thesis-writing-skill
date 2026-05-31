@@ -19,6 +19,14 @@ Do not commit PDF, DOC, DOCX, CAJ, KDH, or full-text extracts.
 
 ## 2. Extract Structural Metadata
 
+First build a private manifest:
+
+```powershell
+python engineering-thesis-zh\scripts\build_manifest.py private_corpus --output private_extracts\manifest.csv
+```
+
+Fill or enrich the blank metadata columns when practical. The manifest stays private.
+
 Run:
 
 ```powershell
