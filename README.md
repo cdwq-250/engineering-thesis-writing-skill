@@ -51,3 +51,11 @@ To summarize experiment CSV files for thesis writing, run:
 ```powershell
 python engineering-thesis-zh\scripts\summarize_experiment_metrics.py path\to\results\csv --output examples\metric_summary.md
 ```
+
+## Validation
+
+Run the local tests with:
+
+```powershell
+python -m pytest
+```
