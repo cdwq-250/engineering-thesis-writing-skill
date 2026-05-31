@@ -25,6 +25,12 @@ Run:
 python engineering-thesis-zh\scripts\extract_outline.py private_corpus --output private_extracts\records.jsonl
 ```
 
+For an existing Markdown thesis draft, run:
+
+```powershell
+python engineering-thesis-zh\scripts\extract_markdown_outline.py path\to\thesis.md --output private_extracts\draft_records.jsonl
+```
+
 The extractor records structural fields such as:
 
 - file name
@@ -76,4 +82,3 @@ After aggregate analysis, use `engineering-thesis-zh` to:
 - write experiment sections from actual metrics
 - map claims to code, tests, CSV files, logs, figures, or screenshots
 - rewrite similarity/AIGC-risk paragraphs without changing facts
-

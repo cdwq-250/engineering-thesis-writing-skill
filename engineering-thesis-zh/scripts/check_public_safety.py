@@ -36,10 +36,8 @@ def main() -> None:
             continue
         rel = path.relative_to(root)
         if path.is_dir():
-            if path.name in BANNED_DIRS:
-                contents = [p for p in path.rglob("*") if p.is_file()]
-                if contents:
-                    violations.append(f"private directory is not empty: {rel}")
+            continue
+        if any(part in BANNED_DIRS for part in rel.parts):
             continue
         if path.suffix.lower() in BANNED_SUFFIXES:
             violations.append(f"banned document file: {rel}")

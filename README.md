@@ -9,9 +9,10 @@ This repository is designed for a local, legally accessed thesis corpus. It does
 1. Collect Chinese engineering graduate theses through authorized school-library access.
 2. Store original files only under ignored private directories such as `private_corpus/`.
 3. Run the extraction script to create structural metadata.
-4. Run quality checks and aggregate analysis.
-5. Use `engineering-thesis-zh` to plan and write thesis sections from real project evidence.
-6. Run the public-safety scan before committing or pushing.
+4. Optionally extract a local Markdown thesis draft for validation.
+5. Run quality checks and aggregate analysis.
+6. Use `engineering-thesis-zh` to plan and write thesis sections from real project evidence.
+7. Run the public-safety scan before committing or pushing.
 
 ## Repository Layout
 
@@ -29,4 +30,3 @@ engineering-thesis-writing-skill/
 ## Safety Rule
 
 Do not commit original theses, converted documents, extracted full text, or long verbatim passages from copyrighted papers. The scripts intentionally focus on structure, labels, counts, and aggregate statistics.
-
