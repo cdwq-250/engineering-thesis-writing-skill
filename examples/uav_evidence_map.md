@@ -58,6 +58,10 @@ The local project test suite collected 7 tests and all passed. This supports cla
 - Strategy comparison charts from `results/csv/baseline.csv` and `results/csv/maintenance_compare.csv`.
 - Sensitivity analysis chart from `results/csv/sensitivity_analysis.csv`.
 
+## Drafting Example
+
+See `examples/uav_experiment_section_draft.md` for a conservative Chinese experiment-section draft generated from the available CSV evidence.
+
 ## Unsupported Claims To Remove Or Weaken
 
 - Real factory deployment.
@@ -67,4 +71,3 @@ The local project test suite collected 7 tests and all passed. This supports cla
 - Production-grade digital-twin platform.
 - Statistical superiority without repeated trials or significance tests.
 - Large-scale concurrency or real-time performance.
-
