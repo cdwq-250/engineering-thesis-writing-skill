@@ -63,10 +63,21 @@ def main() -> None:
             ]
         )
         run([sys.executable, str(SCRIPT_DIR / "analyze_corpus.py"), str(records), "--output-dir", str(public_dir)])
+        run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "write_corpus_report.py"),
+                "--stats-dir",
+                str(public_dir),
+                "--records",
+                str(records),
+                "--output",
+                str(public_dir / "progress_report.md"),
+            ]
+        )
     else:
         print("No PDFs found; manifest smoke test completed.")
 
 
 if __name__ == "__main__":
     main()
-

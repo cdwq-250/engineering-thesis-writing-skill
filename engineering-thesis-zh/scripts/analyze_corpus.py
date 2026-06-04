@@ -13,9 +13,9 @@ from typing import Any
 
 
 TYPE_KEYWORDS = {
-    "software_system": ["系统", "平台", "管理", "设计与实现", "软件", "Web", "数据库"],
-    "control_optimization": ["控制", "优化", "调度", "算法", "预测", "模型", "仿真"],
-    "mechanical_manufacturing": ["机械", "制造", "装配", "工艺", "设备", "加工", "智能制造"],
+    "software_system": ["系统", "平台", "管理", "设计与实现", "软件", "Web", "数据库", "信息"],
+    "control_optimization": ["控制", "优化", "调度", "算法", "预测", "模型", "仿真", "策略"],
+    "mechanical_manufacturing": ["机械", "制造", "装配", "工艺", "设备", "加工", "智能制造", "生产线"],
 }
 
 
@@ -49,6 +49,10 @@ def chapter_prefix(heading: str) -> str:
     return heading[:20]
 
 
+def chapter_count(headings: list[str]) -> int:
+    return sum(1 for heading in headings if re.match(r"^第[一二三四五六七八九十0-9]+章", heading))
+
+
 def write_counter_csv(path: Path, counter: Counter[str], field_name: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
@@ -74,8 +78,8 @@ def main() -> None:
     for record in records:
         type_counts[infer_type(record)] += 1
         headings = record.get("headings", [])
-        chapter_count_distribution[str(sum(1 for h in headings if h.startswith("第") and "章" in h))] += 1
-        heading_counts.update(chapter_prefix(h) for h in headings)
+        chapter_count_distribution[str(chapter_count(headings))] += 1
+        heading_counts.update(chapter_prefix(heading) for heading in headings)
         keyword_counts.update(record.get("keyword_candidates", []))
         for title in record.get("figure_table_titles", []):
             figure_table_counts.update([title[:1]])
@@ -83,7 +87,7 @@ def main() -> None:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     summary = {
         "record_count": len(records),
-        "parse_error_count": sum(1 for r in records if r.get("parse_error")),
+        "parse_error_count": sum(1 for record in records if record.get("parse_error")),
         "type_counts": dict(type_counts),
         "chapter_count_distribution": dict(chapter_count_distribution),
     }
@@ -95,4 +99,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

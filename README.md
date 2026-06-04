@@ -44,6 +44,14 @@ After placing legally obtained PDFs under `private_corpus/`, run:
 python engineering-thesis-zh\scripts\run_corpus_pipeline.py
 ```
 
+After manually downloading PDFs or CAJ-family files into the browser download folder, archive new files into the ignored private corpus first:
+
+```powershell
+python engineering-thesis-zh\scripts\archive_downloads.py --limit 20
+```
+
+The pipeline writes aggregate statistics and a public progress report under `public_stats/corpus/`.
+
 The `examples/` folder also contains a UAV thesis validation brief and evidence map that show how to ground thesis writing in code, tests, CSV outputs, and figures.
 
 To summarize experiment CSV files for thesis writing, run:

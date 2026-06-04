@@ -7,8 +7,9 @@ import argparse
 from pathlib import Path
 
 
-BANNED_SUFFIXES = {".pdf", ".doc", ".docx", ".caj", ".kdh"}
+BANNED_SUFFIXES = {".pdf", ".doc", ".docx", ".caj", ".kdh", ".nh"}
 BANNED_DIRS = {"private_corpus", "private_extracts", "downloads"}
+SKIP_DIRS = {".git", "__pycache__", ".pytest_cache", ".tmp_test"}
 SUSPICIOUS_PATTERNS = [
     "本文共分为",
     "学位论文原创性声明",
@@ -19,8 +20,8 @@ SUSPICIOUS_PATTERNS = [
 TEXT_SUFFIXES = {".md", ".txt", ".json", ".jsonl", ".csv", ".yaml", ".yml", ".py"}
 
 
-def should_skip(path: Path) -> bool:
-    return any(part in {".git", "__pycache__", ".pytest_cache"} for part in path.parts)
+def should_skip(rel_path: Path) -> bool:
+    return any(part in SKIP_DIRS for part in rel_path.parts)
 
 
 def main() -> None:
@@ -32,9 +33,9 @@ def main() -> None:
     violations: list[str] = []
 
     for path in root.rglob("*"):
-        if should_skip(path):
-            continue
         rel = path.relative_to(root)
+        if should_skip(rel):
+            continue
         if path.is_dir():
             continue
         if any(part in BANNED_DIRS for part in rel.parts):
