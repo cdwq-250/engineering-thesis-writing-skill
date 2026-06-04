@@ -20,16 +20,16 @@ Do not commit PDF, DOC, DOCX, CAJ, KDH, or full-text extracts.
 After manually downloading papers through CNKI or another authorized portal, archive new files from the browser download folder:
 
 ```powershell
-python engineering-thesis-zh\scripts\archive_downloads.py --limit 20
+python engineering-thesis-zh\scripts\archive_downloads.py --dry-run --pdf-only --since-days 7 --include "维护|优化|调度|系统|设计|制造|装配|设备|质量|管理"
 ```
 
-For a no-write preview:
+If the preview is correct, run the same command without `--dry-run`:
 
 ```powershell
-python engineering-thesis-zh\scripts\archive_downloads.py --dry-run
+python engineering-thesis-zh\scripts\archive_downloads.py --pdf-only --since-days 7 --include "维护|优化|调度|系统|设计|制造|装配|设备|质量|管理" --limit 20
 ```
 
-The archiver copies files into `private_corpus/cnki_manual/` and skips files already present by SHA-256 hash. It does not delete or move anything from `Downloads`.
+The archiver copies files into `private_corpus/cnki_manual/` and skips files already present by SHA-256 hash. It does not delete or move anything from `Downloads`. Use `--exclude "选题|开题|答辩|报销"` if the download folder contains local documents that match the include terms.
 
 ## 2. Extract Structural Metadata
 

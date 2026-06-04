@@ -9,8 +9,10 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import re
 import shutil
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from pathlib import Path
 
 
@@ -47,6 +49,25 @@ def iter_candidate_files(source: Path) -> list[Path]:
     )
 
 
+def matches_filters(
+    path: Path,
+    include: list[re.Pattern[str]],
+    exclude: list[re.Pattern[str]],
+    since: datetime | None,
+    pdf_only: bool,
+) -> tuple[bool, str]:
+    name = path.name
+    if pdf_only and path.suffix.lower() != ".pdf":
+        return False, "not_pdf"
+    if since is not None and datetime.fromtimestamp(path.stat().st_mtime) < since:
+        return False, "older_than_since"
+    if include and not any(pattern.search(name) for pattern in include):
+        return False, "include_filter"
+    if exclude and any(pattern.search(name) for pattern in exclude):
+        return False, "exclude_filter"
+    return True, ""
+
+
 def existing_hashes(destination: Path) -> set[str]:
     hashes: set[str] = set()
     if not destination.exists():
@@ -70,7 +91,20 @@ def unique_destination(destination: Path, file_name: str) -> Path:
     raise RuntimeError(f"Could not find a unique destination for {file_name}")
 
 
-def archive_downloads(source: Path, destination: Path, limit: int | None, dry_run: bool) -> ArchiveResult:
+def compile_patterns(patterns: list[str]) -> list[re.Pattern[str]]:
+    return [re.compile(pattern, re.I) for pattern in patterns]
+
+
+def archive_downloads(
+    source: Path,
+    destination: Path,
+    limit: int | None,
+    dry_run: bool,
+    include: list[str] | None = None,
+    exclude: list[str] | None = None,
+    since_days: int | None = None,
+    pdf_only: bool = False,
+) -> ArchiveResult:
     if not source.exists():
         raise FileNotFoundError(f"Download directory does not exist: {source}")
 
@@ -78,10 +112,18 @@ def archive_downloads(source: Path, destination: Path, limit: int | None, dry_ru
     seen_hashes = existing_hashes(destination)
     result = ArchiveResult()
     copied_this_run = 0
+    include_patterns = compile_patterns(include or [])
+    exclude_patterns = compile_patterns(exclude or [])
+    since = datetime.now() - timedelta(days=since_days) if since_days is not None else None
 
     for path in iter_candidate_files(source):
         if limit is not None and copied_this_run >= limit:
             break
+        matched, reason = matches_filters(path, include_patterns, exclude_patterns, since, pdf_only)
+        if not matched:
+            result.skipped += 1
+            print(f"skip:{reason}\t{path.name}")
+            continue
         file_hash = sha256(path)
         if file_hash in seen_hashes:
             result.duplicate += 1
@@ -113,10 +155,39 @@ def main() -> None:
         help="Private corpus destination directory",
     )
     parser.add_argument("--limit", type=int, default=None, help="Maximum number of new files to copy")
+    parser.add_argument(
+        "--include",
+        action="append",
+        default=[],
+        help="Case-insensitive regex that the file name must match; repeat for OR matching",
+    )
+    parser.add_argument(
+        "--exclude",
+        action="append",
+        default=[],
+        help="Case-insensitive regex for file names to skip; repeat for OR matching",
+    )
+    parser.add_argument(
+        "--since-days",
+        type=int,
+        default=7,
+        help="Only consider files modified in the last N days; pass -1 to disable",
+    )
+    parser.add_argument("--pdf-only", action="store_true", help="Only archive PDF files")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be copied without writing files")
     args = parser.parse_args()
 
-    result = archive_downloads(args.source.resolve(), args.destination.resolve(), args.limit, args.dry_run)
+    since_days = None if args.since_days < 0 else args.since_days
+    result = archive_downloads(
+        args.source.resolve(),
+        args.destination.resolve(),
+        args.limit,
+        args.dry_run,
+        include=args.include,
+        exclude=args.exclude,
+        since_days=since_days,
+        pdf_only=args.pdf_only,
+    )
     print(f"copied={result.copied}")
     print(f"duplicates={result.duplicate}")
     print(f"skipped={result.skipped}")

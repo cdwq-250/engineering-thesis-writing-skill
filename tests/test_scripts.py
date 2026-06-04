@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 
@@ -128,6 +130,45 @@ def test_archive_downloads_copies_supported_files_and_skips_duplicates(tmp_path:
     assert len(list(destination.glob("*.pdf"))) == 1
     assert (destination / "paper.caj").exists()
     assert not (destination / "ignore.txt").exists()
+
+
+def test_archive_downloads_filters_by_name_type_and_age(tmp_path: Path) -> None:
+    downloads = tmp_path / "Downloads"
+    downloads.mkdir()
+    destination = tmp_path / "private_corpus" / "cnki_manual"
+    target = downloads / "设备维护优化研究.pdf"
+    excluded = downloads / "选题报告.doc"
+    non_pdf = downloads / "设备维护优化研究.caj"
+    old = downloads / "旧论文维护研究.pdf"
+    target.write_bytes(b"%PDF target")
+    excluded.write_bytes(b"DOC report")
+    non_pdf.write_bytes(b"CAJ target")
+    old.write_bytes(b"%PDF old")
+    old_time = time.time() - 60 * 60 * 24 * 30
+    os.utime(old, (old_time, old_time))
+
+    result = run_script(
+        str(SCRIPTS / "archive_downloads.py"),
+        "--source",
+        str(downloads),
+        "--destination",
+        str(destination),
+        "--include",
+        "维护|优化",
+        "--exclude",
+        "选题|报告",
+        "--pdf-only",
+        "--since-days",
+        "7",
+    )
+
+    assert "copied=1" in result.stdout
+    assert "skip:not_pdf" in result.stdout
+    assert "skip:older_than_since" in result.stdout
+    assert (destination / "设备维护优化研究.pdf").exists()
+    assert not (destination / "选题报告.doc").exists()
+    assert not (destination / "设备维护优化研究.caj").exists()
+    assert not (destination / "旧论文维护研究.pdf").exists()
 
 
 def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:
