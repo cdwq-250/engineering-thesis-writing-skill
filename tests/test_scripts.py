@@ -341,6 +341,47 @@ def test_write_profile_questions_for_mechanical_thesis(tmp_path: Path) -> None:
     assert "`evidence[]`" in text
 
 
+def test_generate_manuscript_skeleton_from_valid_profile(tmp_path: Path) -> None:
+    profile = tmp_path / "profile.json"
+    profile.write_text(
+        json.dumps(
+            {
+                "title": "基于OEE的车间设备维护优化研究",
+                "thesis_type": "mechanical_manufacturing",
+                "topic_tags": ["equipment_maintenance"],
+                "constraints": ["仅有案例数据，不能写真实部署"],
+                "known_gaps": ["缺少长期运行数据"],
+                "evidence": [
+                    {
+                        "claim": "案例数据支持维护流程规范化分析",
+                        "source": "outputs/maintenance_cases.csv",
+                        "type": "csv",
+                        "allowed_wording": "案例数据支持维护流程规范化分析",
+                    }
+                ],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    output = tmp_path / "skeleton.md"
+
+    run_script(
+        str(SCRIPTS / "generate_manuscript_skeleton.py"),
+        "--profile",
+        str(profile),
+        "--output",
+        str(output),
+        "--validate-profile",
+    )
+
+    text = output.read_text(encoding="utf-8")
+    assert "Evidence Register" in text
+    assert "第3章 对象现状与问题诊断" in text
+    assert "不得使用“显著提升”" in text
+    assert "outputs/maintenance_cases.csv" in text
+
+
 def test_public_safety_fails_on_public_pdf(tmp_path: Path) -> None:
     public_pdf = tmp_path / "leaked.pdf"
     public_pdf.write_bytes(b"%PDF synthetic placeholder")

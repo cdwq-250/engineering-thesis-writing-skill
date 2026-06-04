@@ -61,6 +61,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `check_public_safety.py`: scan a repository before commit or push for private/copyrighted artifacts.
 - `summarize_experiment_metrics.py`: summarize CSV experiment metrics for evidence-grounded experiment chapter writing.
 - `generate_thesis_plan.py`: generate a corpus-grounded chapter outline, evidence map, figure/table plan, and risky-claim checklist from a project profile.
+- `generate_manuscript_skeleton.py`: generate a conservative Markdown thesis draft skeleton with evidence placeholders from a validated thesis profile.
 - `validate_thesis_profile.py`: validate a thesis planning profile before generating a plan; blocks unsupported strong claims without evidence sources.
 - `write_profile_questions.py`: generate focused interview questions for collecting a thesis profile through multi-turn user collaboration.
 
