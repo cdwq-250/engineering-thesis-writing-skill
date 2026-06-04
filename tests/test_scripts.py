@@ -223,3 +223,14 @@ def test_public_safety_fails_on_public_pdf(tmp_path: Path) -> None:
 
     assert result.returncode == 1
     assert "banned document file" in result.stdout
+
+
+def test_skill_references_have_readable_chinese() -> None:
+    expected = {
+        "software-system-thesis.md": "详细设计与实现",
+        "control-optimization-thesis.md": "问题建模",
+        "mechanical-manufacturing-thesis.md": "设备状态",
+    }
+    for file_name, phrase in expected.items():
+        text = (ROOT / "engineering-thesis-zh" / "references" / file_name).read_text(encoding="utf-8")
+        assert phrase in text

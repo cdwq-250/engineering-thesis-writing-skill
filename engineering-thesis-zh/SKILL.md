@@ -17,6 +17,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
    - Identify whether the task is a software-system, control/optimization, or mechanical/manufacturing application thesis.
    - Read the project repository, experiment outputs, draft thesis, school template, and user constraints before drafting.
    - If the task uses a corpus, keep original papers and full-text extracts local and private.
+   - If public corpus reports exist, read `public_stats/corpus/progress_report.md` and `public_stats/corpus/acquisition_plan.md` before making corpus-based claims.
 
 2. Load focused references.
    - Software system thesis: read `references/software-system-thesis.md`.
@@ -35,6 +36,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
    - Use corpus-derived structure patterns as a guide, not as text to copy.
    - Write in Chinese academic engineering style with concrete objects, variables, methods, and results.
    - Preserve factual boundaries and explicitly state model assumptions and limitations.
+   - Treat corpus findings as preliminary until enough records exist across multiple schools, topics, and thesis families.
 
 5. Verify before delivery.
    - Check that every result discussed has a visible source.
@@ -45,13 +47,26 @@ Never invent project facts, experiment results, deployment scale, real factory d
 
 Use scripts in `scripts/` when a local thesis corpus is available:
 
+- `archive_downloads.py`: copy legally downloaded thesis files into the ignored private corpus with hash-based deduplication and filters.
 - `extract_outline.py`: extract structural metadata from PDF files.
 - `analyze_corpus.py`: aggregate chapter, keyword, figure/table, and thesis-type statistics.
 - `quality_check.py`: check duplicate records, missing fields, and parse failures.
+- `write_corpus_report.py`: generate an aggregate progress report from structural metadata.
+- `write_acquisition_plan.py`: generate the next balanced CNKI/Wanfang search plan from current sample counts.
 - `check_public_safety.py`: scan a repository before commit or push for private/copyrighted artifacts.
 - `summarize_experiment_metrics.py`: summarize CSV experiment metrics for evidence-grounded experiment chapter writing.
 
 The scripts are intentionally structural. They do not publish full text.
+
+## Corpus-Grounded Rule Promotion
+
+When turning corpus observations into writing guidance:
+
+1. Use 1-5 records only to debug extraction quality and produce acquisition priorities.
+2. Use 6-30 records to identify candidate patterns, but label them preliminary.
+3. Promote a chapter pattern or writing rule into references only after it appears across multiple thesis families, schools, or topics.
+4. Never copy source-paper wording into the skill. Convert observations into abstract structure rules, evidence rules, or claim-boundary rules.
+5. If sample distribution is unbalanced, follow `public_stats/corpus/acquisition_plan.md` before drawing stronger conclusions.
 
 ## Output Expectations
 
@@ -74,3 +89,4 @@ For corpus-analysis tasks, output:
 - aggregate statistics only
 - no raw thesis text
 - no long verbatim passages from source papers
+- sample-size caveats and next acquisition actions when the corpus is still small or unbalanced
