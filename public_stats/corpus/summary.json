@@ -1,10 +1,12 @@
 {
-  "record_count": 1,
+  "record_count": 2,
   "parse_error_count": 0,
   "type_counts": {
+    "software_system": 1,
     "control_optimization": 1
   },
   "chapter_count_distribution": {
+    "8": 1,
     "0": 1
   }
 }
