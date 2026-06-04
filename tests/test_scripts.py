@@ -71,6 +71,13 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
         "--batch-size",
         "2",
     )
+    run_script(
+        str(SCRIPTS / "write_rule_candidates.py"),
+        "--stats-dir",
+        str(stats_dir),
+        "--output",
+        str(stats_dir / "rule_candidates.md"),
+    )
 
     record = json.loads(records.read_text(encoding="utf-8").strip())
     assert record["keyword_candidates"] == ["数字孪生", "维护策略", "生产调度"]
@@ -87,6 +94,9 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     assert "Next Search Tasks" in plan
     assert "software" in plan
     assert "mechanical/manufacturing" in plan
+    candidates = (stats_dir / "rule_candidates.md").read_text(encoding="utf-8")
+    assert "Evidence level: `debug_only`" in candidates
+    assert "Promotion Checklist" in candidates
 
 
 def test_manifest_and_empty_pipeline(tmp_path: Path) -> None:

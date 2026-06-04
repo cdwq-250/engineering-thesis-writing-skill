@@ -101,11 +101,12 @@ The full pipeline also writes:
 
 ```text
 public_stats/corpus/progress_report.md
+public_stats/corpus/rule_candidates.md
 public_stats/corpus/acquisition_plan.md
 public_stats/corpus/acquisition_plan.csv
 ```
 
-Use `acquisition_plan.md` to choose the next CNKI/Wanfang searches and to keep software, control/optimization, and mechanical/manufacturing samples balanced.
+Use `rule_candidates.md` to see which observations are still only candidates, and use `acquisition_plan.md` to choose the next CNKI/Wanfang searches and keep software, control/optimization, and mechanical/manufacturing samples balanced.
 
 ## 5. Safety Scan Before Commit Or Push
 

@@ -17,7 +17,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
    - Identify whether the task is a software-system, control/optimization, or mechanical/manufacturing application thesis.
    - Read the project repository, experiment outputs, draft thesis, school template, and user constraints before drafting.
    - If the task uses a corpus, keep original papers and full-text extracts local and private.
-   - If public corpus reports exist, read `public_stats/corpus/progress_report.md` and `public_stats/corpus/acquisition_plan.md` before making corpus-based claims.
+   - If public corpus reports exist, read `public_stats/corpus/progress_report.md`, `public_stats/corpus/rule_candidates.md`, and `public_stats/corpus/acquisition_plan.md` before making corpus-based claims.
 
 2. Load focused references.
    - Software system thesis: read `references/software-system-thesis.md`.
@@ -52,6 +52,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `analyze_corpus.py`: aggregate chapter, keyword, figure/table, and thesis-type statistics.
 - `quality_check.py`: check duplicate records, missing fields, and parse failures.
 - `write_corpus_report.py`: generate an aggregate progress report from structural metadata.
+- `write_rule_candidates.py`: generate non-promoted candidate writing rules with sample-size gates.
 - `write_acquisition_plan.py`: generate the next balanced CNKI/Wanfang search plan from current sample counts.
 - `check_public_safety.py`: scan a repository before commit or push for private/copyrighted artifacts.
 - `summarize_experiment_metrics.py`: summarize CSV experiment metrics for evidence-grounded experiment chapter writing.
@@ -66,7 +67,8 @@ When turning corpus observations into writing guidance:
 2. Use 6-30 records to identify candidate patterns, but label them preliminary.
 3. Promote a chapter pattern or writing rule into references only after it appears across multiple thesis families, schools, or topics.
 4. Never copy source-paper wording into the skill. Convert observations into abstract structure rules, evidence rules, or claim-boundary rules.
-5. If sample distribution is unbalanced, follow `public_stats/corpus/acquisition_plan.md` before drawing stronger conclusions.
+5. Use `public_stats/corpus/rule_candidates.md` as the staging area for observations that are not yet safe to promote.
+6. If sample distribution is unbalanced, follow `public_stats/corpus/acquisition_plan.md` before drawing stronger conclusions.
 
 ## Output Expectations
 

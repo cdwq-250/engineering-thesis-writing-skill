@@ -87,6 +87,16 @@ def main() -> None:
                 str(public_dir / "acquisition_plan.csv"),
             ]
         )
+        run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "write_rule_candidates.py"),
+                "--stats-dir",
+                str(public_dir),
+                "--output",
+                str(public_dir / "rule_candidates.md"),
+            ]
+        )
     else:
         print("No PDFs found; manifest smoke test completed.")
 
