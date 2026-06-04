@@ -237,6 +237,7 @@ def test_public_safety_fails_on_public_pdf(tmp_path: Path) -> None:
 
 def test_skill_references_have_readable_chinese() -> None:
     expected = {
+        "corpus-derived-writing-rules.md": "问题诊断",
         "software-system-thesis.md": "详细设计与实现",
         "control-optimization-thesis.md": "问题建模",
         "mechanical-manufacturing-thesis.md": "设备状态",

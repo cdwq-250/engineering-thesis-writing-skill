@@ -20,6 +20,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
    - If public corpus reports exist, read `public_stats/corpus/progress_report.md`, `public_stats/corpus/rule_candidates.md`, and `public_stats/corpus/acquisition_plan.md` before making corpus-based claims.
 
 2. Load focused references.
+   - Corpus-grounded writing rules: read `references/corpus-derived-writing-rules.md` when public corpus reports exist or when the task asks for thesis commonalities.
    - Software system thesis: read `references/software-system-thesis.md`.
    - Control or optimization thesis: read `references/control-optimization-thesis.md`.
    - Mechanical or intelligent-manufacturing application thesis: read `references/mechanical-manufacturing-thesis.md`.
@@ -34,6 +35,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
 
 4. Draft or revise the thesis.
    - Use corpus-derived structure patterns as a guide, not as text to copy.
+   - Use `references/corpus-derived-writing-rules.md` to shape shared chapter logic, diagnosis-design-validation flow, and claim boundaries.
    - Write in Chinese academic engineering style with concrete objects, variables, methods, and results.
    - Preserve factual boundaries and explicitly state model assumptions and limitations.
    - Treat corpus findings as preliminary until enough records exist across multiple schools, topics, and thesis families.
