@@ -45,6 +45,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
 5. Verify before delivery.
    - Check that every result discussed has a visible source.
    - Check that all figures/tables are supported by project evidence.
+   - Run `audit_manuscript_claims.py` on generated Markdown drafts before delivery when the draft contains result or deployment claims.
    - Check that no copyrighted paper text, extracted full text, or unsupported claims enter deliverables.
 
 ## Corpus Tooling
@@ -62,6 +63,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `summarize_experiment_metrics.py`: summarize CSV experiment metrics for evidence-grounded experiment chapter writing.
 - `generate_thesis_plan.py`: generate a corpus-grounded chapter outline, evidence map, figure/table plan, and risky-claim checklist from a project profile.
 - `generate_manuscript_skeleton.py`: generate a conservative Markdown thesis draft skeleton with evidence placeholders from a validated thesis profile.
+- `audit_manuscript_claims.py`: scan generated Markdown drafts for unsupported strong claims against the Evidence Register.
 - `validate_thesis_profile.py`: validate a thesis planning profile before generating a plan; blocks unsupported strong claims without evidence sources.
 - `write_profile_questions.py`: generate focused interview questions for collecting a thesis profile through multi-turn user collaboration.
 

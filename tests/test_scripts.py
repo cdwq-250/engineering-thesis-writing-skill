@@ -382,6 +382,54 @@ def test_generate_manuscript_skeleton_from_valid_profile(tmp_path: Path) -> None
     assert "outputs/maintenance_cases.csv" in text
 
 
+def test_audit_manuscript_claims_blocks_unsupported_strong_claim(tmp_path: Path) -> None:
+    bad = tmp_path / "bad.md"
+    bad.write_text(
+        "\n".join(
+            [
+                "# Draft",
+                "",
+                "## Evidence Register",
+                "",
+                "| Claim | Source | Type | Allowed Wording |",
+                "|---|---|---|---|",
+                "| 案例数据支持维护流程规范化分析 | outputs/maintenance_cases.csv | csv | 案例数据支持维护流程规范化分析 |",
+                "",
+                "本文方案显著提升企业效益。",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    failed = subprocess.run(
+        [sys.executable, str(SCRIPTS / "audit_manuscript_claims.py"), str(bad)],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    assert failed.returncode == 1
+    assert "strong claim `显著` lacks matching Evidence Register support" in failed.stdout
+
+    good = tmp_path / "good.md"
+    good.write_text(
+        "\n".join(
+            [
+                "# Draft",
+                "",
+                "## Evidence Register",
+                "",
+                "| Claim | Source | Type | Allowed Wording |",
+                "|---|---|---|---|",
+                "| 显著提升维护响应速度 | outputs/maintenance_cases.csv | csv | 显著提升维护响应速度 |",
+                "",
+                "案例结果显示，方案显著提升维护响应速度。",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    result = run_script(str(SCRIPTS / "audit_manuscript_claims.py"), str(good))
+    assert "claim_audit_passed=true" in result.stdout
+
+
 def test_public_safety_fails_on_public_pdf(tmp_path: Path) -> None:
     public_pdf = tmp_path / "leaked.pdf"
     public_pdf.write_bytes(b"%PDF synthetic placeholder")
