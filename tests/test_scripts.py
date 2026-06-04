@@ -323,6 +323,24 @@ def test_validate_thesis_profile_blocks_unsupported_strong_claim(tmp_path: Path)
     assert "strong claim requires concrete evidence source" in failed.stdout
 
 
+def test_write_profile_questions_for_mechanical_thesis(tmp_path: Path) -> None:
+    output = tmp_path / "questions.md"
+
+    run_script(
+        str(SCRIPTS / "write_profile_questions.py"),
+        "--thesis-type",
+        "mechanical_manufacturing",
+        "--output",
+        str(output),
+    )
+
+    text = output.read_text(encoding="utf-8")
+    assert "Thesis Profile Interview" in text
+    assert "OEE" in text
+    assert "仿真" in text
+    assert "`evidence[]`" in text
+
+
 def test_public_safety_fails_on_public_pdf(tmp_path: Path) -> None:
     public_pdf = tmp_path / "leaked.pdf"
     public_pdf.write_bytes(b"%PDF synthetic placeholder")

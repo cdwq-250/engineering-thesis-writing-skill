@@ -15,6 +15,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
 
 1. Establish thesis type and evidence.
    - Identify whether the task is a software-system, control/optimization, or mechanical/manufacturing application thesis.
+   - For multi-turn user collaboration, run `write_profile_questions.py` for the selected thesis type before collecting a thesis profile.
    - Read the project repository, experiment outputs, draft thesis, school template, and user constraints before drafting.
    - If the task uses a corpus, keep original papers and full-text extracts local and private.
    - If public corpus reports exist, read `public_stats/corpus/progress_report.md`, `public_stats/corpus/rule_candidates.md`, and `public_stats/corpus/acquisition_plan.md` before making corpus-based claims.
@@ -61,6 +62,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `summarize_experiment_metrics.py`: summarize CSV experiment metrics for evidence-grounded experiment chapter writing.
 - `generate_thesis_plan.py`: generate a corpus-grounded chapter outline, evidence map, figure/table plan, and risky-claim checklist from a project profile.
 - `validate_thesis_profile.py`: validate a thesis planning profile before generating a plan; blocks unsupported strong claims without evidence sources.
+- `write_profile_questions.py`: generate focused interview questions for collecting a thesis profile through multi-turn user collaboration.
 
 The scripts are intentionally structural. They do not publish full text.
 
