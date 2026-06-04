@@ -407,7 +407,7 @@ def test_audit_manuscript_claims_blocks_unsupported_strong_claim(tmp_path: Path)
         capture_output=True,
     )
     assert failed.returncode == 1
-    assert "strong claim `显著` lacks matching Evidence Register support" in failed.stdout
+    assert "lacks matching Evidence Register support" in failed.stdout
 
     good = tmp_path / "good.md"
     good.write_text(

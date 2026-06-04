@@ -12,6 +12,11 @@ from pathlib import Path
 STRONG_CLAIM_WORDS = ["显著", "工业级", "国内领先", "全面解决", "最优", "投入运行", "实际应用证明"]
 
 
+def display(value: object) -> str:
+    """Return ASCII-safe text for CI consoles with non-UTF-8 encodings."""
+    return str(value).encode("ascii", errors="backslashreplace").decode("ascii")
+
+
 @dataclass
 class EvidenceRow:
     claim: str
@@ -89,9 +94,9 @@ def main() -> None:
     text = args.manuscript.read_text(encoding="utf-8")
     errors, warnings = audit(text)
     for warning in warnings:
-        print(f"warning:{warning}")
+        print(f"warning:{display(warning)}")
     for error in errors:
-        print(f"error:{error}")
+        print(f"error:{display(error)}")
     if errors:
         raise SystemExit(1)
     print("claim_audit_passed=true")
