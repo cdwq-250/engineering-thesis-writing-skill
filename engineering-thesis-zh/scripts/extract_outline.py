@@ -17,13 +17,18 @@ from typing import Iterable
 
 from pypdf import PdfReader
 
+try:
+    import pdfplumber
+except Exception:  # pragma: no cover - optional dependency fallback
+    pdfplumber = None
+
 
 HEADING_PATTERNS = [
     re.compile(r"^(第[一二三四五六七八九十0-9]+章\s+.{2,60})$"),
     re.compile(r"^([0-9]+\.[0-9]+(?:\.[0-9]+)?\s+.{2,60})$"),
     re.compile(r"^(绪论|摘要|Abstract|结论|总结与展望|参考文献|致谢|附录)$", re.I),
 ]
-FIGURE_PATTERN = re.compile(r"^(图|表)\s*[0-9一二三四五六七八九十\-\.]+[\s：:、-]*(.{2,80})$")
+FIGURE_PATTERN = re.compile(r"^([图表]\s*[0-9一二三四五六七八九十\-\.]+[\s:：、]*(.{2,80}))$")
 KEYWORD_PATTERN = re.compile(r"(关键词|关键字)\s*[:：]\s*(.{2,120})")
 
 
@@ -64,7 +69,15 @@ def unique_keep_order(items: Iterable[str], limit: int) -> list[str]:
     return result
 
 
-def extract_text(reader: PdfReader, max_pages: int | None) -> list[str]:
+def extract_text_with_pdfplumber(pdf_path: Path, max_pages: int | None) -> list[str]:
+    if pdfplumber is None:
+        raise RuntimeError("pdfplumber is not installed")
+    with pdfplumber.open(pdf_path) as pdf:
+        pages = pdf.pages if max_pages is None else pdf.pages[:max_pages]
+        return [page.extract_text() or "" for page in pages]
+
+
+def extract_text_with_pypdf(reader: PdfReader, max_pages: int | None) -> list[str]:
     pages = reader.pages if max_pages is None else reader.pages[:max_pages]
     texts: list[str] = []
     for page in pages:
@@ -81,11 +94,19 @@ def looks_like_heading(line: str) -> bool:
     return any(pattern.match(line) for pattern in HEADING_PATTERNS)
 
 
+def split_keywords(raw: str) -> list[str]:
+    return [part for part in re.split(r"[;；,，、\s]+", raw) if part]
+
+
 def extract_record(pdf_path: Path, root: Path, max_pages: int | None) -> ThesisRecord:
     try:
         reader = PdfReader(str(pdf_path))
         page_count = len(reader.pages)
-        texts = extract_text(reader, max_pages)
+        try:
+            texts = extract_text_with_pdfplumber(pdf_path, max_pages)
+        except Exception:
+            texts = extract_text_with_pypdf(reader, max_pages)
+
         lines = [clean_line(line) for text in texts for line in text.splitlines()]
         lines = [line for line in lines if line]
 
@@ -101,8 +122,7 @@ def extract_record(pdf_path: Path, root: Path, max_pages: int | None) -> ThesisR
         for line in lines[:200]:
             match = KEYWORD_PATTERN.search(line)
             if match:
-                raw = match.group(2)
-                keywords.extend(re.split(r"[；;，,、\s]+", raw))
+                keywords.extend(split_keywords(match.group(2)))
 
         title_candidates = [
             line
@@ -151,4 +171,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
