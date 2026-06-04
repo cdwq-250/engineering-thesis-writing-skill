@@ -232,6 +232,43 @@ def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:
     assert "do not claim a difference" in text
 
 
+def test_generate_thesis_plan_from_profile(tmp_path: Path) -> None:
+    profile = tmp_path / "profile.json"
+    profile.write_text(
+        json.dumps(
+            {
+                "title": "基于OEE的车间设备维护优化研究",
+                "thesis_type": "mechanical_manufacturing",
+                "topic_tags": ["equipment_maintenance", "production_scheduling"],
+                "evidence": [
+                    {
+                        "claim": "原型验证表明设备维护流程可被规范化",
+                        "source": "outputs/maintenance_cases.csv",
+                        "type": "csv",
+                        "allowed_wording": "案例数据支持流程规范化分析",
+                    },
+                    {
+                        "claim": "显著提升企业效益",
+                        "source": "",
+                        "type": "document",
+                    },
+                ],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    output = tmp_path / "plan.md"
+
+    run_script(str(SCRIPTS / "generate_thesis_plan.py"), "--profile", str(profile), "--output", str(output))
+
+    text = output.read_text(encoding="utf-8")
+    assert "第3章 对象现状与问题诊断" in text
+    assert "Evidence Map" in text
+    assert "outputs/maintenance_cases.csv" in text
+    assert "Remove or weaken: 显著提升企业效益" in text
+
+
 def test_public_safety_fails_on_public_pdf(tmp_path: Path) -> None:
     public_pdf = tmp_path / "leaked.pdf"
     public_pdf.write_bytes(b"%PDF synthetic placeholder")

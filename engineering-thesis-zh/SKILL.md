@@ -58,6 +58,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `write_acquisition_plan.py`: generate the next balanced CNKI/Wanfang search plan from current sample counts.
 - `check_public_safety.py`: scan a repository before commit or push for private/copyrighted artifacts.
 - `summarize_experiment_metrics.py`: summarize CSV experiment metrics for evidence-grounded experiment chapter writing.
+- `generate_thesis_plan.py`: generate a corpus-grounded chapter outline, evidence map, figure/table plan, and risky-claim checklist from a project profile.
 
 The scripts are intentionally structural. They do not publish full text.
 
