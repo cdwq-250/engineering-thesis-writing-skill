@@ -9,7 +9,9 @@ from datetime import date
 from pathlib import Path
 
 
-SUPPORTED_SUFFIXES = {".pdf", ".caj", ".doc", ".docx", ".kdh"}
+DIRECT_EXTRACTION_SUFFIXES = {".pdf"}
+CONVERSION_REQUIRED_SUFFIXES = {".caj", ".kdh", ".nh", ".doc", ".docx"}
+SUPPORTED_SUFFIXES = DIRECT_EXTRACTION_SUFFIXES | CONVERSION_REQUIRED_SUFFIXES
 FAMILY_NAMES = {"software", "control", "mechanical"}
 
 
@@ -25,6 +27,15 @@ def iter_files(root: Path) -> list[Path]:
     return sorted(
         path for path in root.rglob("*") if path.is_file() and path.suffix.lower() in SUPPORTED_SUFFIXES
     )
+
+
+def conversion_status(path: Path) -> str:
+    suffix = path.suffix.lower()
+    if suffix in DIRECT_EXTRACTION_SUFFIXES:
+        return "ready_for_extraction"
+    if suffix in {".caj", ".kdh", ".nh"}:
+        return "convert_to_pdf_first"
+    return "convert_or_export_to_pdf_first"
 
 
 def main() -> None:
@@ -50,6 +61,7 @@ def main() -> None:
         "keywords",
         "source_database",
         "download_date",
+        "conversion_status",
         "ocr_required",
         "notes",
     ]
@@ -73,6 +85,7 @@ def main() -> None:
                     "keywords": "",
                     "source_database": "",
                     "download_date": date.today().isoformat(),
+                    "conversion_status": conversion_status(path),
                     "ocr_required": "",
                     "notes": "",
                 }
@@ -84,4 +97,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

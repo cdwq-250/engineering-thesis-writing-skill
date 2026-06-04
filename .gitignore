@@ -13,9 +13,9 @@ downloads/
 *.docx
 *.caj
 *.kdh
+*.nh
 
 # Local reports that may contain copyrighted snippets.
 *_fulltext*.json
 *_extract*.txt
 *_extract*.jsonl
-

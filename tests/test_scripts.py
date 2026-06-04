@@ -62,13 +62,19 @@ def test_manifest_and_empty_pipeline(tmp_path: Path) -> None:
     corpus = tmp_path / "private_corpus"
     (corpus / "software").mkdir(parents=True)
     (corpus / "software" / "2024_school_system.pdf").write_bytes(b"%PDF synthetic placeholder")
+    (corpus / "software" / "2024_school_system.caj").write_bytes(b"CAJ synthetic placeholder")
+    (corpus / "software" / "2024_school_system.nh").write_bytes(b"NH synthetic placeholder")
     manifest = tmp_path / "manifest.csv"
 
     run_script(str(SCRIPTS / "build_manifest.py"), str(corpus), "--output", str(manifest))
 
     manifest_text = manifest.read_text(encoding="utf-8-sig")
     assert "2024_school_system.pdf" in manifest_text
+    assert "2024_school_system.caj" in manifest_text
+    assert "2024_school_system.nh" in manifest_text
     assert "software" in manifest_text
+    assert "ready_for_extraction" in manifest_text
+    assert "convert_to_pdf_first" in manifest_text
 
     empty_corpus = tmp_path / "empty"
     empty_corpus.mkdir()
@@ -123,4 +129,3 @@ def test_public_safety_fails_on_public_pdf(tmp_path: Path) -> None:
 
     assert result.returncode == 1
     assert "banned document file" in result.stdout
-

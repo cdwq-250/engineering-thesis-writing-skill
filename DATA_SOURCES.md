@@ -36,7 +36,7 @@ Software:
 - 信息系统
 - 平台设计
 - 数据库设计
-- Web系统
+- Web 系统
 - 软件工程
 
 Control and optimization:
@@ -52,7 +52,7 @@ Control and optimization:
 Mechanical and manufacturing:
 
 - 智能制造
-- 装配产线
+- 装配生产线
 - 设备维护
 - 设备健康管理
 - 工艺优化
@@ -82,7 +82,20 @@ Examples:
 2023_xxx-university_management-system-design.pdf
 ```
 
-If the database downloads CAJ, convert to PDF with an authorized reader/tool before running extraction.
+Prefer `PDF下载` when the database offers it. The extraction pipeline reads PDFs directly. CAJ-family files (`.caj`, `.kdh`, `.nh`) are allowed in the private manifest, but they are marked `convert_to_pdf_first` and must be converted before text extraction.
+
+## CAJ/KDH/NH Handling
+
+Use CAJ-family files only as a fallback when PDF is unavailable.
+
+Recommended conversion order:
+
+1. Open the file with an authorized CNKI/CAJ reader and export or print to PDF.
+2. Save the converted PDF next to the source file in `private_corpus/...`.
+3. Keep the original CAJ/KDH/NH private; never commit it.
+4. Run the corpus pipeline after the PDF exists.
+
+If the converted PDF is image-only or has poor text extraction, mark `ocr_required=yes` in the private manifest and use OCR before relying on keywords, headings, or figure/table captions.
 
 ## Metadata To Preserve
 
@@ -99,6 +112,7 @@ Maintain or enrich a local manifest with:
 - source database
 - download date
 - file format
+- conversion status
 - notes about OCR/scanned pages
 
 Only aggregate statistics may be public.
@@ -107,10 +121,9 @@ Only aggregate statistics may be public.
 
 Do not commit:
 
-- PDFs, CAJ, DOC, DOCX, KDH
+- PDFs, CAJ, DOC, DOCX, KDH, NH
 - full text extracts
 - OCR text
 - long verbatim passages
 - screenshots of copyrighted pages
 - database account or session details
-
