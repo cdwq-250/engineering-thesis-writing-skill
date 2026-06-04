@@ -87,12 +87,22 @@ def write_report(stats_dir: Path, records_path: Path, output: Path, target_per_f
         f"- Average extracted headings per record: {avg_headings:.1f}",
         f"- Average extracted keywords per record: {avg_keywords:.1f}",
         f"- Average extracted figure/table labels per record: {avg_figures:.1f}",
+        f"- Weak heading records: {summary.get('weak_heading_record_count', 0)}",
+        f"- Classification method: {summary.get('classification_method', 'not recorded')}",
         "",
         "## Type Distribution",
         "",
     ]
     for key, value in summary.get("type_counts", {}).items():
         lines.append(f"- {key}: {value}")
+
+    lines.extend(["", "## Classification Confidence", ""])
+    confidence_counts = summary.get("classification_confidence_counts", {})
+    if confidence_counts:
+        for key, value in confidence_counts.items():
+            lines.append(f"- {key}: {value}")
+    else:
+        lines.append("- No confidence data yet.")
 
     lines.extend(["", "## Common Heading Patterns", ""])
     lines.extend(bullet_counter(heading_rows, "heading_pattern") or ["- No heading data yet."])

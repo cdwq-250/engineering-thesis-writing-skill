@@ -2,11 +2,18 @@
   "record_count": 33,
   "parse_error_count": 0,
   "type_counts": {
-    "unknown": 2,
-    "software_system": 15,
-    "control_optimization": 14,
-    "mechanical_manufacturing": 2
+    "mechanical_manufacturing": 26,
+    "control_optimization": 3,
+    "mixed": 3,
+    "software_system": 1
   },
+  "classification_method": "weighted keywords over file name, title candidates, keywords, and headings",
+  "classification_confidence_counts": {
+    "high": 29,
+    "medium": 1,
+    "tie": 3
+  },
+  "weak_heading_record_count": 6,
   "chapter_count_distribution": {
     "0": 16,
     "4": 6,

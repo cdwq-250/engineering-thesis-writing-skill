@@ -27,6 +27,13 @@ def read_counter(path: Path, key_name: str, limit: int) -> list[tuple[str, int]]
         return rows[:limit]
 
 
+def read_rows(path: Path, limit: int) -> list[dict[str, str]]:
+    if not path.exists():
+        return []
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        return list(csv.DictReader(handle))[:limit]
+
+
 def evidence_level(record_count: int) -> str:
     if record_count < 6:
         return "debug_only"
@@ -43,6 +50,7 @@ def write_rule_candidates(stats_dir: Path, output: Path) -> None:
     headings = read_counter(stats_dir / "heading_patterns.csv", "heading_pattern", 12)
     keywords = read_counter(stats_dir / "keywords.csv", "keyword", 12)
     labels = read_counter(stats_dir / "figure_table_counts.csv", "label", 8)
+    diagnostics = read_rows(stats_dir / "classification_diagnostics.csv", 12)
 
     lines = [
         "# Rule Candidates",
@@ -90,6 +98,18 @@ def write_rule_candidates(stats_dir: Path, output: Path) -> None:
 
     lines.extend(["", "## Candidate Figure/Table Signals", ""])
     lines.extend([f"- label `{key}` appears {count} time(s)" for key, count in labels] or ["- No figure/table signals yet."])
+
+    lines.extend(["", "## Classification Diagnostics", ""])
+    if diagnostics:
+        for row in diagnostics:
+            lines.append(
+                "- "
+                f"{row.get('inferred_type', 'unknown')} / {row.get('confidence', 'unknown')}: "
+                f"{row.get('record_count', '0')} record(s), "
+                f"{row.get('weak_heading_records', '0')} weak heading record(s)"
+            )
+    else:
+        lines.append("- No classification diagnostics yet.")
 
     lines.extend(
         [

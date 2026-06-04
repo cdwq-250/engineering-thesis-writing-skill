@@ -87,8 +87,11 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     summary = json.loads((stats_dir / "summary.json").read_text(encoding="utf-8"))
     assert summary["record_count"] == 1
     assert summary["parse_error_count"] == 0
+    assert "classification_confidence_counts" in summary
+    assert (stats_dir / "classification_diagnostics.csv").exists()
     report = (stats_dir / "progress_report.md").read_text(encoding="utf-8")
     assert "Records analyzed: 1" in report
+    assert "Classification Confidence" in report
     assert "Next Acquisition Batch" in report
     plan = (stats_dir / "acquisition_plan.md").read_text(encoding="utf-8")
     assert "Next Search Tasks" in plan
@@ -96,6 +99,7 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     assert "mechanical/manufacturing" in plan
     candidates = (stats_dir / "rule_candidates.md").read_text(encoding="utf-8")
     assert "Evidence level: `debug_only`" in candidates
+    assert "Classification Diagnostics" in candidates
     assert "Promotion Checklist" in candidates
 
 

@@ -9,13 +9,21 @@ This report is generated from local structural metadata. It intentionally exclud
 - Average extracted headings per record: 12.0
 - Average extracted keywords per record: 4.0
 - Average extracted figure/table labels per record: 3.2
+- Weak heading records: 6
+- Classification method: weighted keywords over file name, title candidates, keywords, and headings
 
 ## Type Distribution
 
-- unknown: 2
-- software_system: 15
-- control_optimization: 14
-- mechanical_manufacturing: 2
+- mechanical_manufacturing: 26
+- control_optimization: 3
+- mixed: 3
+- software_system: 1
+
+## Classification Confidence
+
+- high: 29
+- medium: 1
+- tie: 3
 
 ## Common Heading Patterns
 
@@ -56,8 +64,8 @@ This report is generated from local structural metadata. It intentionally exclud
 
 ## Next Acquisition Batch
 
-- software: current 15, next target +20 files
-- control/optimization: current 14, next target +20 files
-- mechanical/manufacturing: current 2, next target +20 files
+- software: current 1, next target +20 files
+- control/optimization: current 3, next target +20 files
+- mechanical/manufacturing: current 26, next target +20 files
 
 Recommended immediate action: download another 10-20 legally accessible PDF theses from CNKI or Wanfang, then run `archive_downloads.py` and `run_corpus_pipeline.py`.

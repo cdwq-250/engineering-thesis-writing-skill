@@ -1,0 +1,6 @@
+inferred_type,confidence,record_count,weak_heading_records,average_headings,average_keywords
+control_optimization,high,2,0,19.5,4.5
+control_optimization,medium,1,0,5.0,6.0
+mechanical_manufacturing,high,26,5,11.6,3.8
+mixed,tie,3,1,11.3,4.3
+software_system,high,1,0,17.0,3.0

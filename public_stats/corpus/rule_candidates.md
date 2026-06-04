@@ -46,6 +46,14 @@ Promote only abstract structure rules, evidence rules, or claim-boundary rules.
 - label `图` appears 81 time(s)
 - label `表` appears 26 time(s)
 
+## Classification Diagnostics
+
+- control_optimization / high: 2 record(s), 0 weak heading record(s)
+- control_optimization / medium: 1 record(s), 0 weak heading record(s)
+- mechanical_manufacturing / high: 26 record(s), 5 weak heading record(s)
+- mixed / tie: 3 record(s), 1 weak heading record(s)
+- software_system / high: 1 record(s), 0 weak heading record(s)
+
 ## Promotion Checklist
 
 - The observation appears in more than one thesis.

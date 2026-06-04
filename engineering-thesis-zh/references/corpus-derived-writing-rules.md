@@ -12,10 +12,14 @@ Chinese engineering graduate theses:
 
 - 33 records analyzed.
 - 0 parse errors.
-- 15 software/system-like records.
-- 14 control/optimization-like records.
-- 2 mechanical/manufacturing-like records.
-- 2 records not confidently classified.
+- 26 mechanical/manufacturing-like records.
+- 3 control/optimization-like records.
+- 1 software/system-like record.
+- 3 mixed records with tied classification signals.
+- 29 records have high classification confidence, 1 has medium confidence,
+  and 3 are ties.
+- 6 records have weak heading extraction and should be checked manually before
+  promoting fine-grained chapter rules.
 - Common heading signals include `1.1`, `1.2`, `1.3`, `3.2`, `3.3`, `4.2`,
   `4.3`, `5.1`, and `5.2`.
 - Common keyword signals include 精益生产, 设备管理, TPM, OEE, 设备维护,
@@ -23,9 +27,12 @@ Chinese engineering graduate theses:
 - Figure/table signals show substantially more figures than tables in the
   current corpus.
 
-This sample is large enough to promote only abstract structure, evidence, and
-claim-boundary rules after manual review. It is not large enough to claim a
-universal thesis template for all Chinese engineering schools.
+This sample is strongest for production, equipment, maintenance, quality,
+manufacturing-management, and industrial optimization theses. It is large enough
+to promote only abstract structure, evidence, and claim-boundary rules after
+manual review. It is not large enough to claim a universal thesis template for
+all Chinese engineering schools, and it is not balanced enough to generalize
+software-system thesis rules.
 
 ## Shared Chapter Logic
 
