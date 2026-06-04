@@ -54,7 +54,8 @@ def parse_evidence_register(text: str) -> list[EvidenceRow]:
 def strong_claim_lines(text: str) -> list[tuple[int, str, str]]:
     result = []
     for line_number, line in enumerate(text.splitlines(), 1):
-        if line.strip().startswith("|"):
+        stripped = line.strip()
+        if stripped.startswith("|") or stripped.startswith("["):
             continue
         for word in STRONG_CLAIM_WORDS:
             if word in line:

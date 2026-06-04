@@ -430,6 +430,40 @@ def test_audit_manuscript_claims_blocks_unsupported_strong_claim(tmp_path: Path)
     assert "claim_audit_passed=true" in result.stdout
 
 
+def test_run_writing_pipeline_generates_plan_skeleton_and_report(tmp_path: Path) -> None:
+    profile = tmp_path / "profile.json"
+    profile.write_text(
+        json.dumps(
+            {
+                "title": "基于OEE的车间设备维护优化研究",
+                "thesis_type": "mechanical_manufacturing",
+                "topic_tags": ["equipment_maintenance"],
+                "constraints": ["仅有案例数据，不能写真实部署"],
+                "known_gaps": ["缺少长期运行数据"],
+                "evidence": [
+                    {
+                        "claim": "案例数据支持维护流程规范化分析",
+                        "source": "outputs/maintenance_cases.csv",
+                        "type": "csv",
+                        "allowed_wording": "案例数据支持维护流程规范化分析",
+                    }
+                ],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    output_dir = tmp_path / "out"
+
+    run_script(str(SCRIPTS / "run_writing_pipeline.py"), "--profile", str(profile), "--output-dir", str(output_dir))
+
+    assert (output_dir / "thesis_plan.md").exists()
+    assert (output_dir / "manuscript_skeleton.md").exists()
+    report = (output_dir / "pipeline_report.md").read_text(encoding="utf-8")
+    assert "Writing Pipeline Report" in report
+    assert "Claim audit errors: 0" in report
+
+
 def test_public_safety_fails_on_public_pdf(tmp_path: Path) -> None:
     public_pdf = tmp_path / "leaked.pdf"
     public_pdf.write_bytes(b"%PDF synthetic placeholder")

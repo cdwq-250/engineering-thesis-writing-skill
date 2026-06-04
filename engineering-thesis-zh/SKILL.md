@@ -66,6 +66,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `audit_manuscript_claims.py`: scan generated Markdown drafts for unsupported strong claims against the Evidence Register.
 - `validate_thesis_profile.py`: validate a thesis planning profile before generating a plan; blocks unsupported strong claims without evidence sources.
 - `write_profile_questions.py`: generate focused interview questions for collecting a thesis profile through multi-turn user collaboration.
+- `run_writing_pipeline.py`: run profile validation, plan generation, skeleton generation, and claim audit in one reproducible pipeline.
 
 The scripts are intentionally structural. They do not publish full text.
 
