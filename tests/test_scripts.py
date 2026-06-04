@@ -269,6 +269,60 @@ def test_generate_thesis_plan_from_profile(tmp_path: Path) -> None:
     assert "Remove or weaken: 显著提升企业效益" in text
 
 
+def test_validate_thesis_profile_blocks_unsupported_strong_claim(tmp_path: Path) -> None:
+    valid = tmp_path / "valid_profile.json"
+    valid.write_text(
+        json.dumps(
+            {
+                "title": "基于OEE的车间设备维护优化研究",
+                "thesis_type": "mechanical_manufacturing",
+                "topic_tags": ["equipment_maintenance"],
+                "constraints": ["无真实部署数据"],
+                "known_gaps": ["缺少长期运行数据"],
+                "evidence": [
+                    {
+                        "claim": "案例数据支持维护流程规范化分析",
+                        "source": "outputs/maintenance_cases.csv",
+                        "type": "csv",
+                        "allowed_wording": "案例数据支持维护流程规范化分析",
+                    }
+                ],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    result = run_script(str(SCRIPTS / "validate_thesis_profile.py"), str(valid))
+    assert "profile_valid=true" in result.stdout
+
+    invalid = tmp_path / "invalid_profile.json"
+    invalid.write_text(
+        json.dumps(
+            {
+                "title": "基于OEE的车间设备维护优化研究",
+                "thesis_type": "mechanical_manufacturing",
+                "evidence": [
+                    {
+                        "claim": "显著提升企业效益",
+                        "source": "",
+                        "type": "document",
+                    }
+                ],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    failed = subprocess.run(
+        [sys.executable, str(SCRIPTS / "validate_thesis_profile.py"), str(invalid)],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    assert failed.returncode == 1
+    assert "strong claim requires concrete evidence source" in failed.stdout
+
+
 def test_public_safety_fails_on_public_pdf(tmp_path: Path) -> None:
     public_pdf = tmp_path / "leaked.pdf"
     public_pdf.write_bytes(b"%PDF synthetic placeholder")
@@ -287,6 +341,7 @@ def test_public_safety_fails_on_public_pdf(tmp_path: Path) -> None:
 def test_skill_references_have_readable_chinese() -> None:
     expected = {
         "corpus-derived-writing-rules.md": "问题诊断",
+        "thesis-profile-schema.md": "基于OEE",
         "software-system-thesis.md": "详细设计与实现",
         "control-optimization-thesis.md": "问题建模",
         "mechanical-manufacturing-thesis.md": "设备状态",

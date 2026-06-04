@@ -21,6 +21,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
 
 2. Load focused references.
    - Corpus-grounded writing rules: read `references/corpus-derived-writing-rules.md` when public corpus reports exist or when the task asks for thesis commonalities.
+   - Thesis planning profile: read `references/thesis-profile-schema.md` before asking the user for project evidence or running `generate_thesis_plan.py`.
    - Software system thesis: read `references/software-system-thesis.md`.
    - Control or optimization thesis: read `references/control-optimization-thesis.md`.
    - Mechanical or intelligent-manufacturing application thesis: read `references/mechanical-manufacturing-thesis.md`.
@@ -59,6 +60,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `check_public_safety.py`: scan a repository before commit or push for private/copyrighted artifacts.
 - `summarize_experiment_metrics.py`: summarize CSV experiment metrics for evidence-grounded experiment chapter writing.
 - `generate_thesis_plan.py`: generate a corpus-grounded chapter outline, evidence map, figure/table plan, and risky-claim checklist from a project profile.
+- `validate_thesis_profile.py`: validate a thesis planning profile before generating a plan; blocks unsupported strong claims without evidence sources.
 
 The scripts are intentionally structural. They do not publish full text.
 

@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from validate_thesis_profile import validate_profile
+
 
 THESIS_TYPES = {
     "mechanical_manufacturing": {
@@ -193,6 +195,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Generate an evidence-grounded thesis writing plan.")
     parser.add_argument("--profile", type=Path, help="JSON profile with title, thesis_type, topic_tags, and evidence.")
     parser.add_argument("--output", type=Path, required=True, help="Output Markdown plan path.")
+    parser.add_argument("--validate-profile", action="store_true", help="Validate the profile and stop on blocking errors.")
     parser.add_argument("--title", help="Title override when no profile is supplied.")
     parser.add_argument(
         "--thesis-type",
@@ -202,6 +205,14 @@ def main() -> None:
     args = parser.parse_args()
 
     profile = load_profile(args.profile)
+    if args.validate_profile:
+        errors, warnings = validate_profile(profile)
+        for warning in warnings:
+            print(f"warning:{warning}")
+        if errors:
+            for error in errors:
+                print(f"error:{error}")
+            raise SystemExit(1)
     if args.title:
         profile["title"] = args.title
     if args.thesis_type:
