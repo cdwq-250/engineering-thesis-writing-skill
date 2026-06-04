@@ -94,6 +94,30 @@ def test_manifest_and_empty_pipeline(tmp_path: Path) -> None:
     assert (private_dir / "manifest.csv").exists()
 
 
+def test_archive_downloads_copies_supported_files_and_skips_duplicates(tmp_path: Path) -> None:
+    downloads = tmp_path / "Downloads"
+    downloads.mkdir()
+    destination = tmp_path / "private_corpus" / "cnki_manual"
+    (downloads / "paper.pdf").write_bytes(b"%PDF paper")
+    (downloads / "paper-copy.pdf").write_bytes(b"%PDF paper")
+    (downloads / "paper.caj").write_bytes(b"CAJ paper")
+    (downloads / "ignore.txt").write_text("not a thesis file", encoding="utf-8")
+
+    result = run_script(
+        str(SCRIPTS / "archive_downloads.py"),
+        "--source",
+        str(downloads),
+        "--destination",
+        str(destination),
+    )
+
+    assert "copied=2" in result.stdout
+    assert "duplicates=1" in result.stdout
+    assert len(list(destination.glob("*.pdf"))) == 1
+    assert (destination / "paper.caj").exists()
+    assert not (destination / "ignore.txt").exists()
+
+
 def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:
     csv_dir = tmp_path / "csv"
     csv_dir.mkdir()

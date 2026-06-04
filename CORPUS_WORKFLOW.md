@@ -17,6 +17,20 @@ Accepted v1 input is PDF. If a thesis is downloaded as CAJ, convert it to PDF wi
 
 Do not commit PDF, DOC, DOCX, CAJ, KDH, or full-text extracts.
 
+After manually downloading papers through CNKI or another authorized portal, archive new files from the browser download folder:
+
+```powershell
+python engineering-thesis-zh\scripts\archive_downloads.py --limit 20
+```
+
+For a no-write preview:
+
+```powershell
+python engineering-thesis-zh\scripts\archive_downloads.py --dry-run
+```
+
+The archiver copies files into `private_corpus/cnki_manual/` and skips files already present by SHA-256 hash. It does not delete or move anything from `Downloads`.
+
 ## 2. Extract Structural Metadata
 
 First build a private manifest:
