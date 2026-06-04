@@ -4,46 +4,49 @@ This report is generated from local structural metadata. It intentionally exclud
 
 ## Current Coverage
 
-- Records analyzed: 2
+- Records analyzed: 33
 - Parse errors: 0 (0.0%)
-- Average extracted headings per record: 8.5
-- Average extracted keywords per record: 6.5
-- Average extracted figure/table labels per record: 15.5
+- Average extracted headings per record: 12.0
+- Average extracted keywords per record: 4.0
+- Average extracted figure/table labels per record: 3.2
 
 ## Type Distribution
 
-- control_optimization: 2
+- unknown: 2
+- software_system: 15
+- control_optimization: 14
+- mechanical_manufacturing: 2
 
 ## Common Heading Patterns
 
-- 第四章: 3
-- 第三章: 2
-- 摘要: 1
-- Abstract: 1
-- 第五章: 1
-- 第一章: 1
-- 第二章: 1
-- 2.1: 1
-- 2.2: 1
-- 3.1: 1
+- 1.2: 68
+- 1.1: 46
+- 5.2: 22
+- 3.3: 17
+- 1.3: 17
+- 4.3: 17
+- Abstract: 16
+- 4.2: 15
+- 3.2: 12
+- 第四章: 11
 
 ## Common Keyword Candidates
 
-- 全面质量管理: 1
-- 造纸化学品: 1
-- 优化策略: 1
-- 质量意识: 1
-- 5M1E: 1
-- 分析: 1
-- 航空脉动装配生产线: 1
-- 基于模型的系统工程: 1
-- 生产流程标准作业图: 1
-- 物（Thing）: 1
+- 精益生产: 5
+- 设备管理: 4
+- TPM: 4
+- 全面质量管理: 2
+- 优化方案: 2
+- 设备综合效率: 2
+- OEE: 2
+- 设备维护: 2
+- 5M1E: 2
+- 分析: 2
 
 ## Figure/Table Label Counts
 
-- 图: 22
-- 表: 9
+- 图: 81
+- 表: 26
 
 ## Interpretation Guardrails
 
@@ -53,8 +56,8 @@ This report is generated from local structural metadata. It intentionally exclud
 
 ## Next Acquisition Batch
 
-- software: current 0, next target +20 files
-- control/optimization: current 2, next target +20 files
-- mechanical/manufacturing: current 0, next target +20 files
+- software: current 15, next target +20 files
+- control/optimization: current 14, next target +20 files
+- mechanical/manufacturing: current 2, next target +20 files
 
 Recommended immediate action: download another 10-20 legally accessible PDF theses from CNKI or Wanfang, then run `archive_downloads.py` and `run_corpus_pipeline.py`.

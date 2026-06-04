@@ -1,11 +1,17 @@
 {
-  "record_count": 2,
+  "record_count": 33,
   "parse_error_count": 0,
   "type_counts": {
-    "control_optimization": 2
+    "unknown": 2,
+    "software_system": 15,
+    "control_optimization": 14,
+    "mechanical_manufacturing": 2
   },
   "chapter_count_distribution": {
-    "8": 1,
-    "0": 1
+    "0": 16,
+    "4": 6,
+    "1": 6,
+    "3": 4,
+    "5": 1
   }
 }

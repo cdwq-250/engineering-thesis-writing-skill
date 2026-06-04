@@ -27,6 +27,11 @@ class ArchiveResult:
     skipped: int = 0
 
 
+def display(value: object) -> str:
+    """Return ASCII-safe text for CI consoles with non-UTF-8 encodings."""
+    return str(value).encode("ascii", errors="backslashreplace").decode("ascii")
+
+
 def sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -122,15 +127,15 @@ def archive_downloads(
         matched, reason = matches_filters(path, include_patterns, exclude_patterns, since, pdf_only)
         if not matched:
             result.skipped += 1
-            print(f"skip:{reason}\t{path.name}")
+            print(f"skip:{reason}\t{display(path.name)}")
             continue
         file_hash = sha256(path)
         if file_hash in seen_hashes:
             result.duplicate += 1
-            print(f"duplicate\t{path.name}")
+            print(f"duplicate\t{display(path.name)}")
             continue
         target = unique_destination(destination, path.name)
-        print(f"{'would_copy' if dry_run else 'copy'}\t{path}\t->\t{target}")
+        print(f"{'would_copy' if dry_run else 'copy'}\t{display(path)}\t->\t{display(target)}")
         if not dry_run:
             shutil.copy2(path, target)
             seen_hashes.add(file_hash)

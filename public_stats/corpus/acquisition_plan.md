@@ -4,23 +4,23 @@ This plan is generated from aggregate corpus counts. It does not include source 
 
 ## Current Counts
 
-- software: 0
-- control/optimization: 2
-- mechanical/manufacturing: 0
+- software: 15
+- control/optimization: 14
+- mechanical/manufacturing: 2
 
 ## Next Search Tasks
 
 | Priority | Family | Batch Target | Query | Destination |
 |---:|---|---:|---|---|
-| 1 | software | 20 | 系统设计与实现 | `private_corpus/software` |
-| 2 | software | 20 | 管理系统 设计与实现 | `private_corpus/software` |
-| 3 | software | 20 | 信息系统 软件工程 | `private_corpus/software` |
-| 4 | mechanical/manufacturing | 20 | 智能制造 装配生产线 | `private_corpus/mechanical` |
-| 5 | mechanical/manufacturing | 20 | 设备维护 健康管理 | `private_corpus/mechanical` |
-| 6 | mechanical/manufacturing | 20 | 工艺优化 制造 | `private_corpus/mechanical` |
-| 7 | control/optimization | 20 | 生产调度 优化 | `private_corpus/control` |
-| 8 | control/optimization | 20 | 维护策略 优化 | `private_corpus/control` |
-| 9 | control/optimization | 20 | 离散事件仿真 调度 | `private_corpus/control` |
+| 1 | mechanical/manufacturing | 20 | 智能制造 装配生产线 | `private_corpus/mechanical` |
+| 2 | mechanical/manufacturing | 20 | 设备维护 健康管理 | `private_corpus/mechanical` |
+| 3 | mechanical/manufacturing | 20 | 工艺优化 制造 | `private_corpus/mechanical` |
+| 4 | control/optimization | 20 | 生产调度 优化 | `private_corpus/control` |
+| 5 | control/optimization | 20 | 维护策略 优化 | `private_corpus/control` |
+| 6 | control/optimization | 20 | 离散事件仿真 调度 | `private_corpus/control` |
+| 7 | software | 20 | 系统设计与实现 | `private_corpus/software` |
+| 8 | software | 20 | 管理系统 设计与实现 | `private_corpus/software` |
+| 9 | software | 20 | 信息系统 软件工程 | `private_corpus/software` |
 
 ## Execution Notes
 

@@ -4,47 +4,47 @@ This file records candidate writing-rule observations derived from aggregate str
 
 ## Evidence Gate
 
-- Records analyzed: 2
+- Records analyzed: 33
 - Parse errors: 0
-- Evidence level: `debug_only`
+- Evidence level: `promotable_after_manual_review`
 
-Current sample size is too small to promote any corpus observation into the skill as a general rule.
-Use the observations below only to check extraction quality and to guide the next acquisition batch.
+Current sample size may support rule promotion after manual review.
+Promote only abstract structure rules, evidence rules, or claim-boundary rules.
 
 ## Candidate Structural Signals
 
-- heading `第四章` appears 3 time(s)
-- heading `第三章` appears 2 time(s)
-- heading `摘要` appears 1 time(s)
-- heading `Abstract` appears 1 time(s)
-- heading `第五章` appears 1 time(s)
-- heading `第一章` appears 1 time(s)
-- heading `第二章` appears 1 time(s)
-- heading `2.1` appears 1 time(s)
-- heading `2.2` appears 1 time(s)
-- heading `3.1` appears 1 time(s)
-- heading `5.0` appears 1 time(s)
-- heading `4.0` appears 1 time(s)
+- heading `1.2` appears 68 time(s)
+- heading `1.1` appears 46 time(s)
+- heading `5.2` appears 22 time(s)
+- heading `3.3` appears 17 time(s)
+- heading `1.3` appears 17 time(s)
+- heading `4.3` appears 17 time(s)
+- heading `Abstract` appears 16 time(s)
+- heading `4.2` appears 15 time(s)
+- heading `3.2` appears 12 time(s)
+- heading `第四章` appears 11 time(s)
+- heading `5.1` appears 11 time(s)
+- heading `ABSTRACT` appears 11 time(s)
 
 ## Candidate Keyword Signals
 
-- keyword `全面质量管理` appears 1 time(s)
-- keyword `造纸化学品` appears 1 time(s)
-- keyword `优化策略` appears 1 time(s)
-- keyword `质量意识` appears 1 time(s)
-- keyword `5M1E` appears 1 time(s)
-- keyword `分析` appears 1 time(s)
-- keyword `航空脉动装配生产线` appears 1 time(s)
-- keyword `基于模型的系统工程` appears 1 time(s)
-- keyword `生产流程标准作业图` appears 1 time(s)
-- keyword `物（Thing）` appears 1 time(s)
-- keyword `设备互联` appears 1 time(s)
-- keyword `安灯` appears 1 time(s)
+- keyword `精益生产` appears 5 time(s)
+- keyword `设备管理` appears 4 time(s)
+- keyword `TPM` appears 4 time(s)
+- keyword `全面质量管理` appears 2 time(s)
+- keyword `优化方案` appears 2 time(s)
+- keyword `设备综合效率` appears 2 time(s)
+- keyword `OEE` appears 2 time(s)
+- keyword `设备维护` appears 2 time(s)
+- keyword `5M1E` appears 2 time(s)
+- keyword `分析` appears 2 time(s)
+- keyword `生产管理` appears 2 time(s)
+- keyword `预防性维护` appears 2 time(s)
 
 ## Candidate Figure/Table Signals
 
-- label `图` appears 22 time(s)
-- label `表` appears 9 time(s)
+- label `图` appears 81 time(s)
+- label `表` appears 26 time(s)
 
 ## Promotion Checklist
 
