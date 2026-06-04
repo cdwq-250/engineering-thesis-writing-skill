@@ -50,7 +50,7 @@ After manually downloading PDFs or CAJ-family files into the browser download fo
 python engineering-thesis-zh\scripts\archive_downloads.py --dry-run --pdf-only --since-days 7 --include "维护|优化|调度|系统|设计|制造|装配|设备|质量|管理"
 ```
 
-If the preview is correct, rerun without `--dry-run`. The pipeline writes aggregate statistics and a public progress report under `public_stats/corpus/`.
+If the preview is correct, rerun without `--dry-run`. The pipeline writes aggregate statistics, a public progress report, and the next acquisition plan under `public_stats/corpus/`.
 
 The `examples/` folder also contains a UAV thesis validation brief and evidence map that show how to ground thesis writing in code, tests, CSV outputs, and figures.
 

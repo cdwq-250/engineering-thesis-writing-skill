@@ -97,6 +97,16 @@ python engineering-thesis-zh\scripts\analyze_corpus.py private_extracts\records.
 
 Review outputs before committing. Public statistics should remain aggregate and non-reconstructive.
 
+The full pipeline also writes:
+
+```text
+public_stats/corpus/progress_report.md
+public_stats/corpus/acquisition_plan.md
+public_stats/corpus/acquisition_plan.csv
+```
+
+Use `acquisition_plan.md` to choose the next CNKI/Wanfang searches and to keep software, control/optimization, and mechanical/manufacturing samples balanced.
+
 ## 5. Safety Scan Before Commit Or Push
 
 Run:

@@ -58,6 +58,19 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
         "--output",
         str(stats_dir / "progress_report.md"),
     )
+    run_script(
+        str(SCRIPTS / "write_acquisition_plan.py"),
+        "--summary",
+        str(stats_dir / "summary.json"),
+        "--output-md",
+        str(stats_dir / "acquisition_plan.md"),
+        "--output-csv",
+        str(stats_dir / "acquisition_plan.csv"),
+        "--target-per-family",
+        "3",
+        "--batch-size",
+        "2",
+    )
 
     record = json.loads(records.read_text(encoding="utf-8").strip())
     assert record["keyword_candidates"] == ["数字孪生", "维护策略", "生产调度"]
@@ -70,6 +83,10 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     report = (stats_dir / "progress_report.md").read_text(encoding="utf-8")
     assert "Records analyzed: 1" in report
     assert "Next Acquisition Batch" in report
+    plan = (stats_dir / "acquisition_plan.md").read_text(encoding="utf-8")
+    assert "Next Search Tasks" in plan
+    assert "software" in plan
+    assert "mechanical/manufacturing" in plan
 
 
 def test_manifest_and_empty_pipeline(tmp_path: Path) -> None:
