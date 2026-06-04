@@ -46,6 +46,41 @@ Promote only abstract structure rules, evidence rules, or claim-boundary rules.
 - label `图` appears 81 time(s)
 - label `表` appears 26 time(s)
 
+## Candidate Topic Signals
+
+- topic `equipment_maintenance` appears in 28 record(s)
+- topic `algorithm_modeling` appears in 26 record(s)
+- topic `production_scheduling` appears in 17 record(s)
+- topic `software_platform` appears in 10 record(s)
+- topic `lean_production` appears in 8 record(s)
+- topic `quality_management` appears in 7 record(s)
+
+## Candidate Topic Co-Occurrence Signals
+
+- topics `algorithm_modeling` + `equipment_maintenance` co-occur in 23 record(s)
+- topics `algorithm_modeling` + `production_scheduling` co-occur in 14 record(s)
+- topics `equipment_maintenance` + `production_scheduling` co-occur in 14 record(s)
+- topics `algorithm_modeling` + `software_platform` co-occur in 8 record(s)
+- topics `equipment_maintenance` + `software_platform` co-occur in 8 record(s)
+- topics `algorithm_modeling` + `lean_production` co-occur in 7 record(s)
+- topics `production_scheduling` + `software_platform` co-occur in 7 record(s)
+- topics `algorithm_modeling` + `quality_management` co-occur in 6 record(s)
+- topics `lean_production` + `quality_management` co-occur in 5 record(s)
+- topics `equipment_maintenance` + `quality_management` co-occur in 5 record(s)
+
+## Candidate Chapter Role Signals
+
+- role `current_state_diagnosis` appears in 29 record(s)
+- role `background_significance` appears in 24 record(s)
+- role `scheme_design` appears in 21 record(s)
+- role `literature_review` appears in 20 record(s)
+- role `model_design` appears in 12 record(s)
+- role `cause_analysis` appears in 10 record(s)
+- role `experiment_evaluation` appears in 9 record(s)
+- role `research_content_route` appears in 7 record(s)
+- role `system_implementation` appears in 5 record(s)
+- role `summary_outlook` appears in 2 record(s)
+
 ## Classification Diagnostics
 
 - control_optimization / high: 2 record(s), 0 weak heading record(s)

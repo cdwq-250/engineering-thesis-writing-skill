@@ -56,6 +56,41 @@ This report is generated from local structural metadata. It intentionally exclud
 - 图: 81
 - 表: 26
 
+## Topic Tags
+
+- equipment_maintenance: 28
+- algorithm_modeling: 26
+- production_scheduling: 17
+- software_platform: 10
+- lean_production: 8
+- quality_management: 7
+
+## Topic Co-Occurrence
+
+- algorithm_modeling + equipment_maintenance: 23
+- algorithm_modeling + production_scheduling: 14
+- equipment_maintenance + production_scheduling: 14
+- algorithm_modeling + software_platform: 8
+- equipment_maintenance + software_platform: 8
+- algorithm_modeling + lean_production: 7
+- production_scheduling + software_platform: 7
+- algorithm_modeling + quality_management: 6
+- lean_production + quality_management: 5
+- equipment_maintenance + quality_management: 5
+
+## Chapter Role Signals
+
+- current_state_diagnosis: 29
+- background_significance: 24
+- scheme_design: 21
+- literature_review: 20
+- model_design: 12
+- cause_analysis: 10
+- experiment_evaluation: 9
+- research_content_route: 7
+- system_implementation: 5
+- summary_outlook: 2
+
 ## Interpretation Guardrails
 
 - Treat current commonalities as preliminary until each target family has a larger sample.

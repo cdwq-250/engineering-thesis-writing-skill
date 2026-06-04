@@ -43,6 +43,17 @@ def bullet_counter(rows: list[dict[str, str]], key_name: str) -> list[str]:
     return lines
 
 
+def bullet_pair_counter(rows: list[dict[str, str]], left_name: str, right_name: str) -> list[str]:
+    lines = []
+    for row in rows:
+        left = row.get(left_name, "")
+        right = row.get(right_name, "")
+        count = row.get("count", "")
+        if left and right:
+            lines.append(f"- {left} + {right}: {count}")
+    return lines
+
+
 def next_batch_advice(summary: dict[str, Any], target_per_family: int) -> list[str]:
     type_counts = summary.get("type_counts", {})
     advice = []
@@ -66,6 +77,9 @@ def write_report(stats_dir: Path, records_path: Path, output: Path, target_per_f
     heading_rows = read_csv_rows(stats_dir / "heading_patterns.csv")
     keyword_rows = read_csv_rows(stats_dir / "keywords.csv")
     figure_rows = read_csv_rows(stats_dir / "figure_table_counts.csv")
+    topic_rows = read_csv_rows(stats_dir / "topic_tags.csv")
+    topic_pair_rows = read_csv_rows(stats_dir / "topic_cooccurrence.csv")
+    role_rows = read_csv_rows(stats_dir / "chapter_role_signals.csv")
 
     heading_counts = [len(record.get("headings", [])) for record in records]
     keyword_counts = [len(record.get("keyword_candidates", [])) for record in records]
@@ -112,6 +126,15 @@ def write_report(stats_dir: Path, records_path: Path, output: Path, target_per_f
 
     lines.extend(["", "## Figure/Table Label Counts", ""])
     lines.extend(bullet_counter(figure_rows, "label") or ["- No figure/table data yet."])
+
+    lines.extend(["", "## Topic Tags", ""])
+    lines.extend(bullet_counter(topic_rows, "topic_tag") or ["- No topic tag data yet."])
+
+    lines.extend(["", "## Topic Co-Occurrence", ""])
+    lines.extend(bullet_pair_counter(topic_pair_rows, "topic_a", "topic_b") or ["- No topic co-occurrence data yet."])
+
+    lines.extend(["", "## Chapter Role Signals", ""])
+    lines.extend(bullet_counter(role_rows, "role") or ["- No chapter role data yet."])
 
     lines.extend(
         [

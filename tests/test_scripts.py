@@ -89,9 +89,15 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     assert summary["parse_error_count"] == 0
     assert "classification_confidence_counts" in summary
     assert (stats_dir / "classification_diagnostics.csv").exists()
+    assert (stats_dir / "topic_tags.csv").exists()
+    assert (stats_dir / "topic_cooccurrence.csv").exists()
+    role_signal_text = (stats_dir / "chapter_role_signals.csv").read_text(encoding="utf-8")
+    assert "role,count" in role_signal_text
     report = (stats_dir / "progress_report.md").read_text(encoding="utf-8")
     assert "Records analyzed: 1" in report
     assert "Classification Confidence" in report
+    assert "Topic Co-Occurrence" in report
+    assert "Chapter Role Signals" in report
     assert "Next Acquisition Batch" in report
     plan = (stats_dir / "acquisition_plan.md").read_text(encoding="utf-8")
     assert "Next Search Tasks" in plan
@@ -100,6 +106,8 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     candidates = (stats_dir / "rule_candidates.md").read_text(encoding="utf-8")
     assert "Evidence level: `debug_only`" in candidates
     assert "Classification Diagnostics" in candidates
+    assert "Candidate Topic Co-Occurrence Signals" in candidates
+    assert "Candidate Chapter Role Signals" in candidates
     assert "Promotion Checklist" in candidates
 
 

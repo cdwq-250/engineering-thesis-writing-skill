@@ -34,6 +34,20 @@ def read_rows(path: Path, limit: int) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))[:limit]
 
 
+def read_pair_counter(path: Path, left_name: str, right_name: str, limit: int) -> list[tuple[str, str, int]]:
+    if not path.exists():
+        return []
+    with path.open("r", encoding="utf-8-sig", newline="") as handle:
+        rows = []
+        for row in csv.DictReader(handle):
+            left = row.get(left_name, "")
+            right = row.get(right_name, "")
+            count = int(row.get("count", "0") or 0)
+            if left and right:
+                rows.append((left, right, count))
+        return rows[:limit]
+
+
 def evidence_level(record_count: int) -> str:
     if record_count < 6:
         return "debug_only"
@@ -50,6 +64,9 @@ def write_rule_candidates(stats_dir: Path, output: Path) -> None:
     headings = read_counter(stats_dir / "heading_patterns.csv", "heading_pattern", 12)
     keywords = read_counter(stats_dir / "keywords.csv", "keyword", 12)
     labels = read_counter(stats_dir / "figure_table_counts.csv", "label", 8)
+    topic_tags = read_counter(stats_dir / "topic_tags.csv", "topic_tag", 10)
+    topic_pairs = read_pair_counter(stats_dir / "topic_cooccurrence.csv", "topic_a", "topic_b", 10)
+    roles = read_counter(stats_dir / "chapter_role_signals.csv", "role", 10)
     diagnostics = read_rows(stats_dir / "classification_diagnostics.csv", 12)
 
     lines = [
@@ -98,6 +115,18 @@ def write_rule_candidates(stats_dir: Path, output: Path) -> None:
 
     lines.extend(["", "## Candidate Figure/Table Signals", ""])
     lines.extend([f"- label `{key}` appears {count} time(s)" for key, count in labels] or ["- No figure/table signals yet."])
+
+    lines.extend(["", "## Candidate Topic Signals", ""])
+    lines.extend([f"- topic `{key}` appears in {count} record(s)" for key, count in topic_tags] or ["- No topic signals yet."])
+
+    lines.extend(["", "## Candidate Topic Co-Occurrence Signals", ""])
+    lines.extend(
+        [f"- topics `{left}` + `{right}` co-occur in {count} record(s)" for left, right, count in topic_pairs]
+        or ["- No topic co-occurrence signals yet."]
+    )
+
+    lines.extend(["", "## Candidate Chapter Role Signals", ""])
+    lines.extend([f"- role `{key}` appears in {count} record(s)" for key, count in roles] or ["- No chapter role signals yet."])
 
     lines.extend(["", "## Classification Diagnostics", ""])
     if diagnostics:
