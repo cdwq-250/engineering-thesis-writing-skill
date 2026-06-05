@@ -4,8 +4,8 @@ Use this reference for theses about mechanical equipment, intelligent manufactur
 
 ## Common Chapter Pattern
 
-1. 绪论：工业场景、设备或工艺问题、研究意义、国内外现状。
-2. 对象与需求分析：生产对象、工艺路线、设备状态、维护或质量需求。
+1. 绪论：工业场景、设备或工艺问题、研究意义、国内外现状。背景章节应尽快落到具体设备、工序、产线或维护对象，而不是停留在宽泛制造业表述。
+2. 对象与需求分析：生产对象、工艺路线、设备状态、维护或质量需求。对 mechanical/manufacturing 题目，通常应在方案章节前给出明确的 current_state_diagnosis。
 3. 模型与方法：工艺模型、设备退化模型、调度或维护策略、评价体系。
 4. 系统或实验平台设计：仿真架构、数据流、数字孪生映射、关键模块。
 5. 实验与结果分析：场景设计、对比实验、敏感性分析、工程解释。
@@ -22,5 +22,7 @@ Use this reference for theses about mechanical equipment, intelligent manufactur
 ## Writing Style
 
 - Anchor claims in the manufacturing object: station, process, equipment, order, operation, health state.
+- Give visible room to background_significance and current_state_diagnosis before concluding that a method or platform is effective.
+- When the topic is equipment_maintenance, keep the maintenance object, trigger condition, and indicator definition explicit instead of writing generic optimization prose.
 - Explain why metrics matter operationally.
 - Use conservative engineering value statements, such as “为后续现场参数接入提供基础”， instead of unsupported claims such as “实现工业级优化”。

@@ -52,6 +52,15 @@ def normalize_term(term: str) -> str:
     return cleaned.strip().lower()
 
 
+def extract_terms(item: str) -> list[str]:
+    if ":" in item:
+        payload = item.split(":", 1)[1]
+    else:
+        payload = item
+    parts = [part.strip() for part in payload.split(",")]
+    return [part for part in parts if part]
+
+
 def term_covered(reference_text: str, term: str) -> bool:
     normalized_reference = reference_text.lower()
     normalized_term = normalize_term(term)
@@ -74,17 +83,18 @@ def analyze_alignment(drafts_text: str, references_dir: Path) -> list[dict[str, 
         else:
             evidence_level = "unknown"
         for item in draft.get("suggested_reference_edits", []):
-            covered = term_covered(reference_text, item)
-            rows.append(
-                {
-                    "family": family,
-                    "reference_file": file_name,
-                    "draft_item": item,
-                    "covered_in_reference": "yes" if covered else "no",
-                    "promotion_gate": str(draft.get("promotion_gate", "")),
-                    "recommended_action": "hold" if evidence_level == "hold_sparse" else ("review_merge" if not covered else "already_covered"),
-                }
-            )
+            for term in extract_terms(item):
+                covered = term_covered(reference_text, term)
+                rows.append(
+                    {
+                        "family": family,
+                        "reference_file": file_name,
+                        "draft_item": term,
+                        "covered_in_reference": "yes" if covered else "no",
+                        "promotion_gate": str(draft.get("promotion_gate", "")),
+                        "recommended_action": "hold" if evidence_level == "hold_sparse" else ("review_merge" if not covered else "already_covered"),
+                    }
+                )
     return rows
 
 

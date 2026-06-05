@@ -861,6 +861,7 @@ def test_write_reference_alignment_report_flags_sparse_and_covered_items(tmp_pat
     assert "mechanical/manufacturing" in md_text
     assert "review_merge" in md_text or "already_covered" in md_text
     assert "family,reference_file,draft_item,covered_in_reference,promotion_gate,recommended_action" in csv_text
+    assert "background_significance" in csv_text
 
 
 def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:
