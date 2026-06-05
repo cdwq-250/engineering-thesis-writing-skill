@@ -70,6 +70,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `write_profile_questions.py`: generate focused interview questions for collecting a thesis profile through multi-turn user collaboration.
 - `write_collaboration_plan.py`: generate a gated multi-turn plan that coordinates corpus acquisition, evidence collection, profile validation, outline generation, and drafting.
 - `write_evidence_inventory.py`: scan a project workspace and produce a private evidence inventory with seed rows for `thesis-profile.json`.
+- `seed_thesis_profile.py`: convert the private evidence inventory into an editable `thesis-profile` seed before validation.
 - `run_writing_pipeline.py`: run profile validation, plan generation, skeleton generation, and claim audit in one reproducible pipeline.
 
 The scripts are intentionally structural. They do not publish full text.

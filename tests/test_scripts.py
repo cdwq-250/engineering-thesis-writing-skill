@@ -692,6 +692,52 @@ def test_write_evidence_inventory_scans_project_files(tmp_path: Path) -> None:
     assert '"test"' in json_text
 
 
+def test_seed_thesis_profile_from_inventory(tmp_path: Path) -> None:
+    inventory = tmp_path / "inventory.json"
+    inventory.write_text(
+        json.dumps(
+            {
+                "code": [
+                    {
+                        "path": "src/app.py",
+                        "claim_template": "待补充：说明 `src/app.py` 支撑的论文 claim。",
+                        "allowed_wording": "代码实现可支撑相关功能说明。",
+                    }
+                ],
+                "csv": [
+                    {
+                        "path": "data/results.csv",
+                        "claim_template": "待补充：说明 `data/results.csv` 支撑的论文 claim。",
+                        "allowed_wording": "数据文件可支撑案例级指标分析。",
+                    }
+                ],
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    output = tmp_path / "thesis-profile.seed.json"
+
+    run_script(
+        str(SCRIPTS / "seed_thesis_profile.py"),
+        "--inventory-json",
+        str(inventory),
+        "--thesis-type",
+        "software_system",
+        "--title",
+        "系统设计与实现",
+        "--output",
+        str(output),
+    )
+
+    profile = json.loads(output.read_text(encoding="utf-8"))
+    assert profile["thesis_type"] == "software_system"
+    assert profile["title"] == "系统设计与实现"
+    assert len(profile["evidence"]) == 2
+    result = run_script(str(SCRIPTS / "validate_thesis_profile.py"), str(output))
+    assert "profile_valid=true" in result.stdout
+
+
 def test_generate_manuscript_skeleton_from_valid_profile(tmp_path: Path) -> None:
     profile = tmp_path / "profile.json"
     profile.write_text(
