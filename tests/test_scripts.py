@@ -78,6 +78,17 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
         "--output",
         str(stats_dir / "rule_candidates.md"),
     )
+    run_script(
+        str(SCRIPTS / "check_corpus_readiness.py"),
+        "--summary",
+        str(stats_dir / "summary.json"),
+        "--output",
+        str(stats_dir / "readiness_report.md"),
+        "--min-total-records",
+        "3",
+        "--target-per-family",
+        "3",
+    )
 
     record = json.loads(records.read_text(encoding="utf-8").strip())
     assert record["keyword_candidates"] == ["数字孪生", "维护策略", "生产调度"]
@@ -109,6 +120,9 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     assert "Candidate Topic Co-Occurrence Signals" in candidates
     assert "Candidate Chapter Role Signals" in candidates
     assert "Promotion Checklist" in candidates
+    readiness = (stats_dir / "readiness_report.md").read_text(encoding="utf-8")
+    assert "Overall readiness:" in readiness
+    assert "software/system coverage" in readiness
 
 
 def test_manifest_and_empty_pipeline(tmp_path: Path) -> None:
@@ -145,6 +159,82 @@ def test_manifest_and_empty_pipeline(tmp_path: Path) -> None:
     )
     assert "No PDFs found; manifest smoke test completed." in result.stdout
     assert (private_dir / "manifest.csv").exists()
+
+
+def test_corpus_readiness_gate_reports_limited_and_balanced_corpora(tmp_path: Path) -> None:
+    limited_summary = tmp_path / "limited_summary.json"
+    limited_summary.write_text(
+        json.dumps(
+            {
+                "record_count": 33,
+                "parse_error_count": 0,
+                "weak_heading_record_count": 6,
+                "type_counts": {
+                    "mechanical_manufacturing": 26,
+                    "control_optimization": 3,
+                    "mixed": 3,
+                    "software_system": 1,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    limited_report = tmp_path / "limited_readiness.md"
+
+    result = run_script(
+        str(SCRIPTS / "check_corpus_readiness.py"),
+        "--summary",
+        str(limited_summary),
+        "--output",
+        str(limited_report),
+    )
+
+    assert "readiness=candidate_mechanical_only" in result.stdout
+    limited_text = limited_report.read_text(encoding="utf-8")
+    assert "Overall readiness: `candidate_mechanical_only`" in limited_text
+    assert "not ready for broad claims" in limited_text
+
+    strict_failed = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPTS / "check_corpus_readiness.py"),
+            "--summary",
+            str(limited_summary),
+            "--output",
+            str(tmp_path / "strict_limited.md"),
+            "--strict",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    assert strict_failed.returncode == 1
+
+    balanced_summary = tmp_path / "balanced_summary.json"
+    balanced_summary.write_text(
+        json.dumps(
+            {
+                "record_count": 330,
+                "parse_error_count": 2,
+                "weak_heading_record_count": 20,
+                "type_counts": {
+                    "mechanical_manufacturing": 110,
+                    "control_optimization": 110,
+                    "software_system": 110,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    balanced_result = run_script(
+        str(SCRIPTS / "check_corpus_readiness.py"),
+        "--summary",
+        str(balanced_summary),
+        "--output",
+        str(tmp_path / "balanced_readiness.md"),
+        "--strict",
+    )
+    assert "readiness=balanced_large" in balanced_result.stdout
 
 
 def test_archive_downloads_copies_supported_files_and_skips_duplicates(tmp_path: Path) -> None:

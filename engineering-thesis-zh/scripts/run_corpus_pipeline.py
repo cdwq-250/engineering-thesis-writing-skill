@@ -97,6 +97,16 @@ def main() -> None:
                 str(public_dir / "rule_candidates.md"),
             ]
         )
+        run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "check_corpus_readiness.py"),
+                "--summary",
+                str(public_dir / "summary.json"),
+                "--output",
+                str(public_dir / "readiness_report.md"),
+            ]
+        )
     else:
         print("No PDFs found; manifest smoke test completed.")
 
