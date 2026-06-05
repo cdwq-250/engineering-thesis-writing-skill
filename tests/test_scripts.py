@@ -50,6 +50,16 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     run_script(str(SCRIPTS / "quality_check.py"), str(records), "--min-headings", "5")
     run_script(str(SCRIPTS / "analyze_corpus.py"), str(records), "--output-dir", str(stats_dir))
     run_script(
+        str(SCRIPTS / "analyze_commonalities.py"),
+        str(records),
+        "--output-md",
+        str(stats_dir / "common_patterns.md"),
+        "--output-csv",
+        str(stats_dir / "commonality_matrix.csv"),
+        "--min-support",
+        "1",
+    )
+    run_script(
         str(SCRIPTS / "write_corpus_report.py"),
         "--stats-dir",
         str(stats_dir),
@@ -110,6 +120,10 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     assert "Topic Co-Occurrence" in report
     assert "Chapter Role Signals" in report
     assert "Next Acquisition Batch" in report
+    common_patterns = (stats_dir / "common_patterns.md").read_text(encoding="utf-8")
+    assert "Common Patterns Report" in common_patterns
+    assert "Evidence Boundary" in common_patterns
+    assert (stats_dir / "commonality_matrix.csv").exists()
     plan = (stats_dir / "acquisition_plan.md").read_text(encoding="utf-8")
     assert "Next Search Tasks" in plan
     assert "software" in plan
@@ -264,6 +278,74 @@ def test_rule_candidates_respect_family_coverage_gate(tmp_path: Path) -> None:
     text = output.read_text(encoding="utf-8")
     assert "Evidence level: `candidate_mechanical_only`" in text
     assert "Do not promote these observations as general rules" in text
+
+
+def test_commonality_analysis_separates_cross_family_and_mechanical_signals(tmp_path: Path) -> None:
+    records = tmp_path / "records.jsonl"
+    rows = [
+        {
+            "file_name": "software_system.pdf",
+            "title_candidates": ["车间管理系统设计与实现"],
+            "keyword_candidates": ["系统", "平台"],
+            "headings": ["研究背景", "系统实现", "测试验证"],
+            "figure_table_titles": [],
+            "parse_error": None,
+        },
+        {
+            "file_name": "control_scheduling.pdf",
+            "title_candidates": ["生产调度优化算法研究"],
+            "keyword_candidates": ["调度", "算法", "模型"],
+            "headings": ["研究背景", "问题建模", "仿真实验"],
+            "figure_table_titles": [],
+            "parse_error": None,
+        },
+        {
+            "file_name": "mechanical_maintenance_1.pdf",
+            "title_candidates": ["设备维护优化研究"],
+            "keyword_candidates": ["设备", "维护", "OEE"],
+            "headings": ["研究背景", "现状问题", "方案设计"],
+            "figure_table_titles": [],
+            "parse_error": None,
+        },
+        {
+            "file_name": "mechanical_maintenance_2.pdf",
+            "title_candidates": ["TPM设备管理优化研究"],
+            "keyword_candidates": ["设备", "维护", "TPM"],
+            "headings": ["研究背景", "现状问题", "方案设计"],
+            "figure_table_titles": [],
+            "parse_error": None,
+        },
+        {
+            "file_name": "mechanical_maintenance_3.pdf",
+            "title_candidates": ["OEE视角下设备管理优化研究"],
+            "keyword_candidates": ["设备", "维护", "OEE"],
+            "headings": ["研究背景", "现状问题", "方案设计"],
+            "figure_table_titles": [],
+            "parse_error": None,
+        },
+    ]
+    records.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in rows), encoding="utf-8")
+    output_md = tmp_path / "common_patterns.md"
+    output_csv = tmp_path / "commonality_matrix.csv"
+
+    run_script(
+        str(SCRIPTS / "analyze_commonalities.py"),
+        str(records),
+        "--output-md",
+        str(output_md),
+        "--output-csv",
+        str(output_csv),
+        "--min-support",
+        "2",
+    )
+
+    report = output_md.read_text(encoding="utf-8")
+    matrix = output_csv.read_text(encoding="utf-8")
+    assert "Common Patterns Report" in report
+    assert "cross_family_candidate" in report
+    assert "mechanical_weighted_candidate" in report
+    assert "role,background_significance" in matrix
+    assert "topic,equipment_maintenance" in matrix
 
 
 def test_archive_downloads_copies_supported_files_and_skips_duplicates(tmp_path: Path) -> None:

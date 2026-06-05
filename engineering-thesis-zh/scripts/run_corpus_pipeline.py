@@ -66,6 +66,17 @@ def main() -> None:
         run(
             [
                 sys.executable,
+                str(SCRIPT_DIR / "analyze_commonalities.py"),
+                str(records),
+                "--output-md",
+                str(public_dir / "common_patterns.md"),
+                "--output-csv",
+                str(public_dir / "commonality_matrix.csv"),
+            ]
+        )
+        run(
+            [
+                sys.executable,
                 str(SCRIPT_DIR / "write_corpus_report.py"),
                 "--stats-dir",
                 str(public_dir),

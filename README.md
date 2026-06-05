@@ -50,7 +50,7 @@ After manually downloading PDFs or CAJ-family files into the browser download fo
 python engineering-thesis-zh\scripts\archive_downloads.py --dry-run --pdf-only --since-days 7 --include "维护|优化|调度|系统|设计|制造|装配|设备|质量|管理"
 ```
 
-If the preview is correct, rerun without `--dry-run`. The pipeline writes aggregate statistics, a public progress report, rule candidates, a readiness gate report, and the next acquisition plan under `public_stats/corpus/`.
+If the preview is correct, rerun without `--dry-run`. The pipeline writes aggregate statistics, a public progress report, common-pattern coverage, rule candidates, a readiness gate report, and the next acquisition plan under `public_stats/corpus/`.
 
 Check whether the current corpus is large and balanced enough before promoting observations into broad writing rules:
 
@@ -59,6 +59,11 @@ python engineering-thesis-zh\scripts\check_corpus_readiness.py --summary public_
 ```
 
 Use `--strict` only for CI or release gates that must fail unless the corpus is large and balanced across thesis families.
+
+To inspect shared signals across thesis families, read:
+
+- `public_stats/corpus/common_patterns.md`
+- `public_stats/corpus/commonality_matrix.csv`
 
 The `examples/` folder also contains a UAV thesis validation brief and evidence map that show how to ground thesis writing in code, tests, CSV outputs, and figures.
 
