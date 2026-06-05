@@ -51,6 +51,8 @@ class TrackerRow:
     download_format: str
     local_file_name: str
     screening_action: str
+    recommended_destination: str
+    screening_reason: str
     archive_status: str
     notes: str
 
@@ -119,6 +121,8 @@ def build_tracker_rows(plan_rows: list[PlanRow], family: str | None, slots_per_q
                     download_format="",
                     local_file_name="",
                     screening_action="",
+                    recommended_destination="",
+                    screening_reason="",
                     archive_status="",
                     notes="",
                 )
@@ -170,6 +174,7 @@ def write_markdown(path: Path, rows: list[TrackerRow], plan_rows: list[PlanRow],
             "- Fill `abstract_checked=yes` only after confirming the abstract matches the intended family filter.",
             "- Use `download_format` such as `pdf`, `caj`, `kdh`, or `nh`.",
             "- Use `screening_action` such as `archive_candidate`, `manual_review`, or `skip_duplicate` after running `screen_downloads.py`.",
+            "- `recommended_destination` and `screening_reason` can be filled automatically from the screening CSV.",
             "- Use `archive_status` such as `archived`, `duplicate`, `rejected`, or `convert_to_pdf_first`.",
             "",
         ]

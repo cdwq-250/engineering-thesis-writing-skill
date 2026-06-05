@@ -56,6 +56,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 
 - `archive_downloads.py`: copy legally downloaded thesis files into the ignored private corpus with hash-based deduplication and filters.
 - `write_batch_tracker.py`: generate a private per-batch acquisition worksheet from the public plan before a manual CNKI/Wanfang download session.
+- `sync_batch_tracker_from_screening.py`: sync `screen_downloads.py` output back into the private tracker so screening decisions and duplicates do not need manual re-entry.
 - `summarize_batch_tracker.py`: summarize a filled private acquisition worksheet into batch progress, archived counts, and remaining family gaps.
 - `extract_outline.py`: extract structural metadata from PDF files.
 - `analyze_corpus.py`: aggregate chapter, keyword, figure/table, and thesis-type statistics.

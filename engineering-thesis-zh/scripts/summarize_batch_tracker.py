@@ -32,6 +32,8 @@ class TrackerRow:
     download_format: str
     local_file_name: str
     screening_action: str
+    recommended_destination: str
+    screening_reason: str
     archive_status: str
     notes: str
 
@@ -59,6 +61,8 @@ def read_tracker(path: Path) -> list[TrackerRow]:
                     download_format=row["download_format"],
                     local_file_name=row["local_file_name"],
                     screening_action=row["screening_action"],
+                    recommended_destination=row.get("recommended_destination", ""),
+                    screening_reason=row.get("screening_reason", ""),
                     archive_status=row["archive_status"],
                     notes=row["notes"],
                 )

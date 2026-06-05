@@ -62,6 +62,12 @@ Before a manual download session, generate a private batch tracker from the publ
 python engineering-thesis-zh\scripts\write_batch_tracker.py --plan-csv public_stats\corpus\acquisition_plan.csv --family software --slots-per-query 8
 ```
 
+After running `screen_downloads.py`, sync the screening CSV back into the tracker so `screening_action`, destination, and duplicate status are filled automatically:
+
+```powershell
+python engineering-thesis-zh\scripts\sync_batch_tracker_from_screening.py private_outputs\software_batch_tracker.csv private_outputs\download_screening.csv --output-md private_outputs\software_tracker_sync.md
+```
+
 After filling the tracker during a manual download session, summarize the batch before rerunning the corpus pipeline:
 
 ```powershell

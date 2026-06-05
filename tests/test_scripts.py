@@ -522,6 +522,8 @@ def test_write_batch_tracker_builds_private_manual_acquisition_sheet(tmp_path: P
     csv_text = output_csv.read_text(encoding="utf-8-sig")
     md_text = output_md.read_text(encoding="utf-8")
     assert "milestone_focus" in csv_text
+    assert "recommended_destination" in csv_text
+    assert "screening_reason" in csv_text
     assert "reach_commonality_10" in csv_text
     assert "系统设计与实现" in csv_text
     assert "Acquisition Batch Tracker" in md_text
@@ -534,10 +536,10 @@ def test_summarize_batch_tracker_reports_archived_progress(tmp_path: Path) -> No
     tracker_csv.write_text(
         "\n".join(
             [
-                "slot,family,milestone_focus,query,source_database,current_records,commonality_gap_records,readiness_gap_records,deep_gap_records,title,school,year,detail_page_checked,abstract_checked,download_format,local_file_name,screening_action,archive_status,notes",
-                "1,software,reach_commonality_10,系统设计与实现,CNKI,1,9,99,299,车间管理系统设计与实现,某大学,2024,yes,yes,pdf,a.pdf,archive_candidate,archived,",
-                "2,software,reach_commonality_10,系统设计与实现,CNKI,1,9,99,299,库存管理系统设计与实现,某大学,2023,yes,yes,caj,b.caj,manual_review,convert_to_pdf_first,",
-                "3,software,reach_commonality_10,管理系统 设计与实现,CNKI,1,9,99,299,,,,yes,no,,,skip_duplicate,duplicate,",
+                "slot,family,milestone_focus,query,source_database,current_records,commonality_gap_records,readiness_gap_records,deep_gap_records,title,school,year,detail_page_checked,abstract_checked,download_format,local_file_name,screening_action,recommended_destination,screening_reason,archive_status,notes",
+                "1,software,reach_commonality_10,系统设计与实现,CNKI,1,9,99,299,车间管理系统设计与实现,某大学,2024,yes,yes,pdf,a.pdf,archive_candidate,private_corpus/software,match,archived,",
+                "2,software,reach_commonality_10,系统设计与实现,CNKI,1,9,99,299,库存管理系统设计与实现,某大学,2023,yes,yes,caj,b.caj,manual_review,private_corpus/software,weak,convert_to_pdf_first,",
+                "3,software,reach_commonality_10,管理系统 设计与实现,CNKI,1,9,99,299,,,,yes,no,,,skip_duplicate,,duplicate,duplicate,",
             ]
         ),
         encoding="utf-8-sig",
@@ -563,6 +565,50 @@ def test_summarize_batch_tracker_reports_archived_progress(tmp_path: Path) -> No
     assert "系统设计与实现: detail 2" in md_text
     assert "remaining_commonality_gap" in csv_text
     assert "software,1,1,2,8,98,298,3" in csv_text
+
+
+def test_sync_batch_tracker_from_screening_updates_matching_rows(tmp_path: Path) -> None:
+    tracker_csv = tmp_path / "software_batch_tracker.csv"
+    tracker_csv.write_text(
+        "\n".join(
+            [
+                "slot,family,milestone_focus,query,source_database,current_records,commonality_gap_records,readiness_gap_records,deep_gap_records,title,school,year,detail_page_checked,abstract_checked,download_format,local_file_name,screening_action,recommended_destination,screening_reason,archive_status,notes",
+                "1,software,reach_commonality_10,系统设计与实现,CNKI,1,9,99,299,车间管理系统设计与实现,某大学,2024,yes,yes,pdf,a.pdf,,,,,",
+                "2,software,reach_commonality_10,系统设计与实现,CNKI,1,9,99,299,库存管理系统设计与实现,某大学,2023,yes,yes,caj,b.caj,,,,,",
+                "3,software,reach_commonality_10,管理系统 设计与实现,CNKI,1,9,99,299,,,,yes,no,,,missing.pdf,,,,,",
+            ]
+        ),
+        encoding="utf-8-sig",
+    )
+    screening_csv = tmp_path / "download_screening.csv"
+    screening_csv.write_text(
+        "\n".join(
+            [
+                "file_name,suffix,size_bytes,duplicate_in_corpus,inferred_type,confidence,priority_rank,recommended_action,recommended_destination,reason",
+                "a.pdf,.pdf,100,false,software_system,high,1,archive_candidate,private_corpus/software,Filename matches software_system",
+                "b.caj,.caj,100,true,software_system,medium,1,skip_duplicate,,File hash already exists in the private corpus.",
+            ]
+        ),
+        encoding="utf-8-sig",
+    )
+    output_md = tmp_path / "tracker_sync.md"
+
+    result = run_script(
+        str(SCRIPTS / "sync_batch_tracker_from_screening.py"),
+        str(tracker_csv),
+        str(screening_csv),
+        "--output-md",
+        str(output_md),
+    )
+
+    assert "matched=2" in result.stdout
+    synced = tracker_csv.read_text(encoding="utf-8-sig")
+    report = output_md.read_text(encoding="utf-8")
+    assert "archive_candidate,private_corpus/software,Filename matches software_system" in synced
+    assert "skip_duplicate,,File hash already exists in the private corpus.,duplicate" in synced
+    assert "missing.pdf" in synced
+    assert "Matched tracker rows: 2" in report
+    assert "skip_duplicate: 1" in report
 
 
 def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:
