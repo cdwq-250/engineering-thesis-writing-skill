@@ -653,6 +653,45 @@ def test_write_collaboration_plan_includes_gates_and_corpus_status(tmp_path: Pat
     assert "variables, objectives, constraints" in text
 
 
+def test_write_evidence_inventory_scans_project_files(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    (project / "src").mkdir(parents=True)
+    (project / "tests").mkdir()
+    (project / "docs").mkdir()
+    (project / "images").mkdir()
+    (project / "data").mkdir()
+    (project / "src" / "app.py").write_text("print('ok')\n", encoding="utf-8")
+    (project / "src" / "config.json").write_text('{"debug": true}\n', encoding="utf-8")
+    (project / "data" / "results.csv").write_text("metric,value\nacc,1\n", encoding="utf-8")
+    (project / "tests" / "test_app.py").write_text("def test_ok():\n    assert True\n", encoding="utf-8")
+    (project / "docs" / "notes.md").write_text("# Notes\n", encoding="utf-8")
+    (project / "images" / "ui.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    output_md = tmp_path / "evidence_inventory.md"
+    output_json = tmp_path / "evidence_inventory.json"
+
+    run_script(
+        str(SCRIPTS / "write_evidence_inventory.py"),
+        "--project-root",
+        str(project),
+        "--thesis-type",
+        "software_system",
+        "--output-md",
+        str(output_md),
+        "--output-json",
+        str(output_json),
+    )
+
+    md_text = output_md.read_text(encoding="utf-8")
+    json_text = output_json.read_text(encoding="utf-8")
+    assert "Evidence Inventory" in md_text
+    assert "src/app.py" in md_text
+    assert "data/results.csv" in md_text
+    assert "tests/test_app.py" in md_text
+    assert '"code"' in json_text
+    assert '"csv"' in json_text
+    assert '"test"' in json_text
+
+
 def test_generate_manuscript_skeleton_from_valid_profile(tmp_path: Path) -> None:
     profile = tmp_path / "profile.json"
     profile.write_text(

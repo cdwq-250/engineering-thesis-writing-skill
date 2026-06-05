@@ -91,21 +91,27 @@ Use the writing pipeline after you have a project idea, code/data evidence, and 
 python engineering-thesis-zh\scripts\write_collaboration_plan.py --thesis-type mechanical_manufacturing --output private_outputs\collaboration_plan.md
 ```
 
-2. Generate interview questions for the selected thesis type:
+2. Build a private evidence inventory from the project workspace:
+
+```powershell
+python engineering-thesis-zh\scripts\write_evidence_inventory.py --project-root . --thesis-type mechanical_manufacturing
+```
+
+3. Generate interview questions for the selected thesis type:
 
 ```powershell
 python engineering-thesis-zh\scripts\write_profile_questions.py --thesis-type mechanical_manufacturing --output private_outputs\profile_questions.md
 ```
 
-3. Fill a local `thesis-profile.json` using `engineering-thesis-zh\references\thesis-profile-schema.md`.
+4. Fill a local `thesis-profile.json` using `engineering-thesis-zh\references\thesis-profile-schema.md`.
 
-4. Validate the profile:
+5. Validate the profile:
 
 ```powershell
 python engineering-thesis-zh\scripts\validate_thesis_profile.py private_outputs\thesis-profile.json
 ```
 
-5. Run the full writing pipeline:
+6. Run the full writing pipeline:
 
 ```powershell
 python engineering-thesis-zh\scripts\run_writing_pipeline.py --profile private_outputs\thesis-profile.json --output-dir private_outputs\writing_run
