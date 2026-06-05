@@ -95,10 +95,12 @@ To inspect shared signals across thesis families, read:
 - `public_stats/corpus/common_patterns.md`
 - `public_stats/corpus/commonality_matrix.csv`
 - `public_stats/corpus/family_writing_briefs.md`
+- `public_stats/corpus/family_rule_drafts.md`
 
 The common-pattern report separates balanced cross-family candidates from sparse cross-family signals so that undersampled families do not create false generalizations.
 The readiness and acquisition reports now also quantify the near-term commonality gate, the balanced readiness gate, and estimated batch counts needed to reach each milestone.
 The family-writing brief summarizes which chapter roles and topic signals are most visible inside each thesis family and whether that evidence is still sparse or already usable as a cautious writing prompt.
+The family-rule draft is a staging artifact: it turns family briefs into conservative draft rules before any later manual edit to `references/`.
 
 The `examples/` folder also contains a UAV thesis validation brief and evidence map that show how to ground thesis writing in code, tests, CSV outputs, and figures.
 

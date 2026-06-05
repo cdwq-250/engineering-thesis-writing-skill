@@ -105,6 +105,18 @@ def main() -> None:
         run(
             [
                 sys.executable,
+                str(SCRIPT_DIR / "write_family_rule_drafts.py"),
+                "--family-brief-csv",
+                str(public_dir / "family_writing_briefs.csv"),
+                "--output-md",
+                str(public_dir / "family_rule_drafts.md"),
+                "--output-csv",
+                str(public_dir / "family_rule_drafts.csv"),
+            ]
+        )
+        run(
+            [
+                sys.executable,
                 str(SCRIPT_DIR / "write_acquisition_plan.py"),
                 "--summary",
                 str(public_dir / "summary.json"),

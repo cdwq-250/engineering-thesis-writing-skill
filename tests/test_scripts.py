@@ -82,6 +82,15 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
         str(stats_dir / "family_writing_briefs.csv"),
     )
     run_script(
+        str(SCRIPTS / "write_family_rule_drafts.py"),
+        "--family-brief-csv",
+        str(stats_dir / "family_writing_briefs.csv"),
+        "--output-md",
+        str(stats_dir / "family_rule_drafts.md"),
+        "--output-csv",
+        str(stats_dir / "family_rule_drafts.csv"),
+    )
+    run_script(
         str(SCRIPTS / "write_acquisition_plan.py"),
         "--summary",
         str(stats_dir / "summary.json"),
@@ -141,6 +150,10 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     assert "Family Writing Briefs" in family_briefs
     assert "mechanical/manufacturing" in family_briefs
     assert (stats_dir / "family_writing_briefs.csv").exists()
+    family_rule_drafts = (stats_dir / "family_rule_drafts.md").read_text(encoding="utf-8")
+    assert "Family Rule Drafts" in family_rule_drafts
+    assert "Promotion Gate" in family_rule_drafts
+    assert (stats_dir / "family_rule_drafts.csv").exists()
     plan = (stats_dir / "acquisition_plan.md").read_text(encoding="utf-8")
     assert "Next Search Tasks" in plan
     assert "software" in plan
@@ -745,6 +758,43 @@ def test_write_family_writing_briefs_summarizes_family_roles_and_signals(tmp_pat
     assert "`role:scheme_design`" in md_text
     assert "family,records_in_corpus,evidence_level,top_roles,top_signals" in csv_text
     assert "mechanical/manufacturing,12,candidate" in csv_text
+
+
+def test_write_family_rule_drafts_converts_briefs_into_staging_rules(tmp_path: Path) -> None:
+    family_brief_csv = tmp_path / "family_writing_briefs.csv"
+    family_brief_csv.write_text(
+        "\n".join(
+            [
+                "family,records_in_corpus,evidence_level,top_roles,top_signals",
+                "software/system,1,very_sparse,scheme_design:1; system_implementation:1,role:scheme_design:1",
+                "control/optimization,7,weak_signal,model_design:5; experiment_evaluation:4,role:model_design:5; topic:algorithm_modeling:5",
+                "mechanical/manufacturing,26,candidate,current_state_diagnosis:22; background_significance:19,topic:equipment_maintenance:24; role:current_state_diagnosis:22",
+            ]
+        ),
+        encoding="utf-8-sig",
+    )
+    output_md = tmp_path / "family_rule_drafts.md"
+    output_csv = tmp_path / "family_rule_drafts.csv"
+
+    result = run_script(
+        str(SCRIPTS / "write_family_rule_drafts.py"),
+        "--family-brief-csv",
+        str(family_brief_csv),
+        "--output-md",
+        str(output_md),
+        "--output-csv",
+        str(output_csv),
+    )
+
+    assert "family_rule_drafts_md=" in result.stdout
+    md_text = output_md.read_text(encoding="utf-8")
+    csv_text = output_csv.read_text(encoding="utf-8-sig")
+    assert "Software/System Draft Rules" in md_text
+    assert "Do not use these observations as family-specific writing rules yet." in md_text
+    assert "Control/Optimization Draft Rules" in md_text
+    assert "Only weak prompts available" in csv_text
+    assert "Mechanical/Manufacturing Draft Rules" in md_text
+    assert "Treat these as structural prompts only" in md_text
 
 
 def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:

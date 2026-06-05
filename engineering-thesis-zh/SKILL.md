@@ -18,7 +18,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
    - For multi-turn user collaboration, read `references/collaboration-workflow.md`, run `write_collaboration_plan.py`, then run `write_profile_questions.py` for the selected thesis type before collecting a thesis profile.
    - Read the project repository, experiment outputs, draft thesis, school template, and user constraints before drafting.
    - If the task uses a corpus, keep original papers and full-text extracts local and private.
-   - If public corpus reports exist, read `public_stats/corpus/progress_report.md`, `public_stats/corpus/common_patterns.md`, `public_stats/corpus/family_writing_briefs.md`, `public_stats/corpus/rule_candidates.md`, `public_stats/corpus/readiness_report.md`, and `public_stats/corpus/acquisition_plan.md` before making corpus-based claims.
+   - If public corpus reports exist, read `public_stats/corpus/progress_report.md`, `public_stats/corpus/common_patterns.md`, `public_stats/corpus/family_writing_briefs.md`, `public_stats/corpus/family_rule_drafts.md`, `public_stats/corpus/rule_candidates.md`, `public_stats/corpus/readiness_report.md`, and `public_stats/corpus/acquisition_plan.md` before making corpus-based claims.
 
 2. Load focused references.
    - Corpus-grounded writing rules: read `references/corpus-derived-writing-rules.md` when public corpus reports exist or when the task asks for thesis commonalities.
@@ -65,6 +65,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `write_corpus_report.py`: generate an aggregate progress report from structural metadata.
 - `write_rule_candidates.py`: generate non-promoted candidate writing rules with sample-size gates.
 - `write_family_writing_briefs.py`: summarize family-level chapter roles and signal frequencies into a cautious writing brief for software, control/optimization, and mechanical/manufacturing theses.
+- `write_family_rule_drafts.py`: convert family writing briefs into conservative draft rules that can later be merged manually into stable references.
 - `write_acquisition_plan.py`: generate the next balanced CNKI/Wanfang search plan from current sample counts, including near-term gate gaps and estimated batches.
 - `check_public_safety.py`: scan a repository before commit or push for private/copyrighted artifacts.
 - `summarize_experiment_metrics.py`: summarize CSV experiment metrics for evidence-grounded experiment chapter writing.

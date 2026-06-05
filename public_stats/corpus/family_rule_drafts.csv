@@ -1,0 +1,4 @@
+﻿family,records_in_corpus,evidence_level,draft_rule_summary,promotion_gate
+software/system,1,very_sparse,No reliable family-specific rule yet,blocked by sparse family coverage
+control/optimization,3,very_sparse,No reliable family-specific rule yet,blocked by sparse family coverage
+mechanical/manufacturing,26,candidate,"Use current_state_diagnosis, background_significance, literature_review as cautious structural prompts",recheck after another batch
