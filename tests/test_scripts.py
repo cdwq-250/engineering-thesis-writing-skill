@@ -529,6 +529,42 @@ def test_write_batch_tracker_builds_private_manual_acquisition_sheet(tmp_path: P
     assert "Family filter: software" in md_text
 
 
+def test_summarize_batch_tracker_reports_archived_progress(tmp_path: Path) -> None:
+    tracker_csv = tmp_path / "software_batch_tracker.csv"
+    tracker_csv.write_text(
+        "\n".join(
+            [
+                "slot,family,milestone_focus,query,source_database,current_records,commonality_gap_records,readiness_gap_records,deep_gap_records,title,school,year,detail_page_checked,abstract_checked,download_format,local_file_name,screening_action,archive_status,notes",
+                "1,software,reach_commonality_10,系统设计与实现,CNKI,1,9,99,299,车间管理系统设计与实现,某大学,2024,yes,yes,pdf,a.pdf,archive_candidate,archived,",
+                "2,software,reach_commonality_10,系统设计与实现,CNKI,1,9,99,299,库存管理系统设计与实现,某大学,2023,yes,yes,caj,b.caj,manual_review,convert_to_pdf_first,",
+                "3,software,reach_commonality_10,管理系统 设计与实现,CNKI,1,9,99,299,,,,yes,no,,,skip_duplicate,duplicate,",
+            ]
+        ),
+        encoding="utf-8-sig",
+    )
+    output_md = tmp_path / "software_batch_summary.md"
+    output_csv = tmp_path / "software_batch_summary.csv"
+
+    result = run_script(
+        str(SCRIPTS / "summarize_batch_tracker.py"),
+        str(tracker_csv),
+        "--output-md",
+        str(output_md),
+        "--output-csv",
+        str(output_csv),
+    )
+
+    assert "tracker_rows=3" in result.stdout
+    md_text = output_md.read_text(encoding="utf-8")
+    csv_text = output_csv.read_text(encoding="utf-8-sig")
+    assert "Batch Tracker Summary" in md_text
+    assert "Detail pages checked: 3" in md_text
+    assert "| software | 1 | 1 | 2 | 8 | 98 | 298 |" in md_text
+    assert "系统设计与实现: detail 2" in md_text
+    assert "remaining_commonality_gap" in csv_text
+    assert "software,1,1,2,8,98,298,3" in csv_text
+
+
 def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:
     csv_dir = tmp_path / "csv"
     csv_dir.mkdir()

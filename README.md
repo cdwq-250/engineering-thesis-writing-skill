@@ -62,6 +62,12 @@ Before a manual download session, generate a private batch tracker from the publ
 python engineering-thesis-zh\scripts\write_batch_tracker.py --plan-csv public_stats\corpus\acquisition_plan.csv --family software --slots-per-query 8
 ```
 
+After filling the tracker during a manual download session, summarize the batch before rerunning the corpus pipeline:
+
+```powershell
+python engineering-thesis-zh\scripts\summarize_batch_tracker.py private_outputs\software_batch_tracker.csv --output-md private_outputs\software_batch_summary.md --output-csv private_outputs\software_batch_summary.csv
+```
+
 The screening report is private by default under `private_outputs/`. If the archive preview is correct, rerun `archive_downloads.py` without `--dry-run`. The pipeline writes aggregate statistics, a public progress report, common-pattern coverage, rule candidates, a readiness gate report, and the next acquisition plan under `public_stats/corpus/`.
 
 Check whether the current corpus is large and balanced enough before promoting observations into broad writing rules:
