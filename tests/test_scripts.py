@@ -797,6 +797,72 @@ def test_write_family_rule_drafts_converts_briefs_into_staging_rules(tmp_path: P
     assert "Treat these as structural prompts only" in md_text
 
 
+def test_write_reference_alignment_report_flags_sparse_and_covered_items(tmp_path: Path) -> None:
+    drafts = tmp_path / "family_rule_drafts.md"
+    drafts.write_text(
+        "\n".join(
+            [
+                "# Family Rule Drafts",
+                "",
+                "## Software/System Draft Rules",
+                "",
+                "- Family: `software/system`",
+                "",
+                "### Suggested Reference Edits Later",
+                "",
+                "- Consider adding or strengthening these chapter-role hints in the family reference: `background_significance` (1), `current_state_diagnosis` (1)",
+                "",
+                "### Promotion Gate",
+                "",
+                "- Promotion is blocked by sparse family coverage; follow `acquisition_plan.md` before editing stable references.",
+                "",
+                "## Mechanical/Manufacturing Draft Rules",
+                "",
+                "- Family: `mechanical/manufacturing`",
+                "",
+                "### Suggested Reference Edits Later",
+                "",
+                "- Consider adding or strengthening these chapter-role hints in the family reference: `current_state_diagnosis` (22), `background_significance` (19)",
+                "- Consider adding these family-specific anchor signals in the family reference: `topic:equipment_maintenance` (24), `role:current_state_diagnosis` (22)",
+                "",
+                "### Promotion Gate",
+                "",
+                "- Before promotion, compare these rules against at least one more legal acquisition batch and confirm the same roles/signals still dominate.",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    references_dir = tmp_path / "references"
+    references_dir.mkdir()
+    (references_dir / "software-system-thesis.md").write_text("# x\n已有 background_significance\n", encoding="utf-8")
+    (references_dir / "control-optimization-thesis.md").write_text("# x\n", encoding="utf-8")
+    (references_dir / "mechanical-manufacturing-thesis.md").write_text("# x\n设备状态 equipment_maintenance\n", encoding="utf-8")
+    output_md = tmp_path / "reference_alignment_report.md"
+    output_csv = tmp_path / "reference_alignment_report.csv"
+
+    result = run_script(
+        str(SCRIPTS / "write_reference_alignment_report.py"),
+        "--draft-md",
+        str(drafts),
+        "--references-dir",
+        str(references_dir),
+        "--output-md",
+        str(output_md),
+        "--output-csv",
+        str(output_csv),
+    )
+
+    assert "reference_alignment_md=" in result.stdout
+    md_text = output_md.read_text(encoding="utf-8")
+    csv_text = output_csv.read_text(encoding="utf-8-sig")
+    assert "Reference Alignment Report" in md_text
+    assert "software/system" in md_text
+    assert "hold" in md_text
+    assert "mechanical/manufacturing" in md_text
+    assert "review_merge" in md_text or "already_covered" in md_text
+    assert "family,reference_file,draft_item,covered_in_reference,promotion_gate,recommended_action" in csv_text
+
+
 def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:
     csv_dir = tmp_path / "csv"
     csv_dir.mkdir()

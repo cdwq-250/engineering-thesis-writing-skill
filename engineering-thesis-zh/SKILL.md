@@ -66,6 +66,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `write_rule_candidates.py`: generate non-promoted candidate writing rules with sample-size gates.
 - `write_family_writing_briefs.py`: summarize family-level chapter roles and signal frequencies into a cautious writing brief for software, control/optimization, and mechanical/manufacturing theses.
 - `write_family_rule_drafts.py`: convert family writing briefs into conservative draft rules that can later be merged manually into stable references.
+- `write_reference_alignment_report.py`: compare family rule drafts against current stable family references and show which draft items are already covered, still blocked, or worth manual review.
 - `write_acquisition_plan.py`: generate the next balanced CNKI/Wanfang search plan from current sample counts, including near-term gate gaps and estimated batches.
 - `check_public_safety.py`: scan a repository before commit or push for private/copyrighted artifacts.
 - `summarize_experiment_metrics.py`: summarize CSV experiment metrics for evidence-grounded experiment chapter writing.

@@ -101,6 +101,11 @@ The common-pattern report separates balanced cross-family candidates from sparse
 The readiness and acquisition reports now also quantify the near-term commonality gate, the balanced readiness gate, and estimated batch counts needed to reach each milestone.
 The family-writing brief summarizes which chapter roles and topic signals are most visible inside each thesis family and whether that evidence is still sparse or already usable as a cautious writing prompt.
 The family-rule draft is a staging artifact: it turns family briefs into conservative draft rules before any later manual edit to `references/`.
+If you want to compare those drafts against the current stable family references before editing them, generate:
+
+```powershell
+python engineering-thesis-zh\scripts\write_reference_alignment_report.py --draft-md public_stats\corpus\family_rule_drafts.md --references-dir engineering-thesis-zh\references --output-md public_stats\corpus\reference_alignment_report.md --output-csv public_stats\corpus\reference_alignment_report.csv
+```
 
 The `examples/` folder also contains a UAV thesis validation brief and evidence map that show how to ground thesis writing in code, tests, CSV outputs, and figures.
 
