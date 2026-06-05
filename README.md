@@ -90,6 +90,8 @@ The pipeline writes:
 - `manuscript_skeleton.md`
 - `pipeline_report.md`
 
+A public synthetic example is included under `examples/synthetic_thesis_profile.json` and `examples/synthetic_writing_pipeline/`. It contains no real thesis text or factory data.
+
 Before any draft is delivered, audit unsupported strong claims:
 
 ```powershell

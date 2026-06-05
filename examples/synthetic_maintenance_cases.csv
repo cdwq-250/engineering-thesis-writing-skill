@@ -1,0 +1,5 @@
+case_id,equipment_id,before_response_minutes,after_response_minutes,before_oee,after_oee,note
+C001,EQ-01,42,30,0.68,0.72,synthetic case data
+C002,EQ-02,55,38,0.64,0.69,synthetic case data
+C003,EQ-03,37,29,0.71,0.74,synthetic case data
+C004,EQ-04,61,45,0.62,0.66,synthetic case data

@@ -1,0 +1,31 @@
+{
+  "title": "基于OEE的合成车间设备维护流程优化研究",
+  "thesis_type": "mechanical_manufacturing",
+  "topic_tags": [
+    "equipment_maintenance",
+    "production_scheduling",
+    "quality_management"
+  ],
+  "constraints": [
+    "synthetic example only; no real factory data",
+    "results may only be described as case-level or prototype-level evidence"
+  ],
+  "known_gaps": [
+    "no long-term field deployment records",
+    "no real maintenance cost ledger"
+  ],
+  "evidence": [
+    {
+      "claim": "合成案例数据支持维护流程规范化分析",
+      "source": "examples/synthetic_maintenance_cases.csv",
+      "type": "csv",
+      "allowed_wording": "合成案例数据支持维护流程规范化分析"
+    },
+    {
+      "claim": "原型流程图说明维护决策节点",
+      "source": "examples/synthetic_maintenance_flow.md",
+      "type": "figure",
+      "allowed_wording": "原型流程图说明维护决策节点"
+    }
+  ]
+}

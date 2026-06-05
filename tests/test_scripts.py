@@ -464,6 +464,21 @@ def test_run_writing_pipeline_generates_plan_skeleton_and_report(tmp_path: Path)
     assert "Claim audit errors: 0" in report
 
 
+def test_public_synthetic_writing_example_is_reproducible(tmp_path: Path) -> None:
+    profile = ROOT / "examples" / "synthetic_thesis_profile.json"
+    assert profile.exists()
+    assert (ROOT / "examples" / "synthetic_maintenance_cases.csv").exists()
+    assert (ROOT / "examples" / "synthetic_maintenance_flow.md").exists()
+
+    output_dir = tmp_path / "synthetic_run"
+    run_script(str(SCRIPTS / "run_writing_pipeline.py"), "--profile", str(profile), "--output-dir", str(output_dir))
+
+    generated_report = (output_dir / "pipeline_report.md").read_text(encoding="utf-8")
+    committed_report = (ROOT / "examples" / "synthetic_writing_pipeline" / "pipeline_report.md").read_text(encoding="utf-8")
+    assert "Claim audit errors: 0" in generated_report
+    assert "Claim audit errors: 0" in committed_report
+
+
 def test_public_safety_fails_on_public_pdf(tmp_path: Path) -> None:
     public_pdf = tmp_path / "leaked.pdf"
     public_pdf.write_bytes(b"%PDF synthetic placeholder")
