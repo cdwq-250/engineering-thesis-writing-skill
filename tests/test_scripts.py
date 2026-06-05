@@ -738,6 +738,55 @@ def test_seed_thesis_profile_from_inventory(tmp_path: Path) -> None:
     assert "profile_valid=true" in result.stdout
 
 
+def test_run_writing_prep_generates_private_working_pack(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    (project / "src").mkdir(parents=True)
+    (project / "tests").mkdir()
+    (project / "data").mkdir()
+    (project / "src" / "app.py").write_text("print('ok')\n", encoding="utf-8")
+    (project / "tests" / "test_app.py").write_text("def test_ok():\n    assert True\n", encoding="utf-8")
+    (project / "data" / "results.csv").write_text("metric,value\nacc,1\n", encoding="utf-8")
+    summary = tmp_path / "summary.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "record_count": 34,
+                "type_counts": {
+                    "software_system": 1,
+                    "control_optimization": 3,
+                    "mechanical_manufacturing": 26,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    readiness = tmp_path / "readiness_report.md"
+    readiness.write_text("Overall readiness: `candidate_mechanical_only`\n", encoding="utf-8")
+    output_dir = tmp_path / "writing_prep"
+
+    run_script(
+        str(SCRIPTS / "run_writing_prep.py"),
+        "--project-root",
+        str(project),
+        "--thesis-type",
+        "software_system",
+        "--title",
+        "系统设计与实现",
+        "--summary",
+        str(summary),
+        "--readiness-report",
+        str(readiness),
+        "--output-dir",
+        str(output_dir),
+    )
+
+    assert (output_dir / "collaboration_plan.md").exists()
+    assert (output_dir / "evidence_inventory.md").exists()
+    assert (output_dir / "evidence_inventory.json").exists()
+    assert (output_dir / "thesis-profile.seed.json").exists()
+    assert (output_dir / "profile_questions.md").exists()
+
+
 def test_generate_manuscript_skeleton_from_valid_profile(tmp_path: Path) -> None:
     profile = tmp_path / "profile.json"
     profile.write_text(

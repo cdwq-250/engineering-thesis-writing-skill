@@ -85,39 +85,35 @@ python engineering-thesis-zh\scripts\summarize_experiment_metrics.py path\to\res
 
 Use the writing pipeline after you have a project idea, code/data evidence, and a thesis family. It does not invent results; it creates a plan and draft skeleton with evidence placeholders.
 
-1. Generate a gated collaboration plan:
+1. Generate the full private writing-prep package:
 
 ```powershell
-python engineering-thesis-zh\scripts\write_collaboration_plan.py --thesis-type mechanical_manufacturing --output private_outputs\collaboration_plan.md
+python engineering-thesis-zh\scripts\run_writing_prep.py --project-root . --thesis-type mechanical_manufacturing --title "待定题目" --output-dir private_outputs\writing_prep
 ```
 
-2. Build a private evidence inventory from the project workspace:
+This writes:
+
+- `collaboration_plan.md`
+- `evidence_inventory.md`
+- `evidence_inventory.json`
+- `thesis-profile.seed.json`
+- `profile_questions.md`
+
+2. If needed, rerun any individual preparation step:
 
 ```powershell
 python engineering-thesis-zh\scripts\write_evidence_inventory.py --project-root . --thesis-type mechanical_manufacturing
 ```
 
-3. Seed an editable `thesis-profile.json` from that inventory:
+3. Refine the seeded `thesis-profile.json` using `engineering-thesis-zh\references\thesis-profile-schema.md`.
 
-```powershell
-python engineering-thesis-zh\scripts\seed_thesis_profile.py --inventory-json private_outputs\evidence_inventory.json --thesis-type mechanical_manufacturing --output private_outputs\thesis-profile.seed.json
-```
-
-4. Generate interview questions for the selected thesis type:
-
-```powershell
-python engineering-thesis-zh\scripts\write_profile_questions.py --thesis-type mechanical_manufacturing --output private_outputs\profile_questions.md
-```
-
-5. Fill a local `thesis-profile.json` using `engineering-thesis-zh\references\thesis-profile-schema.md`.
-
-6. Validate the profile:
+4. Validate the profile:
 
 ```powershell
 python engineering-thesis-zh\scripts\validate_thesis_profile.py private_outputs\thesis-profile.json
 ```
 
-7. Run the full writing pipeline:
+5. Run the full writing pipeline:
 
 ```powershell
 python engineering-thesis-zh\scripts\run_writing_pipeline.py --profile private_outputs\thesis-profile.json --output-dir private_outputs\writing_run
