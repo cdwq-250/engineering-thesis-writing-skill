@@ -69,6 +69,19 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
         str(stats_dir / "progress_report.md"),
     )
     run_script(
+        str(SCRIPTS / "write_family_writing_briefs.py"),
+        "--summary",
+        str(stats_dir / "summary.json"),
+        "--role-csv",
+        str(stats_dir / "chapter_role_by_type.csv"),
+        "--commonality-csv",
+        str(stats_dir / "commonality_matrix.csv"),
+        "--output-md",
+        str(stats_dir / "family_writing_briefs.md"),
+        "--output-csv",
+        str(stats_dir / "family_writing_briefs.csv"),
+    )
+    run_script(
         str(SCRIPTS / "write_acquisition_plan.py"),
         "--summary",
         str(stats_dir / "summary.json"),
@@ -124,6 +137,10 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     assert "Common Patterns Report" in common_patterns
     assert "Evidence Boundary" in common_patterns
     assert (stats_dir / "commonality_matrix.csv").exists()
+    family_briefs = (stats_dir / "family_writing_briefs.md").read_text(encoding="utf-8")
+    assert "Family Writing Briefs" in family_briefs
+    assert "mechanical/manufacturing" in family_briefs
+    assert (stats_dir / "family_writing_briefs.csv").exists()
     plan = (stats_dir / "acquisition_plan.md").read_text(encoding="utf-8")
     assert "Next Search Tasks" in plan
     assert "software" in plan
@@ -658,6 +675,76 @@ def test_aggregate_batch_trackers_builds_query_yield_dashboard(tmp_path: Path) -
     assert "control/optimization / 生产调度 优化: archived 1/2" in md_text
     assert "family,query,slots,detail_checked,abstract_checked,downloaded,archived,archive_yield,manual_review,duplicates" in csv_text
     assert "software,系统设计与实现,2,2,2,2,1,0.500,1,0" in csv_text
+
+
+def test_write_family_writing_briefs_summarizes_family_roles_and_signals(tmp_path: Path) -> None:
+    summary = tmp_path / "summary.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "type_counts": {
+                    "software_system": 1,
+                    "control_optimization": 3,
+                    "mechanical_manufacturing": 12,
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    role_csv = tmp_path / "chapter_role_by_type.csv"
+    role_csv.write_text(
+        "\n".join(
+            [
+                "inferred_type,role,count",
+                "software_system,scheme_design,1",
+                "software_system,system_implementation,1",
+                "control_optimization,model_design,3",
+                "control_optimization,experiment_evaluation,2",
+                "mechanical_manufacturing,current_state_diagnosis,10",
+                "mechanical_manufacturing,background_significance,9",
+            ]
+        ),
+        encoding="utf-8-sig",
+    )
+    commonality_csv = tmp_path / "commonality_matrix.csv"
+    commonality_csv.write_text(
+        "\n".join(
+            [
+                "signal_type,signal,total_records,total_support,total_rate,support_family_count,software_system_support,software_system_rate,control_optimization_support,control_optimization_rate,mechanical_manufacturing_support,mechanical_manufacturing_rate,interpretation",
+                "role,scheme_design,16,9,0.529,3,1,1.000,2,0.667,6,0.500,sparse_cross_family_signal",
+                "role,model_design,12,8,0.471,2,1,1.000,3,1.000,4,0.333,sparse_cross_family_signal",
+                "topic,equipment_maintenance,28,28,0.824,1,0,0.000,0,0.000,12,1.000,mechanical_weighted_candidate",
+            ]
+        ),
+        encoding="utf-8-sig",
+    )
+    output_md = tmp_path / "family_writing_briefs.md"
+    output_csv = tmp_path / "family_writing_briefs.csv"
+
+    result = run_script(
+        str(SCRIPTS / "write_family_writing_briefs.py"),
+        "--summary",
+        str(summary),
+        "--role-csv",
+        str(role_csv),
+        "--commonality-csv",
+        str(commonality_csv),
+        "--output-md",
+        str(output_md),
+        "--output-csv",
+        str(output_csv),
+    )
+
+    assert "family_briefs_md=" in result.stdout
+    md_text = output_md.read_text(encoding="utf-8")
+    csv_text = output_csv.read_text(encoding="utf-8-sig")
+    assert "## software/system" in md_text
+    assert "Evidence level: `very_sparse`" in md_text
+    assert "## mechanical/manufacturing" in md_text
+    assert "Evidence level: `candidate`" in md_text
+    assert "`role:scheme_design`" in md_text
+    assert "family,records_in_corpus,evidence_level,top_roles,top_signals" in csv_text
+    assert "mechanical/manufacturing,12,candidate" in csv_text
 
 
 def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:
