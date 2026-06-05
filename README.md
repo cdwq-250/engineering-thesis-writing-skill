@@ -65,6 +65,8 @@ To inspect shared signals across thesis families, read:
 - `public_stats/corpus/common_patterns.md`
 - `public_stats/corpus/commonality_matrix.csv`
 
+The common-pattern report separates balanced cross-family candidates from sparse cross-family signals so that undersampled families do not create false generalizations.
+
 The `examples/` folder also contains a UAV thesis validation brief and evidence map that show how to ground thesis writing in code, tests, CSV outputs, and figures.
 
 To summarize experiment CSV files for thesis writing, run:

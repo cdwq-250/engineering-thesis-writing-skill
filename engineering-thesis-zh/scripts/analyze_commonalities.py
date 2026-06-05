@@ -36,11 +36,18 @@ def rate(count: int, total: int) -> float:
     return count / total
 
 
-def signal_interpretation(signal_type: str, support_by_family: dict[str, int], family_totals: Counter[str]) -> str:
+def signal_interpretation(
+    signal_type: str,
+    support_by_family: dict[str, int],
+    family_totals: Counter[str],
+    min_family_sample: int,
+) -> str:
     supported_families = [family for family in MAIN_FAMILIES if support_by_family.get(family, 0) > 0]
     mechanical = support_by_family.get("mechanical_manufacturing", 0)
     if len(supported_families) >= 2:
-        return "cross_family_candidate"
+        if all(family_totals.get(family, 0) >= min_family_sample for family in supported_families):
+            return "balanced_cross_family_candidate"
+        return "sparse_cross_family_signal"
     if mechanical >= 3 and mechanical == max(support_by_family.values() or [0]):
         return "mechanical_weighted_candidate"
     if signal_type == "role" and support_by_family:
@@ -48,7 +55,7 @@ def signal_interpretation(signal_type: str, support_by_family: dict[str, int], f
     return "insufficient_support"
 
 
-def collect_signal_rows(records: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], Counter[str]]:
+def collect_signal_rows(records: list[dict[str, Any]], min_family_sample: int) -> tuple[list[dict[str, Any]], Counter[str]]:
     family_totals: Counter[str] = Counter(infer_type(record) for record in records)
     signal_support: dict[tuple[str, str], set[int]] = defaultdict(set)
     family_support: dict[tuple[str, str], Counter[str]] = defaultdict(Counter)
@@ -79,7 +86,7 @@ def collect_signal_rows(records: list[dict[str, Any]]) -> tuple[list[dict[str, A
             "total_support": support,
             "total_rate": f"{rate(support, total_records):.3f}",
             "support_family_count": sum(1 for family in MAIN_FAMILIES if support_by_family.get(family, 0) > 0),
-            "interpretation": signal_interpretation(signal_type, support_by_family, family_totals),
+            "interpretation": signal_interpretation(signal_type, support_by_family, family_totals, min_family_sample),
         }
         for family in MAIN_FAMILIES:
             count = support_by_family.get(family, 0)
@@ -123,10 +130,15 @@ def format_row(row: dict[str, Any]) -> str:
 
 def write_markdown(path: Path, rows: list[dict[str, Any]], family_totals: Counter[str], min_support: int) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    cross = [
+    balanced_cross = [
         row
         for row in rows
-        if row["total_support"] >= min_support and row["interpretation"] == "cross_family_candidate"
+        if row["total_support"] >= min_support and row["interpretation"] == "balanced_cross_family_candidate"
+    ][:12]
+    sparse_cross = [
+        row
+        for row in rows
+        if row["total_support"] >= min_support and row["interpretation"] == "sparse_cross_family_signal"
     ][:12]
     mechanical = [
         row
@@ -148,12 +160,17 @@ def write_markdown(path: Path, rows: list[dict[str, Any]], family_totals: Counte
         f"- Mechanical/manufacturing records: {family_totals.get('mechanical_manufacturing', 0)}",
         f"- Mixed/unknown records: {family_totals.get('mixed', 0) + family_totals.get('unknown', 0)}",
         "",
-        "Current cross-family patterns are candidates only when they appear across at least two main thesis families. Mechanical-weighted patterns must not be generalized to all engineering theses.",
+        "Balanced cross-family candidates require support in at least two adequately sampled main thesis families. Sparse cross-family signals are acquisition priorities, not generalized writing rules.",
         "",
-        "## Cross-Family Candidate Patterns",
+        "## Balanced Cross-Family Candidate Patterns",
         "",
     ]
-    lines.extend([format_row(row) for row in cross] or ["- No cross-family candidate patterns meet the current support gate."])
+    lines.extend(
+        [format_row(row) for row in balanced_cross]
+        or ["- No balanced cross-family candidate patterns meet the current support gate."]
+    )
+    lines.extend(["", "## Sparse Cross-Family Signals", ""])
+    lines.extend([format_row(row) for row in sparse_cross] or ["- No sparse cross-family signals meet the current support gate."])
     lines.extend(["", "## Mechanical-Weighted Candidate Patterns", ""])
     lines.extend([format_row(row) for row in mechanical] or ["- No mechanical-weighted candidate patterns meet the current support gate."])
     lines.extend(["", "## Low-Support Signals", ""])
@@ -163,7 +180,8 @@ def write_markdown(path: Path, rows: list[dict[str, Any]], family_totals: Counte
             "",
             "## Use In Writing",
             "",
-            "- Use cross-family candidate patterns as cautious structure prompts, not final claims.",
+            "- Use balanced cross-family candidates as cautious structure prompts, not final claims.",
+            "- Use sparse cross-family signals to guide the next acquisition batch before promoting any rule.",
             "- Use mechanical-weighted patterns only for mechanical/manufacturing thesis planning.",
             "- Require project evidence before writing any claim about effectiveness, superiority, deployment, or novelty.",
             "",
@@ -178,9 +196,10 @@ def main() -> None:
     parser.add_argument("--output-md", type=Path, default=Path("public_stats/corpus/common_patterns.md"))
     parser.add_argument("--output-csv", type=Path, default=Path("public_stats/corpus/commonality_matrix.csv"))
     parser.add_argument("--min-support", type=int, default=3)
+    parser.add_argument("--min-family-sample", type=int, default=10)
     args = parser.parse_args()
 
-    rows, family_totals = collect_signal_rows(read_jsonl(args.records))
+    rows, family_totals = collect_signal_rows(read_jsonl(args.records), args.min_family_sample)
     write_csv(args.output_csv, rows)
     write_markdown(args.output_md, rows, family_totals, args.min_support)
     print(f"common_patterns={args.output_md}")

@@ -342,10 +342,25 @@ def test_commonality_analysis_separates_cross_family_and_mechanical_signals(tmp_
     report = output_md.read_text(encoding="utf-8")
     matrix = output_csv.read_text(encoding="utf-8")
     assert "Common Patterns Report" in report
-    assert "cross_family_candidate" in report
+    assert "sparse_cross_family_signal" in report
     assert "mechanical_weighted_candidate" in report
     assert "role,background_significance" in matrix
     assert "topic,equipment_maintenance" in matrix
+
+    balanced_md = tmp_path / "balanced_common_patterns.md"
+    run_script(
+        str(SCRIPTS / "analyze_commonalities.py"),
+        str(records),
+        "--output-md",
+        str(balanced_md),
+        "--output-csv",
+        str(tmp_path / "balanced_commonality_matrix.csv"),
+        "--min-support",
+        "2",
+        "--min-family-sample",
+        "1",
+    )
+    assert "balanced_cross_family_candidate" in balanced_md.read_text(encoding="utf-8")
 
 
 def test_archive_downloads_copies_supported_files_and_skips_duplicates(tmp_path: Path) -> None:
