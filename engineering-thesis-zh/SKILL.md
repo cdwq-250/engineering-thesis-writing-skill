@@ -58,6 +58,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `write_batch_tracker.py`: generate a private per-batch acquisition worksheet from the public plan before a manual CNKI/Wanfang download session.
 - `sync_batch_tracker_from_screening.py`: sync `screen_downloads.py` output back into the private tracker so screening decisions and duplicates do not need manual re-entry.
 - `summarize_batch_tracker.py`: summarize a filled private acquisition worksheet into batch progress, archived counts, and remaining family gaps.
+- `aggregate_batch_trackers.py`: aggregate multiple private tracker CSV files into a dashboard showing family/query yield across manual download batches.
 - `extract_outline.py`: extract structural metadata from PDF files.
 - `analyze_corpus.py`: aggregate chapter, keyword, figure/table, and thesis-type statistics.
 - `quality_check.py`: check duplicate records, missing fields, and parse failures.

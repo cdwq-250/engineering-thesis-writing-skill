@@ -74,6 +74,12 @@ After filling the tracker during a manual download session, summarize the batch 
 python engineering-thesis-zh\scripts\summarize_batch_tracker.py private_outputs\software_batch_tracker.csv --output-md private_outputs\software_batch_summary.md --output-csv private_outputs\software_batch_summary.csv
 ```
 
+When you have multiple batch trackers, aggregate them into a private dashboard to compare family/query yield:
+
+```powershell
+python engineering-thesis-zh\scripts\aggregate_batch_trackers.py --root private_outputs --pattern "*batch_tracker.csv" --output-md private_outputs\batch_tracker_dashboard.md --output-csv private_outputs\batch_tracker_dashboard.csv
+```
+
 The screening report is private by default under `private_outputs/`. If the archive preview is correct, rerun `archive_downloads.py` without `--dry-run`. The pipeline writes aggregate statistics, a public progress report, common-pattern coverage, rule candidates, a readiness gate report, and the next acquisition plan under `public_stats/corpus/`.
 
 Check whether the current corpus is large and balanced enough before promoting observations into broad writing rules:

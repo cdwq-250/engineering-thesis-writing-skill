@@ -611,6 +611,55 @@ def test_sync_batch_tracker_from_screening_updates_matching_rows(tmp_path: Path)
     assert "skip_duplicate: 1" in report
 
 
+def test_aggregate_batch_trackers_builds_query_yield_dashboard(tmp_path: Path) -> None:
+    root = tmp_path / "private_outputs"
+    root.mkdir()
+    (root / "software_batch_tracker.csv").write_text(
+        "\n".join(
+            [
+                "slot,family,milestone_focus,query,source_database,current_records,commonality_gap_records,readiness_gap_records,deep_gap_records,title,school,year,detail_page_checked,abstract_checked,download_format,local_file_name,screening_action,recommended_destination,screening_reason,archive_status,notes",
+                "1,software,reach_commonality_10,系统设计与实现,CNKI,1,9,99,299,系统A,某大学,2024,yes,yes,pdf,a.pdf,archive_candidate,private_corpus/software,match,archived,",
+                "2,software,reach_commonality_10,系统设计与实现,CNKI,1,9,99,299,系统B,某大学,2023,yes,yes,pdf,b.pdf,manual_review,private_corpus/software,weak,,",
+            ]
+        ),
+        encoding="utf-8-sig",
+    )
+    (root / "control_batch_tracker.csv").write_text(
+        "\n".join(
+            [
+                "slot,family,milestone_focus,query,source_database,current_records,commonality_gap_records,readiness_gap_records,deep_gap_records,title,school,year,detail_page_checked,abstract_checked,download_format,local_file_name,screening_action,recommended_destination,screening_reason,archive_status,notes",
+                "1,control/optimization,reach_commonality_10,生产调度 优化,CNKI,3,7,97,297,调度A,某大学,2024,yes,yes,pdf,c.pdf,archive_candidate,private_corpus/control,match,archived,",
+                "2,control/optimization,reach_commonality_10,生产调度 优化,CNKI,3,7,97,297,调度B,某大学,2023,yes,no,caj,d.caj,skip_duplicate,,duplicate,duplicate,",
+            ]
+        ),
+        encoding="utf-8-sig",
+    )
+    output_md = tmp_path / "batch_dashboard.md"
+    output_csv = tmp_path / "batch_dashboard.csv"
+
+    result = run_script(
+        str(SCRIPTS / "aggregate_batch_trackers.py"),
+        "--root",
+        str(root),
+        "--pattern",
+        "*batch_tracker.csv",
+        "--output-md",
+        str(output_md),
+        "--output-csv",
+        str(output_csv),
+    )
+
+    assert "tracker_files=2" in result.stdout
+    assert "tracker_rows=4" in result.stdout
+    md_text = output_md.read_text(encoding="utf-8")
+    csv_text = output_csv.read_text(encoding="utf-8-sig")
+    assert "Batch Tracker Aggregate Dashboard" in md_text
+    assert "| software | 2 | 2 | 2 | 2 | 1 | 0.500 |" in md_text
+    assert "control/optimization / 生产调度 优化: archived 1/2" in md_text
+    assert "family,query,slots,detail_checked,abstract_checked,downloaded,archived,archive_yield,manual_review,duplicates" in csv_text
+    assert "software,系统设计与实现,2,2,2,2,1,0.500,1,0" in csv_text
+
+
 def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:
     csv_dir = tmp_path / "csv"
     csv_dir.mkdir()
