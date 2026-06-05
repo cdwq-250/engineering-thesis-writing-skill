@@ -489,6 +489,46 @@ def test_screen_downloads_recommends_family_destinations_and_skips_duplicates(tm
     assert "archive_candidate" in output_md.read_text(encoding="utf-8")
 
 
+def test_write_batch_tracker_builds_private_manual_acquisition_sheet(tmp_path: Path) -> None:
+    plan_csv = tmp_path / "acquisition_plan.csv"
+    plan_csv.write_text(
+        "\n".join(
+            [
+                "priority,family,current_records,commonality_target_records,commonality_gap_records,readiness_target_records,readiness_gap_records,target_records,gap_records,batch_target,estimated_batches_to_readiness,estimated_batches_to_deep_target,query,database,destination_folder,priority_reason,acceptance_filter,stop_condition,notes",
+                '1,software,1,10,9,100,99,300,299,20,5,15,系统设计与实现,CNKI/Wanfang school-library access,private_corpus/software,"Gap 9 to commonality gate 10",Title should describe a software/system/platform design and implementation thesis.,Stop after 20 accepts,Prefer PDF',
+                '2,control/optimization,3,10,7,100,97,300,297,20,5,15,生产调度 优化,CNKI/Wanfang school-library access,private_corpus/control,"Gap 7 to commonality gate 10","Title should center on optimization",Stop after 20 accepts,Prefer PDF',
+            ]
+        ),
+        encoding="utf-8-sig",
+    )
+    output_csv = tmp_path / "batch_tracker.csv"
+    output_md = tmp_path / "batch_tracker.md"
+
+    result = run_script(
+        str(SCRIPTS / "write_batch_tracker.py"),
+        "--plan-csv",
+        str(plan_csv),
+        "--family",
+        "software",
+        "--slots-per-query",
+        "3",
+        "--output-csv",
+        str(output_csv),
+        "--output-md",
+        str(output_md),
+    )
+
+    assert "tracker_rows=3" in result.stdout
+    csv_text = output_csv.read_text(encoding="utf-8-sig")
+    md_text = output_md.read_text(encoding="utf-8")
+    assert "milestone_focus" in csv_text
+    assert "reach_commonality_10" in csv_text
+    assert "系统设计与实现" in csv_text
+    assert "Acquisition Batch Tracker" in md_text
+    assert "detail_page_checked=yes" in md_text
+    assert "Family filter: software" in md_text
+
+
 def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:
     csv_dir = tmp_path / "csv"
     csv_dir.mkdir()

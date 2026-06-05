@@ -55,6 +55,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
 Use scripts in `scripts/` when a local thesis corpus is available:
 
 - `archive_downloads.py`: copy legally downloaded thesis files into the ignored private corpus with hash-based deduplication and filters.
+- `write_batch_tracker.py`: generate a private per-batch acquisition worksheet from the public plan before a manual CNKI/Wanfang download session.
 - `extract_outline.py`: extract structural metadata from PDF files.
 - `analyze_corpus.py`: aggregate chapter, keyword, figure/table, and thesis-type statistics.
 - `quality_check.py`: check duplicate records, missing fields, and parse failures.
