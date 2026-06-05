@@ -6,9 +6,9 @@ Overall readiness: `candidate_mechanical_only`
 
 ## Current Scope
 
-- Records analyzed: 33
+- Records analyzed: 34
 - Parse errors: 0 (0.0%)
-- Weak heading records: 6 (18.2%)
+- Weak heading records: 6 (17.6%)
 
 ## Family Coverage
 
@@ -22,9 +22,9 @@ Overall readiness: `candidate_mechanical_only`
 
 | Gate | Status | Detail |
 |---|---|---|
-| minimum total records | FAIL | 33/100 records |
-| parse error rate | PASS | 0/33 = 0.0%; threshold <= 10.0% |
-| weak heading rate | PASS | 6/33 = 18.2%; threshold <= 25.0% |
+| minimum total records | FAIL | 34/100 records |
+| parse error rate | PASS | 0/34 = 0.0%; threshold <= 10.0% |
+| weak heading rate | PASS | 6/34 = 17.6%; threshold <= 25.0% |
 | software/system coverage | FAIL | 1/100 records |
 | control/optimization coverage | FAIL | 3/100 records |
 | mechanical/manufacturing coverage | FAIL | 26/100 records |

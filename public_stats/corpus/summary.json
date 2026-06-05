@@ -1,9 +1,10 @@
 {
-  "record_count": 33,
+  "record_count": 34,
   "parse_error_count": 0,
   "type_counts": {
     "mechanical_manufacturing": 26,
     "control_optimization": 3,
+    "unknown": 1,
     "mixed": 3,
     "software_system": 1
   },
@@ -11,12 +12,13 @@
   "classification_confidence_counts": {
     "high": 29,
     "medium": 1,
+    "unknown": 1,
     "tie": 3
   },
   "weak_heading_record_count": 6,
   "chapter_count_distribution": {
     "0": 16,
-    "4": 6,
+    "4": 7,
     "1": 6,
     "3": 4,
     "5": 1

@@ -18,7 +18,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
    - For multi-turn user collaboration, run `write_profile_questions.py` for the selected thesis type before collecting a thesis profile.
    - Read the project repository, experiment outputs, draft thesis, school template, and user constraints before drafting.
    - If the task uses a corpus, keep original papers and full-text extracts local and private.
-   - If public corpus reports exist, read `public_stats/corpus/progress_report.md`, `public_stats/corpus/rule_candidates.md`, and `public_stats/corpus/acquisition_plan.md` before making corpus-based claims.
+   - If public corpus reports exist, read `public_stats/corpus/progress_report.md`, `public_stats/corpus/rule_candidates.md`, `public_stats/corpus/readiness_report.md`, and `public_stats/corpus/acquisition_plan.md` before making corpus-based claims.
 
 2. Load focused references.
    - Corpus-grounded writing rules: read `references/corpus-derived-writing-rules.md` when public corpus reports exist or when the task asks for thesis commonalities.

@@ -48,19 +48,41 @@ def read_pair_counter(path: Path, left_name: str, right_name: str, limit: int) -
         return rows[:limit]
 
 
-def evidence_level(record_count: int) -> str:
+def evidence_level(summary: dict[str, Any]) -> str:
+    record_count = int(summary.get("record_count", 0))
+    parse_error_count = int(summary.get("parse_error_count", 0))
+    weak_heading_count = int(summary.get("weak_heading_record_count", 0))
+    type_counts = {key: int(value) for key, value in summary.get("type_counts", {}).items()}
+    parse_error_rate = parse_error_count / record_count if record_count else 0
+    weak_heading_rate = weak_heading_count / record_count if record_count else 0
+
     if record_count < 6:
         return "debug_only"
+    if parse_error_rate > 0.10 or weak_heading_rate > 0.25:
+        return "candidate_needs_quality_review"
     if record_count < 31:
         return "candidate"
-    return "promotable_after_manual_review"
+    if (
+        record_count >= 100
+        and type_counts.get("software_system", 0) >= 100
+        and type_counts.get("control_optimization", 0) >= 100
+        and type_counts.get("mechanical_manufacturing", 0) >= 100
+    ):
+        return "balanced_promotable_after_manual_review"
+    if (
+        record_count >= 30
+        and type_counts.get("mechanical_manufacturing", 0) >= 20
+        and type_counts.get("mechanical_manufacturing", 0) == max(type_counts.values() or [0])
+    ):
+        return "candidate_mechanical_only"
+    return "candidate"
 
 
 def write_rule_candidates(stats_dir: Path, output: Path) -> None:
     summary = read_json(stats_dir / "summary.json")
     record_count = int(summary.get("record_count", 0))
     parse_error_count = int(summary.get("parse_error_count", 0))
-    level = evidence_level(record_count)
+    level = evidence_level(summary)
     headings = read_counter(stats_dir / "heading_patterns.csv", "heading_pattern", 12)
     keywords = read_counter(stats_dir / "keywords.csv", "keyword", 12)
     labels = read_counter(stats_dir / "figure_table_counts.csv", "label", 8)
@@ -98,10 +120,26 @@ def write_rule_candidates(stats_dir: Path, output: Path) -> None:
                 "",
             ]
         )
+    elif level == "candidate_needs_quality_review":
+        lines.extend(
+            [
+                "Current sample quality is not strong enough for rule promotion.",
+                "Review parse errors and weak heading extraction before using these observations for writing guidance.",
+                "",
+            ]
+        )
+    elif level == "candidate_mechanical_only":
+        lines.extend(
+            [
+                "Current corpus supports cautious candidate patterns for mechanical/manufacturing-style theses only.",
+                "Do not promote these observations as general rules for all Chinese engineering graduate theses until software/system and control/optimization coverage improves.",
+                "",
+            ]
+        )
     else:
         lines.extend(
             [
-                "Current sample size may support rule promotion after manual review.",
+                "Current corpus is large and balanced enough to support rule promotion after manual review.",
                 "Promote only abstract structure rules, evidence rules, or claim-boundary rules.",
                 "",
             ]

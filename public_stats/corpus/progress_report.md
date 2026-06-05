@@ -4,9 +4,9 @@ This report is generated from local structural metadata. It intentionally exclud
 
 ## Current Coverage
 
-- Records analyzed: 33
+- Records analyzed: 34
 - Parse errors: 0 (0.0%)
-- Average extracted headings per record: 12.0
+- Average extracted headings per record: 12.3
 - Average extracted keywords per record: 4.0
 - Average extracted figure/table labels per record: 3.2
 - Weak heading records: 6
@@ -16,6 +16,7 @@ This report is generated from local structural metadata. It intentionally exclud
 
 - mechanical_manufacturing: 26
 - control_optimization: 3
+- unknown: 1
 - mixed: 3
 - software_system: 1
 
@@ -23,20 +24,21 @@ This report is generated from local structural metadata. It intentionally exclud
 
 - high: 29
 - medium: 1
+- unknown: 1
 - tie: 3
 
 ## Common Heading Patterns
 
-- 1.2: 68
-- 1.1: 46
+- 1.2: 75
+- 1.1: 49
 - 5.2: 22
-- 3.3: 17
+- 3.3: 18
+- 4.3: 18
+- Abstract: 17
 - 1.3: 17
-- 4.3: 17
-- Abstract: 16
 - 4.2: 15
-- 3.2: 12
-- 第四章: 11
+- 3.2: 13
+- 第四章: 12
 
 ## Common Keyword Candidates
 
@@ -53,7 +55,7 @@ This report is generated from local structural metadata. It intentionally exclud
 
 ## Figure/Table Label Counts
 
-- 图: 81
+- 图: 82
 - 表: 26
 
 ## Topic Tags
@@ -80,10 +82,10 @@ This report is generated from local structural metadata. It intentionally exclud
 
 ## Chapter Role Signals
 
-- current_state_diagnosis: 29
-- background_significance: 24
+- current_state_diagnosis: 30
+- background_significance: 25
 - scheme_design: 21
-- literature_review: 20
+- literature_review: 21
 - model_design: 12
 - cause_analysis: 10
 - experiment_evaluation: 9

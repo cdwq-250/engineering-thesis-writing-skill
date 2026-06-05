@@ -237,6 +237,35 @@ def test_corpus_readiness_gate_reports_limited_and_balanced_corpora(tmp_path: Pa
     assert "readiness=balanced_large" in balanced_result.stdout
 
 
+def test_rule_candidates_respect_family_coverage_gate(tmp_path: Path) -> None:
+    stats_dir = tmp_path / "stats"
+    stats_dir.mkdir()
+    (stats_dir / "summary.json").write_text(
+        json.dumps(
+            {
+                "record_count": 34,
+                "parse_error_count": 0,
+                "weak_heading_record_count": 6,
+                "type_counts": {
+                    "mechanical_manufacturing": 26,
+                    "control_optimization": 3,
+                    "software_system": 1,
+                    "mixed": 3,
+                    "unknown": 1,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    output = tmp_path / "rule_candidates.md"
+
+    run_script(str(SCRIPTS / "write_rule_candidates.py"), "--stats-dir", str(stats_dir), "--output", str(output))
+
+    text = output.read_text(encoding="utf-8")
+    assert "Evidence level: `candidate_mechanical_only`" in text
+    assert "Do not promote these observations as general rules" in text
+
+
 def test_archive_downloads_copies_supported_files_and_skips_duplicates(tmp_path: Path) -> None:
     downloads = tmp_path / "Downloads"
     downloads.mkdir()

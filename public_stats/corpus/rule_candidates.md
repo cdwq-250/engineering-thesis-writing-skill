@@ -4,27 +4,27 @@ This file records candidate writing-rule observations derived from aggregate str
 
 ## Evidence Gate
 
-- Records analyzed: 33
+- Records analyzed: 34
 - Parse errors: 0
-- Evidence level: `promotable_after_manual_review`
+- Evidence level: `candidate_mechanical_only`
 
-Current sample size may support rule promotion after manual review.
-Promote only abstract structure rules, evidence rules, or claim-boundary rules.
+Current corpus supports cautious candidate patterns for mechanical/manufacturing-style theses only.
+Do not promote these observations as general rules for all Chinese engineering graduate theses until software/system and control/optimization coverage improves.
 
 ## Candidate Structural Signals
 
-- heading `1.2` appears 68 time(s)
-- heading `1.1` appears 46 time(s)
+- heading `1.2` appears 75 time(s)
+- heading `1.1` appears 49 time(s)
 - heading `5.2` appears 22 time(s)
-- heading `3.3` appears 17 time(s)
+- heading `3.3` appears 18 time(s)
+- heading `4.3` appears 18 time(s)
+- heading `Abstract` appears 17 time(s)
 - heading `1.3` appears 17 time(s)
-- heading `4.3` appears 17 time(s)
-- heading `Abstract` appears 16 time(s)
 - heading `4.2` appears 15 time(s)
-- heading `3.2` appears 12 time(s)
-- heading `第四章` appears 11 time(s)
-- heading `5.1` appears 11 time(s)
-- heading `ABSTRACT` appears 11 time(s)
+- heading `3.2` appears 13 time(s)
+- heading `第四章` appears 12 time(s)
+- heading `5.1` appears 12 time(s)
+- heading `第一章` appears 12 time(s)
 
 ## Candidate Keyword Signals
 
@@ -43,7 +43,7 @@ Promote only abstract structure rules, evidence rules, or claim-boundary rules.
 
 ## Candidate Figure/Table Signals
 
-- label `图` appears 81 time(s)
+- label `图` appears 82 time(s)
 - label `表` appears 26 time(s)
 
 ## Candidate Topic Signals
@@ -70,10 +70,10 @@ Promote only abstract structure rules, evidence rules, or claim-boundary rules.
 
 ## Candidate Chapter Role Signals
 
-- role `current_state_diagnosis` appears in 29 record(s)
-- role `background_significance` appears in 24 record(s)
+- role `current_state_diagnosis` appears in 30 record(s)
+- role `background_significance` appears in 25 record(s)
 - role `scheme_design` appears in 21 record(s)
-- role `literature_review` appears in 20 record(s)
+- role `literature_review` appears in 21 record(s)
 - role `model_design` appears in 12 record(s)
 - role `cause_analysis` appears in 10 record(s)
 - role `experiment_evaluation` appears in 9 record(s)
@@ -88,6 +88,7 @@ Promote only abstract structure rules, evidence rules, or claim-boundary rules.
 - mechanical_manufacturing / high: 26 record(s), 5 weak heading record(s)
 - mixed / tie: 3 record(s), 1 weak heading record(s)
 - software_system / high: 1 record(s), 0 weak heading record(s)
+- unknown / unknown: 1 record(s), 0 weak heading record(s)
 
 ## Promotion Checklist
 
