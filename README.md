@@ -50,7 +50,13 @@ After manually downloading PDFs or CAJ-family files into the browser download fo
 python engineering-thesis-zh\scripts\archive_downloads.py --dry-run --pdf-only --since-days 7 --include "维护|优化|调度|系统|设计|制造|装配|设备|质量|管理"
 ```
 
-If the preview is correct, rerun without `--dry-run`. The pipeline writes aggregate statistics, a public progress report, common-pattern coverage, rule candidates, a readiness gate report, and the next acquisition plan under `public_stats/corpus/`.
+Before archiving a mixed download folder, screen files against the current family gaps:
+
+```powershell
+python engineering-thesis-zh\scripts\screen_downloads.py --source downloads --corpus-root private_corpus --summary public_stats\corpus\summary.json --pdf-only
+```
+
+The screening report is private by default under `private_outputs/`. If the archive preview is correct, rerun `archive_downloads.py` without `--dry-run`. The pipeline writes aggregate statistics, a public progress report, common-pattern coverage, rule candidates, a readiness gate report, and the next acquisition plan under `public_stats/corpus/`.
 
 Check whether the current corpus is large and balanced enough before promoting observations into broad writing rules:
 

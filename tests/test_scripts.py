@@ -432,6 +432,57 @@ def test_archive_downloads_filters_by_name_type_and_age(tmp_path: Path) -> None:
     assert not (destination / "旧论文维护研究.pdf").exists()
 
 
+def test_screen_downloads_recommends_family_destinations_and_skips_duplicates(tmp_path: Path) -> None:
+    downloads = tmp_path / "downloads"
+    corpus = tmp_path / "private_corpus"
+    downloads.mkdir()
+    (corpus / "software").mkdir(parents=True)
+    duplicate = downloads / "existing.pdf"
+    duplicate.write_bytes(b"%PDF duplicate")
+    (corpus / "software" / "existing.pdf").write_bytes(b"%PDF duplicate")
+    (downloads / "\u8f66\u95f4\u7ba1\u7406\u7cfb\u7edf\u8bbe\u8ba1\u4e0e\u5b9e\u73b0.pdf").write_bytes(
+        b"%PDF software"
+    )
+    (downloads / "\u751f\u4ea7\u8c03\u5ea6\u4f18\u5316\u7b97\u6cd5\u7814\u7a76.pdf").write_bytes(b"%PDF control")
+    summary = tmp_path / "summary.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "type_counts": {
+                    "software_system": 1,
+                    "control_optimization": 3,
+                    "mechanical_manufacturing": 26,
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    output_csv = tmp_path / "screening.csv"
+    output_md = tmp_path / "screening.md"
+
+    result = run_script(
+        str(SCRIPTS / "screen_downloads.py"),
+        "--source",
+        str(downloads),
+        "--corpus-root",
+        str(corpus),
+        "--summary",
+        str(summary),
+        "--output-csv",
+        str(output_csv),
+        "--output-md",
+        str(output_md),
+        "--pdf-only",
+    )
+
+    assert "screened=3" in result.stdout
+    csv_text = output_csv.read_text(encoding="utf-8-sig")
+    assert "skip_duplicate" in csv_text
+    assert "private_corpus/software" in csv_text
+    assert "private_corpus/control" in csv_text
+    assert "archive_candidate" in output_md.read_text(encoding="utf-8")
+
+
 def test_experiment_metric_summary_handles_ties(tmp_path: Path) -> None:
     csv_dir = tmp_path / "csv"
     csv_dir.mkdir()

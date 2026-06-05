@@ -9,6 +9,7 @@ __pycache__/
 private_corpus/
 private_extracts/
 downloads/
+private_outputs/
 *.pdf
 *.doc
 *.docx
