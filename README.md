@@ -60,6 +60,44 @@ To summarize experiment CSV files for thesis writing, run:
 python engineering-thesis-zh\scripts\summarize_experiment_metrics.py path\to\results\csv --output examples\metric_summary.md
 ```
 
+## Evidence-Grounded Writing Pipeline
+
+Use the writing pipeline after you have a project idea, code/data evidence, and a thesis family. It does not invent results; it creates a plan and draft skeleton with evidence placeholders.
+
+1. Generate interview questions for the selected thesis type:
+
+```powershell
+python engineering-thesis-zh\scripts\write_profile_questions.py --thesis-type mechanical_manufacturing --output private_outputs\profile_questions.md
+```
+
+2. Fill a local `thesis-profile.json` using `engineering-thesis-zh\references\thesis-profile-schema.md`.
+
+3. Validate the profile:
+
+```powershell
+python engineering-thesis-zh\scripts\validate_thesis_profile.py private_outputs\thesis-profile.json
+```
+
+4. Run the full writing pipeline:
+
+```powershell
+python engineering-thesis-zh\scripts\run_writing_pipeline.py --profile private_outputs\thesis-profile.json --output-dir private_outputs\writing_run
+```
+
+The pipeline writes:
+
+- `thesis_plan.md`
+- `manuscript_skeleton.md`
+- `pipeline_report.md`
+
+Before any draft is delivered, audit unsupported strong claims:
+
+```powershell
+python engineering-thesis-zh\scripts\audit_manuscript_claims.py private_outputs\writing_run\manuscript_skeleton.md
+```
+
+Keep generated project-specific drafts under ignored private folders unless the user explicitly wants a public synthetic example.
+
 ## Validation
 
 Run the local tests with:
