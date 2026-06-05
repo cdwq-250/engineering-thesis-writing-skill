@@ -128,6 +128,12 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     assert "Next Search Tasks" in plan
     assert "software" in plan
     assert "mechanical/manufacturing" in plan
+    assert "Batch Policy" in plan
+    assert "Acceptance Filters" in plan
+    plan_csv = (stats_dir / "acquisition_plan.csv").read_text(encoding="utf-8-sig")
+    assert "gap_records" in plan_csv
+    assert "priority_reason" in plan_csv
+    assert "acceptance_filter" in plan_csv
     candidates = (stats_dir / "rule_candidates.md").read_text(encoding="utf-8")
     assert "Evidence level: `debug_only`" in candidates
     assert "Classification Diagnostics" in candidates

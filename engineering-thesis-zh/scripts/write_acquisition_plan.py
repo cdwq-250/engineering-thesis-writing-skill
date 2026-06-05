@@ -23,6 +23,7 @@ FAMILIES = {
             "数据库设计 管理平台",
             "平台设计与实现",
         ],
+        "acceptance_filter": "Title should describe a software/system/platform design and implementation thesis.",
     },
     "control_optimization": {
         "label": "control/optimization",
@@ -35,6 +36,7 @@ FAMILIES = {
             "预测控制 设备维护",
             "强化学习 调度",
         ],
+        "acceptance_filter": "Title should center on optimization, scheduling, control, simulation, or algorithmic decision models.",
     },
     "mechanical_manufacturing": {
         "label": "mechanical/manufacturing",
@@ -47,6 +49,7 @@ FAMILIES = {
             "装配线 平衡优化",
             "设备故障 预测维护",
         ],
+        "acceptance_filter": "Title should be mechanical, manufacturing, workshop, equipment, maintenance, process, or production-line focused.",
     },
 }
 
@@ -57,10 +60,14 @@ class PlanRow:
     family: str
     current_records: int
     target_records: int
+    gap_records: int
     batch_target: int
     query: str
     database: str
     destination_folder: str
+    priority_reason: str
+    acceptance_filter: str
+    stop_condition: str
     notes: str
 
 
@@ -72,16 +79,20 @@ def build_plan(summary: dict[str, Any], target_per_family: int, batch_size: int)
     type_counts = summary.get("type_counts", {})
     rows: list[PlanRow] = []
     priority = 1
-    sorted_families = sorted(
-        FAMILIES.items(),
-        key=lambda item: int(type_counts.get(item[0], 0)),
-    )
+    sorted_families = sorted(FAMILIES.items(), key=lambda item: int(type_counts.get(item[0], 0)))
     for family_key, spec in sorted_families:
         current = int(type_counts.get(family_key, 0))
         remaining = max(target_per_family - current, 0)
         batch_target = min(batch_size, remaining)
         if batch_target <= 0:
             continue
+        reason = (
+            f"Gap {remaining} records to target {target_per_family}; "
+            "prioritized because readiness and commonality gates need balanced family coverage."
+        )
+        stop_condition = (
+            f"Stop this batch after {batch_target} accepted PDFs or when search results no longer match the family filter."
+        )
         for query in spec["queries"][:3]:
             rows.append(
                 PlanRow(
@@ -89,10 +100,14 @@ def build_plan(summary: dict[str, Any], target_per_family: int, batch_size: int)
                     family=spec["label"],
                     current_records=current,
                     target_records=target_per_family,
+                    gap_records=remaining,
                     batch_target=batch_target,
                     query=query,
                     database="CNKI/Wanfang school-library access",
                     destination_folder=spec["folder"],
+                    priority_reason=reason,
+                    acceptance_filter=spec["acceptance_filter"],
+                    stop_condition=stop_condition,
                     notes="Prefer PDF; use CAJ/KDH/NH only when PDF is unavailable and convert to PDF before extraction.",
                 )
             )
@@ -121,19 +136,36 @@ def write_markdown(path: Path, rows: list[PlanRow], summary: dict[str, Any]) -> 
     ]
     for family_key, spec in FAMILIES.items():
         lines.append(f"- {spec['label']}: {summary.get('type_counts', {}).get(family_key, 0)}")
+
     lines.extend(
         [
             "",
+            "## Batch Policy",
+            "",
+            "- Fill the lowest-count family first; do not add more mechanical/manufacturing papers until software and control/optimization coverage improve.",
+            "- Accept a paper only when the title and abstract match the family filter; skip irrelevant business-only or management-only papers.",
+            "- After each batch, run the corpus pipeline and read `readiness_report.md` plus `common_patterns.md` before deciding the next batch.",
+            "",
             "## Next Search Tasks",
             "",
-            "| Priority | Family | Batch Target | Query | Destination |",
-            "|---:|---|---:|---|---|",
+            "| Priority | Family | Gap | Batch Target | Query | Destination |",
+            "|---:|---|---:|---:|---|---|",
         ]
     )
     for row in rows:
         lines.append(
-            f"| {row.priority} | {row.family} | {row.batch_target} | {row.query} | `{row.destination_folder}` |"
+            f"| {row.priority} | {row.family} | {row.gap_records} | {row.batch_target} | {row.query} | `{row.destination_folder}` |"
         )
+
+    lines.extend(["", "## Acceptance Filters", ""])
+    seen_filters: set[tuple[str, str]] = set()
+    for row in rows:
+        key = (row.family, row.acceptance_filter)
+        if key in seen_filters:
+            continue
+        seen_filters.add(key)
+        lines.append(f"- {row.family}: {row.acceptance_filter}")
+
     lines.extend(
         [
             "",
@@ -143,12 +175,13 @@ def write_markdown(path: Path, rows: list[PlanRow], summary: dict[str, Any]) -> 
             "- Enter a thesis detail page and prefer `PDF下载` when available.",
             "- After downloading, run the archiver in dry-run mode first.",
             "- Archive only files that match the intended thesis batch; keep unrelated local files out of `private_corpus`.",
+            "- For the current corpus, prioritize `private_corpus/software` and `private_corpus/control` before adding more mechanical/manufacturing papers.",
             "",
             "Recommended archiver command:",
             "",
-            '```powershell',
-            'python engineering-thesis-zh\\scripts\\archive_downloads.py --dry-run --pdf-only --since-days 7 --include "维护|优化|调度|系统|设计|制造|装配|设备|质量|管理"',
-            '```',
+            "```powershell",
+            'python engineering-thesis-zh\\scripts\\archive_downloads.py --dry-run --pdf-only --since-days 7 --include "系统|设计|实现|平台|调度|优化|控制|算法|仿真|模型"',
+            "```",
             "",
         ]
     )

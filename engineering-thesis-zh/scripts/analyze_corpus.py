@@ -194,7 +194,7 @@ def write_role_signal_csv(path: Path, records: list[dict[str, Any]]) -> None:
     role_counts: Counter[str] = Counter()
     role_type_counts: Counter[tuple[str, str]] = Counter()
     for record in records:
-        roles = matched_tags(record, CHAPTER_ROLE_KEYWORDS)
+        roles = sorted(matched_tags(record, CHAPTER_ROLE_KEYWORDS))
         inferred = infer_type(record)
         role_counts.update(roles)
         role_type_counts.update((inferred, role) for role in roles)
