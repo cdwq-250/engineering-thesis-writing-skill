@@ -15,7 +15,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
 
 1. Establish thesis type and evidence.
    - Identify whether the task is a software-system, control/optimization, or mechanical/manufacturing application thesis.
-   - For multi-turn user collaboration, run `write_profile_questions.py` for the selected thesis type before collecting a thesis profile.
+   - For multi-turn user collaboration, read `references/collaboration-workflow.md`, run `write_collaboration_plan.py`, then run `write_profile_questions.py` for the selected thesis type before collecting a thesis profile.
    - Read the project repository, experiment outputs, draft thesis, school template, and user constraints before drafting.
    - If the task uses a corpus, keep original papers and full-text extracts local and private.
    - If public corpus reports exist, read `public_stats/corpus/progress_report.md`, `public_stats/corpus/common_patterns.md`, `public_stats/corpus/rule_candidates.md`, `public_stats/corpus/readiness_report.md`, and `public_stats/corpus/acquisition_plan.md` before making corpus-based claims.
@@ -29,6 +29,7 @@ Never invent project facts, experiment results, deployment scale, real factory d
    - Experiment sections: read `references/experiment-writing.md`.
    - Figures and evidence mapping: read `references/figure-and-evidence-rules.md`.
    - Similarity or AIGC rewriting: read `references/similarity-aigc-rewrite.md`.
+   - Multi-turn collaboration gates: read `references/collaboration-workflow.md`.
 
 3. Build an evidence map before writing.
    - Map every major claim to code, configuration, data, experiment scripts, test results, figures, logs, or user-provided materials.
@@ -66,6 +67,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `audit_manuscript_claims.py`: scan generated Markdown drafts for unsupported strong claims against the Evidence Register.
 - `validate_thesis_profile.py`: validate a thesis planning profile before generating a plan; blocks unsupported strong claims without evidence sources.
 - `write_profile_questions.py`: generate focused interview questions for collecting a thesis profile through multi-turn user collaboration.
+- `write_collaboration_plan.py`: generate a gated multi-turn plan that coordinates corpus acquisition, evidence collection, profile validation, outline generation, and drafting.
 - `run_writing_pipeline.py`: run profile validation, plan generation, skeleton generation, and claim audit in one reproducible pipeline.
 
 The scripts are intentionally structural. They do not publish full text.

@@ -614,6 +614,45 @@ def test_write_profile_questions_for_mechanical_thesis(tmp_path: Path) -> None:
     assert "`evidence[]`" in text
 
 
+def test_write_collaboration_plan_includes_gates_and_corpus_status(tmp_path: Path) -> None:
+    summary = tmp_path / "summary.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "record_count": 34,
+                "type_counts": {
+                    "software_system": 1,
+                    "control_optimization": 3,
+                    "mechanical_manufacturing": 26,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    readiness = tmp_path / "readiness_report.md"
+    readiness.write_text("Overall readiness: `candidate_mechanical_only`\n", encoding="utf-8")
+    output = tmp_path / "collaboration_plan.md"
+
+    run_script(
+        str(SCRIPTS / "write_collaboration_plan.py"),
+        "--thesis-type",
+        "control_optimization",
+        "--summary",
+        str(summary),
+        "--readiness-report",
+        str(readiness),
+        "--output",
+        str(output),
+    )
+
+    text = output.read_text(encoding="utf-8")
+    assert "Thesis Collaboration Plan" in text
+    assert "Readiness: `candidate_mechanical_only`" in text
+    assert "Stage 2: Thesis Profile" in text
+    assert "validate_thesis_profile.py" in text
+    assert "variables, objectives, constraints" in text
+
+
 def test_generate_manuscript_skeleton_from_valid_profile(tmp_path: Path) -> None:
     profile = tmp_path / "profile.json"
     profile.write_text(
