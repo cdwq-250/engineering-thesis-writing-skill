@@ -60,7 +60,7 @@ Use scripts in `scripts/` when a local thesis corpus is available:
 - `quality_check.py`: check duplicate records, missing fields, and parse failures.
 - `write_corpus_report.py`: generate an aggregate progress report from structural metadata.
 - `write_rule_candidates.py`: generate non-promoted candidate writing rules with sample-size gates.
-- `write_acquisition_plan.py`: generate the next balanced CNKI/Wanfang search plan from current sample counts.
+- `write_acquisition_plan.py`: generate the next balanced CNKI/Wanfang search plan from current sample counts, including near-term gate gaps and estimated batches.
 - `check_public_safety.py`: scan a repository before commit or push for private/copyrighted artifacts.
 - `summarize_experiment_metrics.py`: summarize CSV experiment metrics for evidence-grounded experiment chapter writing.
 - `generate_thesis_plan.py`: generate a corpus-grounded chapter outline, evidence map, figure/table plan, and risky-claim checklist from a project profile.

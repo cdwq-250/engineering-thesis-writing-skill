@@ -15,6 +15,10 @@ FAMILIES = {
     "control_optimization": "control/optimization",
     "mechanical_manufacturing": "mechanical/manufacturing",
 }
+NEAR_TERM_MILESTONES = (
+    ("commonality family sample", 10),
+    ("balanced readiness family coverage", 100),
+)
 
 
 @dataclass
@@ -41,6 +45,12 @@ def classify_readiness(gates: list[Gate], total: int, type_counts: dict[str, int
     if total >= 30 and mechanical >= min(20, target_per_family) and mechanical == max(type_counts.values() or [0]):
         return "candidate_mechanical_only"
     return "insufficient"
+
+
+def batches_needed(gap: int, batch_size: int) -> int:
+    if gap <= 0:
+        return 0
+    return (gap + batch_size - 1) // batch_size
 
 
 def build_gates(
@@ -91,6 +101,7 @@ def write_report(
     gates: list[Gate],
     readiness: str,
     target_per_family: int,
+    batch_size: int,
 ) -> None:
     total = int(summary.get("record_count", 0))
     type_counts = {key: int(value) for key, value in summary.get("type_counts", {}).items()}
@@ -119,6 +130,21 @@ def write_report(
         current = type_counts.get(family_key, 0)
         gap = max(target_per_family - current, 0)
         lines.append(f"| {label} | {current} | {target_per_family} | {gap} |")
+
+    lines.extend(
+        [
+            "",
+            "## Near-Term Milestones",
+            "",
+            "| Family | Milestone | Target | Gap | Estimated Batches |",
+            "|---|---|---:|---:|---:|",
+        ]
+    )
+    for family_key, label in FAMILIES.items():
+        current = type_counts.get(family_key, 0)
+        for milestone_name, target in NEAR_TERM_MILESTONES:
+            gap = max(target - current, 0)
+            lines.append(f"| {label} | {milestone_name} | {target} | {gap} | {batches_needed(gap, batch_size)} |")
 
     lines.extend(
         [
@@ -182,6 +208,7 @@ def main() -> None:
     parser.add_argument("--target-per-family", type=int, default=100)
     parser.add_argument("--max-parse-error-rate", type=float, default=0.10)
     parser.add_argument("--max-weak-heading-rate", type=float, default=0.25)
+    parser.add_argument("--batch-size", type=int, default=20)
     parser.add_argument("--strict", action="store_true", help="Exit 1 unless the corpus is balanced_large.")
     args = parser.parse_args()
 
@@ -195,7 +222,7 @@ def main() -> None:
         args.max_weak_heading_rate,
     )
     readiness = classify_readiness(gates, int(summary.get("record_count", 0)), type_counts, args.target_per_family)
-    write_report(args.output, summary, gates, readiness, args.target_per_family)
+    write_report(args.output, summary, gates, readiness, args.target_per_family, args.batch_size)
 
     print(f"readiness={readiness}")
     print(f"report={args.output}")

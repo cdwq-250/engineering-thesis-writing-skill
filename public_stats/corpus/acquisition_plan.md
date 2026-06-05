@@ -12,21 +12,30 @@ This plan is generated from aggregate corpus counts. It does not include source 
 
 - Fill the lowest-count family first; do not add more mechanical/manufacturing papers until software and control/optimization coverage improve.
 - Accept a paper only when the title and abstract match the family filter; skip irrelevant business-only or management-only papers.
+- Clear the near-term commonality gate first, then the balanced readiness gate, then the deep corpus target.
 - After each batch, run the corpus pipeline and read `readiness_report.md` plus `common_patterns.md` before deciding the next batch.
+
+## Coverage Milestones
+
+| Family | Current | Commonality Gate | Readiness Gate | Deep Target | Batches To Readiness | Batches To Deep Target |
+|---|---:|---:|---:|---:|---:|---:|
+| software | 1 | 9 gap to 10 | 99 gap to 100 | 299 gap to 300 | 5 | 15 |
+| control/optimization | 3 | 7 gap to 10 | 97 gap to 100 | 297 gap to 300 | 5 | 15 |
+| mechanical/manufacturing | 26 | 0 gap to 10 | 74 gap to 100 | 274 gap to 300 | 4 | 14 |
 
 ## Next Search Tasks
 
-| Priority | Family | Gap | Batch Target | Query | Destination |
-|---:|---|---:|---:|---|---|
-| 1 | software | 299 | 20 | 系统设计与实现 | `private_corpus/software` |
-| 2 | software | 299 | 20 | 管理系统 设计与实现 | `private_corpus/software` |
-| 3 | software | 299 | 20 | 信息系统 软件工程 | `private_corpus/software` |
-| 4 | control/optimization | 297 | 20 | 生产调度 优化 | `private_corpus/control` |
-| 5 | control/optimization | 297 | 20 | 维护策略 优化 | `private_corpus/control` |
-| 6 | control/optimization | 297 | 20 | 离散事件仿真 调度 | `private_corpus/control` |
-| 7 | mechanical/manufacturing | 274 | 20 | 智能制造 装配生产线 | `private_corpus/mechanical` |
-| 8 | mechanical/manufacturing | 274 | 20 | 设备维护 健康管理 | `private_corpus/mechanical` |
-| 9 | mechanical/manufacturing | 274 | 20 | 工艺优化 制造 | `private_corpus/mechanical` |
+| Priority | Family | Commonality Gap | Readiness Gap | Deep Gap | Batch Target | Query | Destination |
+|---:|---|---:|---:|---:|---:|---|---|
+| 1 | software | 9 | 99 | 299 | 20 | 系统设计与实现 | `private_corpus/software` |
+| 2 | software | 9 | 99 | 299 | 20 | 管理系统 设计与实现 | `private_corpus/software` |
+| 3 | software | 9 | 99 | 299 | 20 | 信息系统 软件工程 | `private_corpus/software` |
+| 4 | control/optimization | 7 | 97 | 297 | 20 | 生产调度 优化 | `private_corpus/control` |
+| 5 | control/optimization | 7 | 97 | 297 | 20 | 维护策略 优化 | `private_corpus/control` |
+| 6 | control/optimization | 7 | 97 | 297 | 20 | 离散事件仿真 调度 | `private_corpus/control` |
+| 7 | mechanical/manufacturing | 0 | 74 | 274 | 20 | 智能制造 装配生产线 | `private_corpus/mechanical` |
+| 8 | mechanical/manufacturing | 0 | 74 | 274 | 20 | 设备维护 健康管理 | `private_corpus/mechanical` |
+| 9 | mechanical/manufacturing | 0 | 74 | 274 | 20 | 工艺优化 制造 | `private_corpus/mechanical` |
 
 ## Acceptance Filters
 

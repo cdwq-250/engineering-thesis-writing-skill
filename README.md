@@ -72,6 +72,7 @@ To inspect shared signals across thesis families, read:
 - `public_stats/corpus/commonality_matrix.csv`
 
 The common-pattern report separates balanced cross-family candidates from sparse cross-family signals so that undersampled families do not create false generalizations.
+The readiness and acquisition reports now also quantify the near-term commonality gate, the balanced readiness gate, and estimated batch counts needed to reach each milestone.
 
 The `examples/` folder also contains a UAV thesis validation brief and evidence map that show how to ground thesis writing in code, tests, CSV outputs, and figures.
 

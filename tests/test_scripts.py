@@ -129,8 +129,11 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     assert "software" in plan
     assert "mechanical/manufacturing" in plan
     assert "Batch Policy" in plan
+    assert "Coverage Milestones" in plan
     assert "Acceptance Filters" in plan
     plan_csv = (stats_dir / "acquisition_plan.csv").read_text(encoding="utf-8-sig")
+    assert "commonality_gap_records" in plan_csv
+    assert "readiness_gap_records" in plan_csv
     assert "gap_records" in plan_csv
     assert "priority_reason" in plan_csv
     assert "acceptance_filter" in plan_csv
@@ -142,6 +145,8 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     assert "Promotion Checklist" in candidates
     readiness = (stats_dir / "readiness_report.md").read_text(encoding="utf-8")
     assert "Overall readiness:" in readiness
+    assert "Near-Term Milestones" in readiness
+    assert "commonality family sample" in readiness
     assert "software/system coverage" in readiness
 
 
@@ -212,6 +217,7 @@ def test_corpus_readiness_gate_reports_limited_and_balanced_corpora(tmp_path: Pa
     assert "readiness=candidate_mechanical_only" in result.stdout
     limited_text = limited_report.read_text(encoding="utf-8")
     assert "Overall readiness: `candidate_mechanical_only`" in limited_text
+    assert "Estimated Batches" in limited_text
     assert "not ready for broad claims" in limited_text
 
     strict_failed = subprocess.run(

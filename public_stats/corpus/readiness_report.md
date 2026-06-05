@@ -18,6 +18,17 @@ Overall readiness: `candidate_mechanical_only`
 | control/optimization | 3 | 100 | 97 |
 | mechanical/manufacturing | 26 | 100 | 74 |
 
+## Near-Term Milestones
+
+| Family | Milestone | Target | Gap | Estimated Batches |
+|---|---|---:|---:|---:|
+| software/system | commonality family sample | 10 | 9 | 1 |
+| software/system | balanced readiness family coverage | 100 | 99 | 5 |
+| control/optimization | commonality family sample | 10 | 7 | 1 |
+| control/optimization | balanced readiness family coverage | 100 | 97 | 5 |
+| mechanical/manufacturing | commonality family sample | 10 | 0 | 0 |
+| mechanical/manufacturing | balanced readiness family coverage | 100 | 74 | 4 |
+
 ## Gates
 
 | Gate | Status | Detail |
