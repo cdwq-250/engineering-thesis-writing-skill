@@ -180,6 +180,24 @@ def test_markdown_outline_and_corpus_analysis(tmp_path: Path) -> None:
     assert "software/system coverage" in readiness
 
 
+def test_type_inference_prefers_control_for_multi_agent_control_titles() -> None:
+    sys.path.insert(0, str(SCRIPTS))
+    try:
+        from analyze_corpus import infer_type, type_scores
+    finally:
+        sys.path.pop(0)
+
+    record = {
+        "file_name": "复杂网络条件下多智能体系统协同跟踪控制研究.pdf",
+        "title_candidates": ["复杂网络条件下多智能体系统协同跟踪控制研究"],
+        "keyword_candidates": [],
+        "headings": [],
+    }
+    scores = type_scores(record)
+    assert scores["control_optimization"] > scores["software_system"]
+    assert infer_type(record) == "control_optimization"
+
+
 def test_manifest_and_empty_pipeline(tmp_path: Path) -> None:
     corpus = tmp_path / "private_corpus"
     (corpus / "software").mkdir(parents=True)

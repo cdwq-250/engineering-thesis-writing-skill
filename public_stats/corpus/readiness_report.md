@@ -6,39 +6,39 @@ Overall readiness: `candidate_mechanical_only`
 
 ## Current Scope
 
-- Records analyzed: 34
+- Records analyzed: 51
 - Parse errors: 0 (0.0%)
-- Weak heading records: 6 (17.6%)
+- Weak heading records: 4 (7.8%)
 
 ## Family Coverage
 
 | Family | Current Records | Target Records | Gap |
 |---|---:|---:|---:|
-| software/system | 1 | 100 | 99 |
-| control/optimization | 3 | 100 | 97 |
-| mechanical/manufacturing | 26 | 100 | 74 |
+| software/system | 0 | 100 | 100 |
+| control/optimization | 22 | 100 | 78 |
+| mechanical/manufacturing | 25 | 100 | 75 |
 
 ## Near-Term Milestones
 
 | Family | Milestone | Target | Gap | Estimated Batches |
 |---|---|---:|---:|---:|
-| software/system | commonality family sample | 10 | 9 | 1 |
-| software/system | balanced readiness family coverage | 100 | 99 | 5 |
-| control/optimization | commonality family sample | 10 | 7 | 1 |
-| control/optimization | balanced readiness family coverage | 100 | 97 | 5 |
+| software/system | commonality family sample | 10 | 10 | 1 |
+| software/system | balanced readiness family coverage | 100 | 100 | 5 |
+| control/optimization | commonality family sample | 10 | 0 | 0 |
+| control/optimization | balanced readiness family coverage | 100 | 78 | 4 |
 | mechanical/manufacturing | commonality family sample | 10 | 0 | 0 |
-| mechanical/manufacturing | balanced readiness family coverage | 100 | 74 | 4 |
+| mechanical/manufacturing | balanced readiness family coverage | 100 | 75 | 4 |
 
 ## Gates
 
 | Gate | Status | Detail |
 |---|---|---|
-| minimum total records | FAIL | 34/100 records |
-| parse error rate | PASS | 0/34 = 0.0%; threshold <= 10.0% |
-| weak heading rate | PASS | 6/34 = 17.6%; threshold <= 25.0% |
-| software/system coverage | FAIL | 1/100 records |
-| control/optimization coverage | FAIL | 3/100 records |
-| mechanical/manufacturing coverage | FAIL | 26/100 records |
+| minimum total records | FAIL | 51/100 records |
+| parse error rate | PASS | 0/51 = 0.0%; threshold <= 10.0% |
+| weak heading rate | PASS | 4/51 = 7.8%; threshold <= 25.0% |
+| software/system coverage | FAIL | 0/100 records |
+| control/optimization coverage | FAIL | 22/100 records |
+| mechanical/manufacturing coverage | FAIL | 25/100 records |
 
 ## Interpretation
 

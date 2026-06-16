@@ -4,32 +4,32 @@ This report is generated from aggregate metadata only. It does not publish thesi
 
 ## Evidence Boundary
 
-- Total records: 34
-- Software/system records: 1
-- Control/optimization records: 3
-- Mechanical/manufacturing records: 26
+- Total records: 51
+- Software/system records: 0
+- Control/optimization records: 22
+- Mechanical/manufacturing records: 25
 - Mixed/unknown records: 4
 
 Balanced cross-family candidates require support in at least two adequately sampled main thesis families. Sparse cross-family signals are acquisition priorities, not generalized writing rules.
 
 ## Balanced Cross-Family Candidate Patterns
 
-- No balanced cross-family candidate patterns meet the current support gate.
+- `role:current_state_diagnosis` appears in 47/51 records (software 0, control 21, mechanical 22); interpretation: `balanced_cross_family_candidate`
+- `topic:algorithm_modeling` appears in 42/51 records (software 0, control 19, mechanical 21); interpretation: `balanced_cross_family_candidate`
+- `role:literature_review` appears in 40/51 records (software 0, control 20, mechanical 17); interpretation: `balanced_cross_family_candidate`
+- `role:scheme_design` appears in 39/51 records (software 0, control 20, mechanical 18); interpretation: `balanced_cross_family_candidate`
+- `role:background_significance` appears in 38/51 records (software 0, control 17, mechanical 18); interpretation: `balanced_cross_family_candidate`
+- `role:research_content_route` appears in 33/51 records (software 0, control 12, mechanical 18); interpretation: `balanced_cross_family_candidate`
+- `topic:equipment_maintenance` appears in 29/51 records (software 0, control 4, mechanical 23); interpretation: `balanced_cross_family_candidate`
+- `role:experiment_evaluation` appears in 23/51 records (software 0, control 15, mechanical 8); interpretation: `balanced_cross_family_candidate`
+- `role:model_design` appears in 23/51 records (software 0, control 13, mechanical 8); interpretation: `balanced_cross_family_candidate`
+- `topic:software_platform` appears in 22/51 records (software 0, control 15, mechanical 6); interpretation: `balanced_cross_family_candidate`
+- `topic:production_scheduling` appears in 19/51 records (software 0, control 4, mechanical 13); interpretation: `balanced_cross_family_candidate`
+- `role:cause_analysis` appears in 12/51 records (software 0, control 2, mechanical 9); interpretation: `balanced_cross_family_candidate`
 
 ## Sparse Cross-Family Signals
 
-- `role:current_state_diagnosis` appears in 30/34 records (software 1, control 3, mechanical 22); interpretation: `sparse_cross_family_signal`
-- `topic:equipment_maintenance` appears in 28/34 records (software 0, control 2, mechanical 24); interpretation: `sparse_cross_family_signal`
-- `topic:algorithm_modeling` appears in 26/34 records (software 1, control 3, mechanical 20); interpretation: `sparse_cross_family_signal`
-- `role:background_significance` appears in 25/34 records (software 1, control 2, mechanical 19); interpretation: `sparse_cross_family_signal`
-- `role:literature_review` appears in 21/34 records (software 0, control 2, mechanical 16); interpretation: `sparse_cross_family_signal`
-- `role:scheme_design` appears in 21/34 records (software 1, control 3, mechanical 16); interpretation: `sparse_cross_family_signal`
-- `topic:production_scheduling` appears in 17/34 records (software 0, control 1, mechanical 14); interpretation: `sparse_cross_family_signal`
-- `role:model_design` appears in 12/34 records (software 1, control 2, mechanical 7); interpretation: `sparse_cross_family_signal`
-- `role:cause_analysis` appears in 10/34 records (software 1, control 1, mechanical 7); interpretation: `sparse_cross_family_signal`
-- `topic:software_platform` appears in 10/34 records (software 1, control 1, mechanical 7); interpretation: `sparse_cross_family_signal`
-- `role:experiment_evaluation` appears in 9/34 records (software 1, control 2, mechanical 6); interpretation: `sparse_cross_family_signal`
-- `topic:lean_production` appears in 8/34 records (software 1, control 1, mechanical 5); interpretation: `sparse_cross_family_signal`
+- No sparse cross-family signals meet the current support gate.
 
 ## Mechanical-Weighted Candidate Patterns
 
@@ -37,8 +37,7 @@ Balanced cross-family candidates require support in at least two adequately samp
 
 ## Low-Support Signals
 
-- `role:result_discussion` appears in 2/34 records (software 0, control 1, mechanical 1); interpretation: `sparse_cross_family_signal`
-- `role:summary_outlook` appears in 2/34 records (software 0, control 0, mechanical 2); interpretation: `structure_signal_needs_more_families`
+- No low-support signals were emitted.
 
 ## Use In Writing
 

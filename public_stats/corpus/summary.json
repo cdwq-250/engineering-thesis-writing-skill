@@ -1,26 +1,31 @@
 {
-  "record_count": 34,
+  "record_count": 51,
   "parse_error_count": 0,
   "type_counts": {
-    "mechanical_manufacturing": 26,
-    "control_optimization": 3,
+    "mechanical_manufacturing": 25,
+    "control_optimization": 22,
     "unknown": 1,
-    "mixed": 3,
-    "software_system": 1
+    "mixed": 3
   },
   "classification_method": "weighted keywords over file name, title candidates, keywords, and headings",
   "classification_confidence_counts": {
-    "high": 29,
+    "high": 46,
     "medium": 1,
     "unknown": 1,
     "tie": 3
   },
-  "weak_heading_record_count": 6,
+  "weak_heading_record_count": 4,
   "chapter_count_distribution": {
-    "0": 16,
-    "4": 7,
-    "1": 6,
-    "3": 4,
-    "5": 1
+    "0": 18,
+    "9": 1,
+    "3": 3,
+    "4": 5,
+    "8": 5,
+    "7": 4,
+    "6": 9,
+    "5": 3,
+    "10": 1,
+    "2": 1,
+    "1": 1
   }
 }
